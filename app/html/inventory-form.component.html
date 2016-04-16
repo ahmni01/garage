@@ -1,0 +1,120 @@
+
+
+<div class="container">
+  <div  [hidden]="submitted">
+    <h1>Add Inventory</h1>
+    <form *ngIf="active" (ngSubmit)="onSubmit()" #inventoryForm="ngForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" required
+          [(ngModel)]="model.name"
+            ngControl="name"  #name="ngForm" >
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          Item Name is required
+          
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="itemCount">Item Count</label>
+        <input type="text" class="form-control"
+          [(ngModel)]="model.count"
+            ngControl="itemCount" >
+      </div>
+
+      <div class="form-group">
+        <label for="categories">Category</label>
+        <select class="form-control" required
+          [(ngModel)]="model.categories"
+            ngControl="categories" #categories="ngForm" >
+          <option *ngFor="#p of category" [value]="p">{{p}}</option>
+        </select>
+        <div [hidden]="categories.valid || categories.pristine" class="alert alert-danger">
+          category is required
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!inventoryForm.form.valid">Save</button>  
+
+<hr>
+     <!-- NOT SHOWN IN DOCS -->
+     <!--
+      <div>
+        <hr>
+        Name via form.controls = {{showFormControls(inventoryForm)}}
+      </div>
+      - -->
+    </form>
+  </div>
+  
+      <div [hidden]="!submitted">
+      <div class="alert alert-success" role="alert">
+        <strong>Item saved!</strong> Please feel free to make corrections by clicking on Edit button...
+      </div>
+      
+    <h2>Item details:</h2>
+    <div class="row">
+      <div class="col-xs-3">Name</div>
+      <div class="col-xs-9  pull-left">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Count</div>
+      <div class="col-xs-9 pull-left">{{ model.count }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Category</div>
+      <div class="col-xs-9 pull-left">{{ model.categories }}</div>
+    </div>
+    <br>
+    <button class="btn btn-info" (click)="submitted=false">Edit</button>
+    <hr>
+  </div>
+  <!-- Large modal -->  
+  
+<div class="panel panel-primary" >
+  <!-- Default panel contents -->
+  <div class="panel-heading">Existing Inventory</div>
+  <div class="panel-body">
+    <p>
+        <input type="text" [(ngModel)]='listFilter' class="form-control" placeholder="Search Inventory...">
+    </p>
+    
+  </div>
+
+<div class="table-responsive">  
+        <table class="table table-hover table-striped"> 
+            <thead> 
+                <tr> <th>#ID</th> <th>Name</th> <th>Total Count</th><th>Available Count</th> <th>Category</th><th>Contact</th><th>Cost</th><th>Manufacturer</th><th>AvailableSince</th> </tr> 
+            </thead> 
+            <tbody>
+                <tr *ngFor = '#item of items | itemFilter: listFilter'  >
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.count}}</td>
+                    <td>{{item.availableCount}}</td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.contact}}</td>
+                    <td>{{item.cost}}</td>
+                    <td>{{item.manufacturer}}</td>
+                    <td>{{item.availableSince}}</td>
+                    </tr>
+                         
+                 <!--
+                <tr> <th scope="row">1</th> <td>{{ items.name }}</td> <td>{{ model.count }}</td> <td>{{ model.category }}</td> </tr> 
+                <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> 
+                <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr>
+                --> 
+                </tbody> 
+          </table>
+  </div>
+</div>
+  
+</div>
+
+
+
+<!-- 
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+-->
