@@ -11,31 +11,31 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var ItemFilterPipe;
+    var InventoryFilterPipe;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            ItemFilterPipe = (function () {
-                function ItemFilterPipe() {
+            InventoryFilterPipe = (function () {
+                function InventoryFilterPipe() {
                 }
-                ItemFilterPipe.prototype.transform = function (value, args) {
+                InventoryFilterPipe.prototype.transform = function (value, args) {
                     var filter = args[0] ? args[0].toLocaleLowerCase() : null;
                     return filter ? value.filter(function (items) {
                         return items.name.toLocaleLowerCase().indexOf(filter) != -1;
                     }) : value;
                 };
-                ItemFilterPipe = __decorate([
+                InventoryFilterPipe = __decorate([
                     core_1.Pipe({
                         name: 'itemFilter'
                     }), 
                     __metadata('design:paramtypes', [])
-                ], ItemFilterPipe);
-                return ItemFilterPipe;
+                ], InventoryFilterPipe);
+                return InventoryFilterPipe;
             }());
-            exports_1("ItemFilterPipe", ItemFilterPipe);
+            exports_1("InventoryFilterPipe", InventoryFilterPipe);
         }
     }
 });

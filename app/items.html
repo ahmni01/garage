@@ -1,0 +1,41 @@
+
+
+<div class="container">
+  
+<div class="panel panel-primary" >
+  <!-- Default panel contents -->
+  <div class="panel-heading">Existing Inventory</div>
+  <div class="panel-body">
+    <p>
+        <input type="text" [(ngModel)]='listFilter' class="form-control" placeholder="Search Inventory...">
+    </p>
+    
+  </div>
+
+<div class="table-responsive">  
+        <table class="table table-hover table-striped"> 
+            <thead> 
+                <tr> <th>#ID</th> <th>Name</th> <th>Total Count</th><th>Available Count</th> <th>Category</th><th>Contact</th><th>Cost</th><th>Manufacturer</th><th>AvailableSince</th> </tr> 
+            </thead> 
+            <tbody>
+              <!-- # means a local variable -->
+                <tr *ngFor = '#item of items | itemFilter: listFilter'  >
+                    <td>{{item.id}}</td>                      
+                                        <td>
+                     <a [routerLink]="['ItemInformation',{id:item.id}]">
+                      {{item.name}}
+                      </a>
+                    </td>
+                    <td>{{item.count}}</td>
+                    <td>{{item.availableCount}}</td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.contact}}</td>
+                    <td>{{item.cost|currency:'USD':true }} </td>
+                    <td>{{item.manufacturer}}</td>
+                    <td>{{item.availableSince}}</td>
+                    </tr>
+                </tbody> 
+          </table>
+  </div>
+</div>
+</div>
