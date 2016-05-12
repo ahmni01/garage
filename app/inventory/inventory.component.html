@@ -1,0 +1,196 @@
+  
+<div class="container">
+  <div  [hidden]="submitted">
+    <h1>Add Inventory</h1>
+   
+    <form *ngIf="active" (ngSubmit)="onSubmit()" #inventoryForm="ngForm">
+   <div class="col-lg-6">
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" required
+          [(ngModel)]="model.name"
+            ngControl="name"  #name="ngForm" >
+        <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+          Inventory Name is required
+          
+        </div>
+      </div>
+
+
+<!--
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select class="form-control" required
+          [(ngModel)]="model.category"
+            ngControl="category" #category="ngForm" >
+          <option *ngFor="#p of categories" [value]="p">{{p.name}}</option>
+        </select>
+        <div [hidden]="category.valid || category.pristine" class="alert alert-danger">
+          category is required
+        </div>
+      </div>
+-->
+
+      <div class="form-group">
+        <label for="model.category.name">Category</label>
+        <select class="form-control" required
+          [(ngModel)]="model.category.name" (change)="onChange($event.target.value)"
+            ngControl="model.category" #category="ngForm" >
+          <option *ngFor="#p of categories" [value]="p">{{p.name}}</option>
+        </select>
+        <div [hidden]="category.valid || category.pristine" class="alert alert-danger">
+          category is required
+        </div>
+      </div>
+        <div class="form-group">
+        <label for="vendor_name">Vendor Name</label>
+        <input type="text" class="form-control" required
+          [(ngModel)]="model.vendor_name"
+            ngControl="vendor_name"  #name="ngForm" >
+<!--
+        <div [hidden]="vendor_name.valid || vendor_name.pristine" class="alert alert-danger">
+          Vendor Name is required
+        </div>
+-->
+      </div>
+
+      </div>
+   <div class="col-lg-6">
+      
+      <div class="form-group">
+        <label for="vendor_contact">Vendor Contact</label>
+        <input type="text" class="form-control"
+          [(ngModel)]="model.vendor_contact"
+            ngControl="vendor_contact" >
+      </div>
+      
+      <div class="form-group">
+        <label for="cost">Cost</label>
+        <input type="number" class="form-control"
+          [(ngModel)]="model.cost"
+            ngControl="cost" >
+      </div>
+      
+      <div class="form-group">
+        <label for="purchase_date">Purchase Date</label>
+        <input type="date" class="form-control"
+          [(ngModel)]="model.purchase_date"
+            ngControl="purchase_date" >
+      </div>
+   
+      </div>
+      <div class="col-lg-6">
+   
+      <button type="submit" class="btn btn-primary" [disabled]="!inventoryForm.form.valid">Save</button>  
+     </div>
+      </form>
+   
+    
+</div>      
+      
+
+
+     <!-- NOT SHOWN IN DOCS -->
+     <!--
+      <div>
+        <hr>
+        Name via form.controls = {{showFormControls(inventoryForm)}}
+      </div>
+      - -->
+    
+  </div>
+<hr>  
+      <div [hidden]="!submitted">
+      <div class="alert alert-success" role="alert">
+        <strong>Inventory saved!</strong> Please feel free to make corrections by clicking on Edit button...
+      </div>
+      
+    <h2>Inventory details:</h2>
+    <div class="row">
+      <div class="col-xs-3">Name</div>
+      <div class="col-xs-9  pull-left">{{ model.name }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Category</div>
+      <div class="col-xs-9 pull-left">{{model.category.name}} </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Vendor Name</div>
+      <div class="col-xs-9 pull-left">{{ model.vendor_name }}</div>
+    </div>    
+    
+    <div class="row">
+      <div class="col-xs-3">Vendor Contact</div>
+      <div class="col-xs-9 pull-left">{{ model.vendor_contact }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Cost</div>
+      <div class="col-xs-9 pull-left">{{ model.cost }}</div>
+    </div>    
+       
+    <div class="row">
+      <div class="col-xs-3">Purchase Date</div>
+      <div class="col-xs-9 pull-left">{{ model.purchaseDate }}</div>
+    </div>    
+       
+     <div class="row">
+      <div class="col-xs-3">JSON</div>
+      <div class="col-xs-9 pull-left">{{ model.category.name | json}}</div>
+    </div>
+    <br>
+    <button class="btn btn-warning" (click)="submitted=false">Edit</button>
+    <hr>
+  </div>
+  <!-- Large modal -->  
+  
+<div class="panel panel-primary" >
+  <!-- Default panel contents -->
+  <div class="panel-heading">Existing Inventory</div>
+  <div class="panel-body">
+    <p>
+        <input type="text" [(ngModel)]='listFilter' class="form-control" placeholder="Search Inventory...">
+    </p>
+    
+  </div>
+
+<div class="table-responsive">  
+        <table class="table table-hover table-striped"> 
+            <thead> 
+                <tr> <th>#ID</th> <th>Name</th> <th>Category</th><th>Vendor Name</th><th>Vendor Contact</th><th>Cost</th><th>PurchaseDate</th> </tr> 
+            </thead> 
+            <tbody>
+              <!-- # means a local variable -->
+                <tr *ngFor = '#item of inventory | itemFilter: listFilter | itemFilter: model.name'  >
+                    <td>{{item.id}}</td>                      
+                    <td>
+                     <a [routerLink]="['ItemInformation',{id:item.id}]">
+                      {{item.name}}
+                      </a>
+                    </td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.vendor_name}}</td>
+                    <td>{{item.vendor_contact}}</td>
+                    <td>{{item.cost|currency:'USD':true }} </td>
+                    
+                    <td>{{item.purchase_date}}</td>
+                    </tr>
+                         
+                 <!--
+                <tr> <th scope="row">1</th> <td>{{ items.name }}</td> <td>{{ model.count }}</td> <td>{{ model.category }}</td> </tr> 
+                <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> 
+                <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr>
+                --> 
+                </tbody> 
+          </table>
+  </div>
+</div>
+
+
+
+
+<!-- 
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+-->
