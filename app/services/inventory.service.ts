@@ -1,8 +1,8 @@
-
-import {Injectable} from 'angular2/core';
-import {Headers} from 'angular2/http';
-import {Http, Response} from 'angular2/http';
+import {Injectable} from '@angular/core';
+import {Http, Response, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable'; 
+
+import {Inventory}    from '../inventory/inventory';
 
 @Injectable()
 export class InventoryService{
@@ -13,21 +13,24 @@ export class InventoryService{
       
        getInventory():Observable <any>{          
         var apiHeaders = new Headers();
-        apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
-      //  console.log('Authorization : ' + apiHeaders.get('Authorization'));    
-       
-      //  apiHeaders.append('Content-Type', 'application/json');
-      //  console.log('Content-Type : ' + apiHeaders.get('Content-Type'));
- 
-            return this._http.get(this._inventoryUrl,{
-                headers: apiHeaders
-            })
-                       .map((response: Response) => <any>response.json())
-                       .do(data =>{
+        let _token=sessionStorage.getItem('id_token');        
+        
+        apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+        apiHeaders.append('Content-Type', 'application/json');
+        return this._http.get(this._inventoryUrl,{headers: apiHeaders})
+                  .map((response: Response) => <Inventory[]>response.json())                 
+                  .do(data =>{
                         // console.log("RecievedData: " + JSON.stringify(data))  
                        })
-                       .catch(this.exceptionHandler);                        
+                  .catch(this.exceptionHandler);                        
         }
+        
+        searchInventory(id: number): Observable<Inventory> {
+        return this.getInventory()
+            .map((inventory: Inventory[]) => inventory.find(item => item.id === id));
+    }
+
+        
         private exceptionHandler(error: Response){
           console.log(error);
           return Observable.throw(error.json().error || 'Encountered Error!!')

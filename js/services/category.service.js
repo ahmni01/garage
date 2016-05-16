@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', './auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.token.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', './auth.to
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, http_2, Observable_1, auth_token_service_1;
+    var core_1, http_1, Observable_1, auth_token_service_1;
     var CategoryService;
     return {
         setters:[
@@ -19,7 +19,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', './auth.to
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-                http_2 = http_1_1;
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
@@ -36,11 +35,11 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', './auth.to
                 }
                 CategoryService.prototype.getCategories = function () {
                     var apiHeaders = new http_1.Headers();
-                    console.log("<= Session Token => " + localStorage.getItem('id_token'));
-                    var _token = localStorage.getItem('id_token');
+                    //console.log("<= Session Token => " + localStorage.getItem('id_token'));
+                    var _token = sessionStorage.getItem('id_token');
                     apiHeaders.append('Authorization', _token);
-                    //  apiHeaders.append('Content-Type', 'application/json');
-                    //  console.log('Content-Type : ' + apiHeaders.get('Content-Type'));
+                    apiHeaders.append('Content-Type', 'application/json');
+                    //console.log('Content-Type : ' + apiHeaders.get('Content-Type'));
                     return this._http.get(this._categoryUrl, {
                         headers: apiHeaders
                     })
@@ -56,7 +55,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable', './auth.to
                 };
                 CategoryService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_2.Http, auth_token_service_1.AuthTokenService])
+                    __metadata('design:paramtypes', [http_1.Http, auth_token_service_1.AuthTokenService])
                 ], CategoryService);
                 return CategoryService;
             }());

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, http_2, Observable_1;
+    var core_1, http_1, Observable_1;
     var InventoryService;
     return {
         setters:[
@@ -19,7 +19,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-                http_2 = http_1_1;
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
@@ -32,18 +31,19 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 }
                 InventoryService.prototype.getInventory = function () {
                     var apiHeaders = new http_1.Headers();
-                    apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
-                    //  console.log('Authorization : ' + apiHeaders.get('Authorization'));    
-                    //  apiHeaders.append('Content-Type', 'application/json');
-                    //  console.log('Content-Type : ' + apiHeaders.get('Content-Type'));
-                    return this._http.get(this._inventoryUrl, {
-                        headers: apiHeaders
-                    })
+                    var _token = sessionStorage.getItem('id_token');
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    return this._http.get(this._inventoryUrl, { headers: apiHeaders })
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         // console.log("RecievedData: " + JSON.stringify(data))  
                     })
                         .catch(this.exceptionHandler);
+                };
+                InventoryService.prototype.searchInventory = function (id) {
+                    return this.getInventory()
+                        .map(function (inventory) { return inventory.find(function (item) { return item.id === id; }); });
                 };
                 InventoryService.prototype.exceptionHandler = function (error) {
                     console.log(error);
@@ -51,7 +51,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 };
                 InventoryService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_2.Http])
+                    __metadata('design:paramtypes', [http_1.Http])
                 ], InventoryService);
                 return InventoryService;
             }());

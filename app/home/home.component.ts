@@ -1,7 +1,5 @@
-import { Component } from 'angular2/core';
-import { RouteParams } from 'angular2/router';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, RouteConfig} from 'angular2/router';
-
+import {Component}  from '@angular/core';
+import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes} from '@angular/router';
 
 @Component({
     templateUrl: 'app/home/home.component.html',

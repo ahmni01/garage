@@ -27,7 +27,7 @@
           <option *ngFor="#p of categories" [value]="p">{{p.name}}</option>
         </select>
         <div [hidden]="category.valid || category.pristine" class="alert alert-danger">
-          category is required
+          category is required 
         </div>
       </div>
 -->
@@ -37,7 +37,7 @@
         <select class="form-control" required
           [(ngModel)]="model.category.name" (change)="onChange($event.target.value)"
             ngControl="model.category" #category="ngForm" >
-          <option *ngFor="#p of categories" [value]="p">{{p.name}}</option>
+          <option *ngFor="let p of categories" [value]="p">{{p.name}}</option>
         </select>
         <div [hidden]="category.valid || category.pristine" class="alert alert-danger">
           category is required
@@ -141,8 +141,7 @@
     <br>
     <button class="btn btn-warning" (click)="submitted=false">Edit</button>
     <hr>
-  </div>
-  <!-- Large modal -->  
+  </div> 
   
 <div class="panel panel-primary" >
   <!-- Default panel contents -->
@@ -150,8 +149,7 @@
   <div class="panel-body">
     <p>
         <input type="text" [(ngModel)]='listFilter' class="form-control" placeholder="Search Inventory...">
-    </p>
-    
+    </p>  
   </div>
 
 <div class="table-responsive">  
@@ -160,37 +158,16 @@
                 <tr> <th>#ID</th> <th>Name</th> <th>Category</th><th>Vendor Name</th><th>Vendor Contact</th><th>Cost</th><th>PurchaseDate</th> </tr> 
             </thead> 
             <tbody>
-              <!-- # means a local variable -->
-                <tr *ngFor = '#item of inventory | itemFilter: listFilter | itemFilter: model.name'  >
+                <tr *ngFor = 'let item of inventory | itemFilter: listFilter | itemFilter: model.name'  >
                     <td>{{item.id}}</td>                      
-                    <td>
-                     <a [routerLink]="['ItemInformation',{id:item.id}]">
-                      {{item.name}}
-                      </a>
-                    </td>
+                    <td>{{item.name}}</td>
                     <td>{{item.category}}</td>
                     <td>{{item.vendor_name}}</td>
                     <td>{{item.vendor_contact}}</td>
                     <td>{{item.cost|currency:'USD':true }} </td>
-                    
                     <td>{{item.purchase_date}}</td>
                     </tr>
-                         
-                 <!--
-                <tr> <th scope="row">1</th> <td>{{ items.name }}</td> <td>{{ model.count }}</td> <td>{{ model.category }}</td> </tr> 
-                <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> 
-                <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr>
-                --> 
                 </tbody> 
           </table>
   </div>
 </div>
-
-
-
-
-<!-- 
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at http://angular.io/license
--->

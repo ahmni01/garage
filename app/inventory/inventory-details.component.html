@@ -1,49 +1,88 @@
 
 <div class='panel panel-primary'>
     <div class='panel-heading'>
-        {{pageTitle}} sss
+        {{pageTitle + ' : '}} 
         </div>        
-        <div class="table-responsive">  
-        <table class="table table-hover table-striped"> 
-            <thead> 
-                <tr> <th>#ID</th> <th>Name</th> <th>Total Count</th><th>Available Count</th> <th>Category</th><th>Contact</th><th>Cost</th><th>Manufacturer</th><th>AvailableSince</th> </tr> 
-            </thead> 
-            <tbody>
-                <tr *ngFor = '#item of items | itemFilter: listFilter'  >
-                    <td>{{item.id}}</td>                      
-                    <td>
-                     
-                      {{item.name}}
-                      
-                    </td>
-                    <td>{{item.count}}</td>
-                    <td>{{item.availableCount}}</td>
-                    <td>{{item.category}}</td>
-                    <td>{{item.contact}}</td>
-                    <td>{{item.cost}}</td>
-                    <td>{{item.manufacturer}}</td>
-                    <td>{{item.availableSince}}</td>
-                    </tr>                        
-     
-                </tbody> 
-          </table>
-  </div>
-  <hr>
-<hr>
-    <div class="input-append btn-group">
-    <input class="span2" id="appendedInputButton" size="16" type="text">
-    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-        <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-        <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-        <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-        <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
-        <li class="divider"></li>
-        <li><a href="#"><i class="i"></i> Make admin</a></li>
-    </ul>
-</div> 
+  
+    
+  <div class='panel-body'>
+        <div class='row'>
+            <div class='col-md-6'>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Name:</strong></div>
+                    <div class='col-md-6'>{{item | json}}</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Code:</strong></div>
+                    <div class='col-md-6'></div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Description:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Availability:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Price:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
 
+            </div>
+            <div class='col-md-6'>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Name:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Code:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Description:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Availability:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+                <div class='row'>
+                    <div class='col-md-3'><strong>Price:</strong></div>
+                    <div class='col-md-6'>Value</div>
+                </div>
+
+            </div>
+            
+        </div>
+    </div>
+
+    <div class='panel-footer'>
+         <div class="row">
+           <div class='col-md-3'>
+             <a class='btn btn-default' (click)='onBack()' style='width:80px'>
+                <i class='glyphicon glyphicon-chevron-left'></i> Back
+             </a>
+             <a class='btn btn-primary' (click)='onBack()' style='width:80px'>
+              <i class='glyphicon glyphicon-floppy-disk'></i> Save
+            </a>
+         </div>
+         <div class='col-md-2'>
+             <input type="text" class="form-control" placeholder="pmfkey" >
+         </div>
+         <div class='col-md-4'>
+             <input type="text" class="form-control" placeholder="Name" >
+         </div>
+         <a class='btn btn-warning' (click)='onBack()' style='width:80px'>
+               <i class='glyphicon glyphicon-ok-sign'></i> Assign
+          </a>
+       </div>
+   </div>
+        
+        
+        
+        
+    
     
  </div>
         

@@ -1,7 +1,7 @@
 
-import {Injectable} from 'angular2/core';
-import {Headers} from 'angular2/http';
-import {Http, Response} from 'angular2/http';
+import {Injectable} from '@angular/core';
+import {Http, Response, Headers} from '@angular/http';
+
 import {Observable} from 'rxjs/Observable'; 
 import {AuthTokenService} from './auth.token.service';
 
@@ -15,14 +15,12 @@ export class CategoryService{
       
        getCategories():Observable <any>{          
         var apiHeaders = new Headers();
-        console.log("<= Session Token => " + localStorage.getItem('id_token'));
-        let _token=localStorage.getItem('id_token');        
-        
-        apiHeaders.append('Authorization', _token);
-         
+        //console.log("<= Session Token => " + localStorage.getItem('id_token'));
+        let _token=sessionStorage.getItem('id_token');        
+        apiHeaders.append('Authorization', _token);         
        
-      //  apiHeaders.append('Content-Type', 'application/json');
-      //  console.log('Content-Type : ' + apiHeaders.get('Content-Type'));
+        apiHeaders.append('Content-Type', 'application/json');
+        //console.log('Content-Type : ' + apiHeaders.get('Content-Type'));
  
             return this._http.get(this._categoryUrl,{
                 headers: apiHeaders
