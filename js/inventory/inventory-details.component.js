@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './inventory-filter.pipe', './inventory.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../services/inventory.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './inventory-filter.pipe', 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, inventory_filter_pipe_1, router_2, inventory_component_1;
+    var core_1, router_1, router_2, inventory_service_1;
     var InventoryDetailsComponent;
     return {
         setters:[
@@ -21,28 +21,39 @@ System.register(['angular2/core', 'angular2/router', './inventory-filter.pipe', 
                 router_1 = router_1_1;
                 router_2 = router_1_1;
             },
-            function (inventory_filter_pipe_1_1) {
-                inventory_filter_pipe_1 = inventory_filter_pipe_1_1;
-            },
-            function (inventory_component_1_1) {
-                inventory_component_1 = inventory_component_1_1;
+            function (inventory_service_1_1) {
+                inventory_service_1 = inventory_service_1_1;
             }],
         execute: function() {
             InventoryDetailsComponent = (function () {
-                function InventoryDetailsComponent(_routeParams) {
-                    this._routeParams = _routeParams;
+                function InventoryDetailsComponent(_inventoryService, _router) {
+                    this._inventoryService = _inventoryService;
+                    this._router = _router;
                     this.pageTitle = 'Inventory details';
-                    var id = +this._routeParams.get('id');
-                    this.pageTitle += ": " + id;
                 }
+                InventoryDetailsComponent.prototype.routerOnActivate = function (curr) {
+                    var id = +curr.getParam('id');
+                    this.pageTitle = this.pageTitle + ':' + id;
+                    this.searchInventory(id);
+                };
+                InventoryDetailsComponent.prototype.searchInventory = function (id) {
+                    var _this = this;
+                    this._inventoryService.searchInventory(id)
+                        .subscribe(function (item) {
+                        _this.item = item;
+                    }, function (error) { return _this.errorMessage = error; });
+                    // console.log("###item.name####" +this.item.name)
+                };
+                InventoryDetailsComponent.prototype.onBack = function () {
+                    this._router.navigate(['/adminbay']);
+                };
                 InventoryDetailsComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/inventory/inventory-details.component.html',
-                        pipes: [inventory_filter_pipe_1.InventoryFilterPipe],
-                        directives: [router_2.ROUTER_DIRECTIVES],
-                        providers: [router_2.ROUTER_PROVIDERS, inventory_component_1.InventoryComponent]
+                        providers: [inventory_service_1.InventoryService],
+                        directives: [router_2.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [router_1.RouteParams])
+                    __metadata('design:paramtypes', [inventory_service_1.InventoryService, router_1.Router])
                 ], InventoryDetailsComponent);
                 return InventoryDetailsComponent;
             }());

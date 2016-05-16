@@ -11,11 +11,25 @@
  
      <garage-app>Loading Garage...</garage-app>
 
+<link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">        
+
+
+    <!-- Polyfill(s) for older browsers -->
+    <script src="node_modules/es6-shim/es6-shim.min.js"></script>
+    
+    <script src="node_modules/zone.js/dist/zone.js"></script>
+    <script src="node_modules/reflect-metadata/Reflect.js"></script>
+    <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+    
+     
+    <!--
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="forms.css">        
-    <!-- IE required polyfills, in this exact order -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.0/es6-shim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.20/system-polyfills.js"></script>
     <script src="https://npmcdn.com/angular2@2.0.0-beta.14/es6/dev/src/testing/shims_for_IE.js"></script>
@@ -28,13 +42,13 @@
      <script src="node_modules/typescript/lib/typescript.js"></script>
      <script src="node_modules/rxjs/bundles/Rx.js"></script>
      <script src="node_modules/angular2/bundles/http.dev.js"></script>
-     
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
     <script src="https://code.angularjs.org/tools/system.js"></script>
     <script src="https://npmcdn.com/typescript@1.8.9/lib/typescript.js"></script>
     <script src="https://code.angularjs.org/2.0.0-beta.14/angular2.dev.js"></script>
     <script src="https://code.angularjs.org/2.0.0-beta.14/Rx.js"></script>
-    -->     
+    
     <script>
       System.config({
         transpiler: 'typescript', 
@@ -44,6 +58,13 @@
       System.import('app/main')
             .then(null, console.error.bind(console));
     </script>
+ -->     
+ <!-- Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+    <script>
+      System.import('app').catch(function(err){ console.error(err);  });
+    </script>
+ 
     
   </body>
 

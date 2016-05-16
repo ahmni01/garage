@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './inventory', '../services/category.service', '../services/inventory.service', './inventory-filter.pipe', '../services/auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', './inventory', '../services/category.service', '../services/inventory.service', './inventory-filter.pipe', '../services/auth.token.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -54,7 +54,10 @@ System.register(['angular2/core', 'angular2/router', './inventory', '../services
                 InventoryComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this._authTokenService.getToken()
-                        .subscribe(function (token) { return _this.token = token; });
+                        .subscribe(function (token) {
+                        _this.token = token;
+                        console.log("token recieved??? : " + token);
+                    });
                     this._categoryService.getCategories()
                         .subscribe(function (categories) { return _this.categories = categories; });
                     this._inventoryService.getInventory()
@@ -67,12 +70,8 @@ System.register(['angular2/core', 'angular2/router', './inventory', '../services
                     console.log(':::::this.model.category : ' + this.model.category.toString());
                 };
                 InventoryComponent.prototype.onChange = function (deviceValue) {
-                    console.log(deviceValue);
+                    //  console.log(deviceValue);
                     // console.log(JSON.stringify(deviceValue).toString());
-                    for (var key in deviceValue) {
-                        var value = deviceValue[key][key];
-                        console.log('Value in the strange array' + key + ' - ' + value);
-                    }
                     // this.model.category = newValue;
                     // ... do other stuff here ...
                 };
@@ -88,7 +87,6 @@ System.register(['angular2/core', 'angular2/router', './inventory', '../services
                 };
                 InventoryComponent = __decorate([
                     core_1.Component({
-                        selector: 'item-component',
                         templateUrl: 'app/inventory/inventory.component.html',
                         pipes: [inventory_filter_pipe_1.InventoryFilterPipe],
                         directives: [router_1.ROUTER_DIRECTIVES],

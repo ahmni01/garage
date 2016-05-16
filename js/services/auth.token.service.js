@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, http_2, Observable_1;
+    var core_1, http_1, Observable_1;
     var AuthTokenService;
     return {
         setters:[
@@ -19,7 +19,6 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-                http_2 = http_1_1;
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
@@ -32,8 +31,8 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 }
                 AuthTokenService.prototype.getToken = function () {
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-                    console.log('Content-Type : ' + headers.get('Content-Type'));
-                    var options = new http_2.RequestOptions({ headers: headers });
+                    //console.log('Content-Type : ' + headers.get('Content-Type'));
+                    var options = new http_1.RequestOptions({ headers: headers });
                     var body = JSON.stringify({ "username": "demo", "password": "Password1" });
                     return this._http.post(this._tokenUrl, body, options)
                         .map(this.extractData)
@@ -43,17 +42,13 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     if (res.status < 200 || res.status >= 300)
                         throw new Error('Bad response status: ' + res.status);
                     var body = res.json();
-                    console.log("Token: " + JSON.stringify(body));
+                    //console.log("Token: " + JSON.stringify(body)); 
                     this._token = 'CALiveAPICreator ' + body.apikey + ':1';
-                    this._tokenExpiration = body.expiration;
-                    console.log("Token Expires@" + this._tokenExpiration);
-                    //var time = new Date().getTime() - new Date(this._tokenExpiration).getTime();
-                    var time = new Date("2016-05-10T04:30:30.000Z").getTime() - new Date(this._tokenExpiration).getTime();
-                    //let day = new Date("2015-03-25T12:00:00");
-                    //console.log("Date ----------" + day.toDateString());
-                    //console.log("Difference in minutes - " + day.getMinutes());           
-                    console.log("###########Time Difference############## " + time);
-                    localStorage.setItem('id_token', this._token);
+                    this._tokenExpirationDateTime = body.expiration;
+                    //console.log("Token Expires@" + this._tokenExpirationDateTime);
+                    var tokenExpiresIn = new Date(this._tokenExpirationDateTime).getTime() - new Date().getTime();
+                    //console.log("Token Expires in : " + tokenExpiresIn + ' milleseconds, ' + tokenExpiresIn/(1000*60) + ' minutes');
+                    sessionStorage.setItem('id_token', this._token);
                     return body.data || {};
                 };
                 AuthTokenService.prototype.exceptionHandler = function (error) {
@@ -62,7 +57,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 };
                 AuthTokenService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [http_2.Http])
+                    __metadata('design:paramtypes', [http_1.Http])
                 ], AuthTokenService);
                 return AuthTokenService;
             }());
