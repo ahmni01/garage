@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx', './inventory/inventory.component', './inventory/inventory-details.component', './items.component', './home/home.component', './adminbay/adminbay.component', './report/report.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx', './inventory/inventory.component', './inventory/inventory-details.component', './home/home.component', './adminbay/adminbay.component', './report/report.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, http_1, inventory_component_1, inventory_details_component_1, items_component_1, home_component_1, adminbay_component_1, report_component_1;
+    var core_1, router_1, http_1, inventory_component_1, inventory_details_component_1, home_component_1, adminbay_component_1, report_component_1;
     var MainComponent;
     return {
         setters:[
@@ -29,9 +29,6 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
             },
             function (inventory_details_component_1_1) {
                 inventory_details_component_1 = inventory_details_component_1_1;
-            },
-            function (items_component_1_1) {
-                items_component_1 = items_component_1_1;
             },
             function (home_component_1_1) {
                 home_component_1 = home_component_1_1;
@@ -53,7 +50,6 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
                         template: " \n  <div>\n  <nav class=\"navbar navbar-default navbar-fixed-top\">\n  <a class=\"navbar-brand\">CA Garage</a>\n     <ul class=\"nav navbar-nav\">        \n        <li><a [routerLink]=\"['/home']\">Home</a></li>\n        <li><a [routerLink]=\"['/inventory']\">Manage Inventory</a></li>\n       <li><a [routerLink]=\"['/adminbay']\">Admin Bay</a></li>\n       <li><a [routerLink]=\"['/reports']\">Reports</a></li>\n     </ul>    \n    </nav>\n  <div class='container'>\n    <router-outlet></router-outlet>\n    </div>\n  </div> ",
                         directives: [router_1.ROUTER_DIRECTIVES],
                         providers: [inventory_component_1.InventoryComponent,
-                            items_component_1.ItemComponent,
                             router_1.ROUTER_PROVIDERS,
                             http_1.HTTP_PROVIDERS]
                     }),

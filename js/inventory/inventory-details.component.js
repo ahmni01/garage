@@ -33,15 +33,13 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
                 }
                 InventoryDetailsComponent.prototype.routerOnActivate = function (curr) {
                     var id = +curr.getParam('id');
-                    this.pageTitle = this.pageTitle + ':' + id;
+                    this.pageTitle = this.pageTitle + ':';
                     this.searchInventory(id);
                 };
                 InventoryDetailsComponent.prototype.searchInventory = function (id) {
                     var _this = this;
                     this._inventoryService.searchInventory(id)
-                        .subscribe(function (item) {
-                        _this.item = item;
-                    }, function (error) { return _this.errorMessage = error; });
+                        .subscribe(function (inventory) { return _this.inventory = inventory; }, function (error) { return _this.errorMessage = error; });
                     // console.log("###item.name####" +this.item.name)
                 };
                 InventoryDetailsComponent.prototype.onBack = function () {
@@ -50,8 +48,8 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
                 InventoryDetailsComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/inventory/inventory-details.component.html',
-                        providers: [inventory_service_1.InventoryService],
-                        directives: [router_2.ROUTER_DIRECTIVES]
+                        directives: [router_2.ROUTER_DIRECTIVES],
+                        providers: [inventory_service_1.InventoryService]
                     }), 
                     __metadata('design:paramtypes', [inventory_service_1.InventoryService, router_1.Router])
                 ], InventoryDetailsComponent);

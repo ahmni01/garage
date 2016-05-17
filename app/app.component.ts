@@ -5,7 +5,6 @@ import 'rxjs/Rx';
 
 import {InventoryComponent} from './inventory/inventory.component';
 import {InventoryDetailsComponent} from './inventory/inventory-details.component';
-import {ItemComponent} from './items.component';
 import {HomeComponent} from './home/home.component';
 import {AdminBayComponent} from './adminbay/adminbay.component';
 import {ReportComponent} from './report/report.component';
@@ -28,8 +27,7 @@ import {ReportComponent} from './report/report.component';
     </div>
   </div> `,
   directives: [ROUTER_DIRECTIVES],
-  providers:[InventoryComponent,
-             ItemComponent, 
+  providers:[InventoryComponent,             
              ROUTER_PROVIDERS, 
              HTTP_PROVIDERS]  
 })

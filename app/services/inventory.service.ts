@@ -20,7 +20,7 @@ export class InventoryService{
         return this._http.get(this._inventoryUrl,{headers: apiHeaders})
                   .map((response: Response) => <Inventory[]>response.json())                 
                   .do(data =>{
-                        // console.log("RecievedData: " + JSON.stringify(data))  
+                         //console.log("RecievedData: " + JSON.stringify(data))  
                        })
                   .catch(this.exceptionHandler);                        
         }
