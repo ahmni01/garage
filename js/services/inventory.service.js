@@ -37,7 +37,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     return this._http.get(this._inventoryUrl, { headers: apiHeaders })
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
-                        // console.log("RecievedData: " + JSON.stringify(data))  
+                        //console.log("RecievedData: " + JSON.stringify(data))  
                     })
                         .catch(this.exceptionHandler);
                 };

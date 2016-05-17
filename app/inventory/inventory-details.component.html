@@ -1,57 +1,37 @@
 
 <div class='panel panel-primary'>
     <div class='panel-heading'>
-        {{pageTitle + ' : '}} 
-        </div>        
-  
-    
+       ID:  {{inventory?.id}} , Name:  {{inventory?.name}}  
+        </div>    
   <div class='panel-body'>
         <div class='row'>
             <div class='col-md-6'>
                 <div class='row'>
                     <div class='col-md-3'><strong>Name:</strong></div>
-                    <div class='col-md-6'>{{item | json}}</div>
+                    <div class='col-md-6'>{{inventory?.name}}</div>
                 </div>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Code:</strong></div>
-                    <div class='col-md-6'></div>
+                    <div class='col-md-3'><strong>Category:</strong></div>
+                    <div class='col-md-6'>{{inventory?.category}}</div>
                 </div>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Description:</strong></div>
-                    <div class='col-md-6'>Value</div>
+                    <div class='col-md-3'><strong>Vendor Name:</strong></div>
+                    <div class='col-md-6'>{{inventory?.vendor_name}}</div>
                 </div>
-                <div class='row'>
-                    <div class='col-md-3'><strong>Availability:</strong></div>
-                    <div class='col-md-6'>Value</div>
-                </div>
-                <div class='row'>
-                    <div class='col-md-3'><strong>Price:</strong></div>
-                    <div class='col-md-6'>Value</div>
-                </div>
-
             </div>
             <div class='col-md-6'>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Name:</strong></div>
-                    <div class='col-md-6'>Value</div>
+                    <div class='col-md-3'><strong>Vendor Contact:</strong></div>
+                    <div class='col-md-6'>{{inventory?.vendor_contact}}</div>
                 </div>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Code:</strong></div>
-                    <div class='col-md-6'>Value</div>
+                    <div class='col-md-3'><strong>Cost:</strong></div>
+                    <div class='col-md-6'>{{inventory?.cost | currency: 'USD':true}}</div>
                 </div>
                 <div class='row'>
-                    <div class='col-md-3'><strong>Description:</strong></div>
-                    <div class='col-md-6'>Value</div>
+                    <div class='col-md-3'><strong>Purchase Date:</strong></div>
+                    <div class='col-md-6'>{{inventory?.purchase_date}}</div>
                 </div>
-                <div class='row'>
-                    <div class='col-md-3'><strong>Availability:</strong></div>
-                    <div class='col-md-6'>Value</div>
-                </div>
-                <div class='row'>
-                    <div class='col-md-3'><strong>Price:</strong></div>
-                    <div class='col-md-6'>Value</div>
-                </div>
-
             </div>
             
         </div>
