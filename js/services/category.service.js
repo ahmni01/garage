@@ -31,7 +31,8 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                 function CategoryService(_http, _authTokenService) {
                     this._http = _http;
                     this._authTokenService = _authTokenService;
-                    this._categoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/category';
+                    //private _categoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/category';
+                    this._categoryUrl = sessionStorage.getItem('api_base_url') + 'category';
                 }
                 CategoryService.prototype.getCategories = function () {
                     var apiHeaders = new http_1.Headers();

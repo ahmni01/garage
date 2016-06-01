@@ -21,10 +21,11 @@ System.register(['@angular/core'], function(exports_1, context_1) {
             InventoryFilterPipe = (function () {
                 function InventoryFilterPipe() {
                 }
-                InventoryFilterPipe.prototype.transform = function (value, args) {
-                    var filter = args[0] ? args[0].toLocaleLowerCase() : null;
-                    return filter ? value.filter(function (items) {
-                        return items.name.toLocaleLowerCase().indexOf(filter) != -1;
+                InventoryFilterPipe.prototype.transform = function (value, filter) {
+                    filter = filter ? filter.toLocaleLowerCase() : null;
+                    console.log('$$$$$$$$$$filter$$$$$$$$$: ' + filter);
+                    return filter ? value.filter(function (inventory) {
+                        return inventory.name.toLocaleLowerCase().indexOf(filter) !== -1;
                     }) : value;
                 };
                 InventoryFilterPipe = __decorate([

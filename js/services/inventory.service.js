@@ -27,8 +27,20 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
             InventoryService = (function () {
                 function InventoryService(_http) {
                     this._http = _http;
-                    this._inventoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/inventory';
+                    //private _inventoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/inventory';
+                    this._inventoryUrl = sessionStorage.getItem('api_base_url') + 'inventory';
                 }
+                InventoryService.prototype.addNewInventory = function (payload) {
+                    var apiHeaders = new http_1.Headers();
+                    var _token = sessionStorage.getItem('id_token');
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    return this._http.post(this._inventoryUrl, payload, { headers: apiHeaders })
+                        .map(function (response) { return response.json(); })
+                        .do(function (data) {
+                        console.log("Response from POST: " + JSON.stringify(data));
+                    });
+                };
                 InventoryService.prototype.getInventory = function () {
                     var apiHeaders = new http_1.Headers();
                     var _token = sessionStorage.getItem('id_token');
@@ -40,6 +52,33 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                         //console.log("RecievedData: " + JSON.stringify(data))  
                     })
                         .catch(this.exceptionHandler);
+                };
+                InventoryService.prototype.findInventory = function (term) {
+                    var apiHeaders = new http_1.Headers();
+                    var urlwithFilter, searchFilterStr;
+                    var _token = sessionStorage.getItem('id_token');
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator 68368c95857b7710514f52621ccc5eb7:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    searchFilterStr = '?filter=name like \'' + term + '%\'';
+                    urlwithFilter = this._inventoryUrl + searchFilterStr;
+                    return this._http.get(urlwithFilter, { headers: apiHeaders })
+                        .map(function (response) { return response.json(); });
+                };
+                InventoryService.prototype.findInventoryByID = function (id) {
+                    var apiHeaders = new http_1.Headers();
+                    var urlwithFilter, searchFilterStr;
+                    var _token = sessionStorage.getItem('id_token');
+                    console.log('####findInventoryByID: ' + id);
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator 68368c95857b7710514f52621ccc5eb7:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    searchFilterStr = '/' + id;
+                    urlwithFilter = this._inventoryUrl + searchFilterStr;
+                    console.log('####urlwithFilter: ' + urlwithFilter);
+                    return this._http.get(urlwithFilter, { headers: apiHeaders })
+                        .map(function (response) { return response.json(); })
+                        .do(function (data) {
+                        console.log("RecievedData: " + JSON.stringify(data));
+                    });
                 };
                 InventoryService.prototype.searchInventory = function (id) {
                     return this.getInventory()

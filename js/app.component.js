@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx', './inventory/inventory.component', './inventory/inventory-details.component', './home/home.component', './adminbay/adminbay.component', './report/report.component'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '@angular/http', './inventory/inventory.component', './inventory/inventory-details.component', './home/home.component', './adminbay/adminbay.component', './report/report.component', './services/config.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, http_1, inventory_component_1, inventory_details_component_1, home_component_1, adminbay_component_1, report_component_1;
+    var core_1, router_1, http_1, inventory_component_1, inventory_details_component_1, home_component_1, adminbay_component_1, report_component_1, config_service_1;
     var MainComponent;
     return {
         setters:[
@@ -23,7 +23,6 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (_1) {},
             function (inventory_component_1_1) {
                 inventory_component_1 = inventory_component_1_1;
             },
@@ -38,6 +37,9 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
             },
             function (report_component_1_1) {
                 report_component_1 = report_component_1_1;
+            },
+            function (config_service_1_1) {
+                config_service_1 = config_service_1_1;
             }],
         execute: function() {
             MainComponent = (function () {
@@ -51,7 +53,8 @@ System.register(['@angular/core', '@angular/router', '@angular/http', 'rxjs/Rx',
                         directives: [router_1.ROUTER_DIRECTIVES],
                         providers: [inventory_component_1.InventoryComponent,
                             router_1.ROUTER_PROVIDERS,
-                            http_1.HTTP_PROVIDERS]
+                            http_1.HTTP_PROVIDERS,
+                            config_service_1.ConfigService]
                     }),
                     router_1.Routes([
                         { path: '/', component: home_component_1.HomeComponent },

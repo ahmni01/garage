@@ -1,15 +1,29 @@
 import {PipeTransform, Pipe} from '@angular/core';
 import {Inventory} from './inventory'
+import {Observable} from 'rxjs/Observable'; 
 
 @Pipe({
     name: 'itemFilter'
 })
 export class InventoryFilterPipe implements PipeTransform{
     
-    transform(value: Inventory[], args:string[]):Inventory[]{
-        let filter: string=args[0]?args[0].toLocaleLowerCase():null;
-        return filter ? value.filter ((items: Inventory) =>
-        items.name.toLocaleLowerCase().indexOf(filter)!=-1):value;   
+    transform(value: Inventory[], filter: string):Inventory[]{
+        filter = filter ? filter.toLocaleLowerCase() : null; 
+        console.log('$$$$$$$$$$filter$$$$$$$$$: ' + filter);
+        return filter ? value.filter ((inventory) => 
+        inventory.name.toLocaleLowerCase().indexOf(filter) !== -1) : value;  
+       
               
     }
+    
+     
+    
+    
+    
+    
+    
+
 }
+
+
+
