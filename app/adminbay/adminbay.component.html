@@ -1,20 +1,20 @@
-<div class="container">
-<div class="panel panel-primary" >
+
+<div class="panel panel-primary">
   <!-- Default panel contents -->
   <div class="panel-heading">{{pageTitle}}</div>
   <div class="panel-body">
     <p>
-        <input type="text" [(ngModel)]='listFilter' class="form-control" placeholder="Search Inventory...">
+        <input type="text" #term (keyup)="search(term.value)" class="form-control" placeholder="Search Inventory...">
     </p>
   </div>
-  <div class="table-responsive">  
+  <div class="table-responsive" >  
         <table class="table table-hover table-striped"> 
             <thead> 
               <tr> <th>#ID</th> <th>Name</th> <th>Category</th><th>Vendor Name</th><th>Vendor Contact</th><th>Cost</th></tr> 
             </thead> 
             <tbody>
               <!-- # means a local variable -->
-                <tr *ngFor = 'let item of inventory | itemFilter: listFilter'  >
+                <tr *ngFor = "let item of inventoryData | async"  >
                     <td>{{item.id}}</td>                      
                     <td>
                      <a [routerLink]="['/item',item.id]">
@@ -29,5 +29,4 @@
                 </tbody> 
           </table>
   </div>
-</div>
 </div>

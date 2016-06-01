@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../services/inventory.service', '../inventory/inventory-filter.pipe', '../services/auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../services/inventory.service', 'rxjs/Subject'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, inventory_service_1, inventory_filter_pipe_1, auth_token_service_1;
+    var core_1, router_1, inventory_service_1, Subject_1;
     var AdminBayComponent;
     return {
         setters:[
@@ -23,38 +23,35 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
             function (inventory_service_1_1) {
                 inventory_service_1 = inventory_service_1_1;
             },
-            function (inventory_filter_pipe_1_1) {
-                inventory_filter_pipe_1 = inventory_filter_pipe_1_1;
-            },
-            function (auth_token_service_1_1) {
-                auth_token_service_1 = auth_token_service_1_1;
+            function (Subject_1_1) {
+                Subject_1 = Subject_1_1;
             }],
         execute: function() {
             AdminBayComponent = (function () {
-                function AdminBayComponent(_authTokenService, _inventoryService) {
-                    this._authTokenService = _authTokenService;
+                function AdminBayComponent(_inventoryService) {
+                    var _this = this;
                     this._inventoryService = _inventoryService;
                     this.pageTitle = 'Search & Allocate';
-                    this.listFilter = '';
+                    this.searchTermStream = new Subject_1.Subject();
+                    this.inventoryData = this.searchTermStream
+                        .debounceTime(300)
+                        .distinctUntilChanged()
+                        .switchMap(function (term) { return _this._inventoryService.findInventory(term); });
                 }
-                AdminBayComponent.prototype.ngOnInit = function () {
-                    var _this = this;
-                    this._authTokenService.getToken()
-                        .subscribe(function (token) {
-                        _this.token = token;
-                        console.log("AdminBayComponent: token recieved??? : " + token);
-                    });
-                    this._inventoryService.getInventory()
-                        .subscribe(function (inventory) { return _this.inventory = inventory; });
+                AdminBayComponent.prototype.search = function (term) {
+                    if (!term) {
+                        return;
+                    }
+                    ;
+                    this.searchTermStream.next(term);
                 };
                 AdminBayComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/adminbay/adminbay.component.html',
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        pipes: [inventory_filter_pipe_1.InventoryFilterPipe],
-                        providers: [inventory_service_1.InventoryService, auth_token_service_1.AuthTokenService]
+                        providers: [inventory_service_1.InventoryService]
                     }), 
-                    __metadata('design:paramtypes', [auth_token_service_1.AuthTokenService, inventory_service_1.InventoryService])
+                    __metadata('design:paramtypes', [inventory_service_1.InventoryService])
                 ], AdminBayComponent);
                 return AdminBayComponent;
             }());

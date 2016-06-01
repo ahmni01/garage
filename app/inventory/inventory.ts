@@ -19,4 +19,4 @@ export class Inventory implements InventoryInterface{
     public cost?:number,
     public purchase_date?:string     
   ) {  }
-}
+} 

@@ -1,6 +1,7 @@
 import {Component}  from '@angular/core';
 import {Router, OnActivate, RouteSegment} from '@angular/router';
 import {ROUTER_DIRECTIVES} from '@angular/router';
+import {Observable} from 'rxjs/Observable'; 
 
 import {InventoryService} from '../services/inventory.service';
 import {Inventory}    from './inventory';
@@ -12,7 +13,7 @@ import {Inventory}    from './inventory';
 })
 export class InventoryDetailsComponent implements OnActivate{
     pageTitle:string = 'Inventory details';
-    inventory: Inventory;    
+    inventoryDetails: Inventory;    
     errorMessage: string;
     
     constructor(private _inventoryService: InventoryService, 
@@ -26,12 +27,18 @@ export class InventoryDetailsComponent implements OnActivate{
     }
 
     searchInventory(id: number) {
-        this._inventoryService.searchInventory(id)
+       this._inventoryService.searchInventory(id)
             .subscribe(
-            inventory => this.inventory = inventory,
+            inventory => this.inventoryDetails = inventory,
             error => this.errorMessage = <any>error);
-           // console.log("###item.name####" +this.item.name)
-           
+          
+          
+        console.log("###id####" +id)
+        //this.inventory  = this._inventoryService.findInventoryByID(id);
+          //this._inventoryService.findInventoryByID(id).subscribe(inventory => this.inventoryDetails = inventory);
+          //console.log("###this.inventory.name####" +this.inventoryDetails.name)
+         
+          
             }
     
         onBack(): void {

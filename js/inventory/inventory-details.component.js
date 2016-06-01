@@ -39,8 +39,11 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
                 InventoryDetailsComponent.prototype.searchInventory = function (id) {
                     var _this = this;
                     this._inventoryService.searchInventory(id)
-                        .subscribe(function (inventory) { return _this.inventory = inventory; }, function (error) { return _this.errorMessage = error; });
-                    // console.log("###item.name####" +this.item.name)
+                        .subscribe(function (inventory) { return _this.inventoryDetails = inventory; }, function (error) { return _this.errorMessage = error; });
+                    console.log("###id####" + id);
+                    //this.inventory  = this._inventoryService.findInventoryByID(id);
+                    //this._inventoryService.findInventoryByID(id).subscribe(inventory => this.inventoryDetails = inventory);
+                    //console.log("###this.inventory.name####" +this.inventoryDetails.name)
                 };
                 InventoryDetailsComponent.prototype.onBack = function () {
                     this._router.navigate(['/adminbay']);

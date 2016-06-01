@@ -7,7 +7,8 @@ import {AuthTokenService} from './auth.token.service';
 
 @Injectable()
 export class CategoryService{
-    private _categoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/category';
+    //private _categoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/category';
+    private _categoryUrl = sessionStorage.getItem('api_base_url') + 'category';
     private _token:any;
         
     constructor(private _http: Http, private _authTokenService:AuthTokenService){

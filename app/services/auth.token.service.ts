@@ -1,18 +1,31 @@
-import {Injectable} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {Http, Response,RequestOptions, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable'; 
+import {Observable} from 'rxjs/Observable';
 
+import {ConfigService} from './config.service';  
+
+@Component({  
+  providers:[ConfigService]
+})
 @Injectable()
 export class AuthTokenService{
-    private _tokenUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/@authentication';
+    //private _tokenUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/@authentication';
+    private _tokenUrl = sessionStorage.getItem('api_base_url') + '@authentication';
     private _token:any;
     private _tokenExpirationDateTime:any;
-    private _tokenStatus: boolean;
+    private _tokenStatus: boolean; 
+    private _dataFromConfig:any;
         
-    constructor(private _http: Http){
+    constructor(private _http: Http, private _configService: ConfigService){
+      }      
+      
+      getConfig():void{
+          this._configService.loadConfig()
+          .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig);      
       }
-            
-       getToken():Observable <any>{        
+       
+       getToken():Observable <any>{
+        this.getConfig();        
         let headers = new Headers({ 'Content-Type': 'application/json' });
         //console.log('Content-Type : ' + headers.get('Content-Type'));
         let options = new RequestOptions({ headers: headers });
