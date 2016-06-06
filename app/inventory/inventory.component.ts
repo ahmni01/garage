@@ -5,13 +5,16 @@ import {Inventory}    from './inventory';
 import {CategoryService} from '../services/category.service';
 import {InventoryService} from '../services/inventory.service';
 import {InventoryFilterPipe} from './inventory-filter.pipe';
-import {DerpPipe} from './DerpPipe';
 import {AuthTokenService} from '../services/auth.token.service';
+import {DataTable} from 'primeng/primeng';
+import {Column} from 'primeng/primeng';
+import {Panel} from 'primeng/primeng';
+import {Button} from 'primeng/primeng';
 
 @Component({  
   templateUrl: 'app/inventory/inventory.component.html',
-  pipes: [InventoryFilterPipe,DerpPipe],
-  directives: [ROUTER_DIRECTIVES],
+  pipes: [InventoryFilterPipe],
+  directives: [ROUTER_DIRECTIVES,DataTable,Column,Panel,Button],
   providers:[ CategoryService, InventoryService, AuthTokenService]
 })
 export class InventoryComponent implements OnInit {
@@ -20,8 +23,10 @@ export class InventoryComponent implements OnInit {
   inventory: Inventory; 
   inventorsy:any;
   newInventory: Inventory[];
+  filterString:string;
   token:any;
   model:any;
+  cols: any[];
   constructor(private _categoryService: CategoryService, 
                 private _inventoryService: InventoryService,
                 private _authTokenService: AuthTokenService,
@@ -29,7 +34,18 @@ export class InventoryComponent implements OnInit {
   }  
   
   ngOnInit():void{
-  this.model = new Inventory(100, '', '', '' );  
+    this.cols = [
+            {field: 'id', header: 'ID'},
+            {field: 'name', header: 'Name'},
+            {field: 'category', header: 'Category'},
+            {field: 'purchase_date', header: 'Purchase Date'},
+            {field: 'vendor_name', header: 'Vendor Name'},
+            {field: 'vendor_contact', header: 'Vendor Contact'},
+            {field: 'cost', header: 'Cost'},
+            {field: 'available', header: 'Availability'},
+        ];        
+        
+  this.model = new Inventory(100, '', '', '', '' );  
 
   this._authTokenService.getToken()
   .subscribe(token => {

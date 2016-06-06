@@ -1,6 +1,5 @@
-
+<!--
 <div class="panel panel-primary">
-  <!-- Default panel contents -->
   <div class="panel-heading">{{pageTitle}}</div>
   <div class="panel-body">
     <p>
@@ -13,7 +12,6 @@
               <tr> <th>#ID</th> <th>Name</th> <th>Category</th><th>Vendor Name</th><th>Vendor Contact</th><th>Cost</th></tr> 
             </thead> 
             <tbody>
-              <!-- # means a local variable -->
                 <tr *ngFor = "let item of inventoryData | async"  >
                     <td>{{item.id}}</td>                      
                     <td>
@@ -30,3 +28,49 @@
           </table>
   </div>
 </div>
+-->
+<p-panel header="Edit/Allocate Inventory">
+    <p>
+        <input type="text" #term (keyup)="search(term.value)" class="form-control" placeholder="Search Inventory...">
+    </p>
+  <div class="table-responsive" >  
+        <table class="table table-hover table-striped"> 
+            <thead> 
+              <tr> <th>#ID</th> <th>Name</th> <th>Category</th><th>Vendor Name</th><th>Availability</th><th>Current Owner</th><th>Cost</th></tr> 
+            </thead> 
+            <tbody>
+              <!-- # means a local variable -->
+                <tr *ngFor = "let item of inventoryData | async"  >
+                    <td>{{item.id}}</td>                      
+                    <td>
+                     <a [routerLink]="['/item',item.id]">
+                     {{item.name}}
+                     </a>  
+                    </td>
+                    <td>{{item.category}}</td>
+                    <td>{{item.vendor_name}}</td>
+                    <td>{{item.available}}</td>                        
+                    <td>{{item.current_owner}}</td>        
+                    <td>{{item.cost | currency : 'USD':true }}</td>
+                                
+                    </tr>
+                </tbody> 
+          </table>
+  </div>
+
+</p-panel>
+<hr>
+
+<p-panel header="Top Items to be returned" [toggleable]="true" >    
+<p-dataTable [value]="reservation" [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" sortMode="multiple">
+    <p-column field="reservation_id" header="Reservation ID" [sortable]="true"></p-column>
+    <p-column field="inventory_id" header="Inventory ID" [sortable]="true"></p-column>    
+    <p-column field="inventory_name" header="Inventory Name" [sortable]="true"></p-column>
+    <p-column field="username" header="User Name" [sortable]="true"></p-column>
+    <p-column field="userid" header="pmfkey" [sortable]="true"></p-column>
+    <p-column field="booking_date" header="Booking Date" [sortable]="true"></p-column>
+    <p-column field="return_by_date" header="Return By Date" [sortable]="true"></p-column>       
+</p-dataTable>  
+</p-panel>
+
+

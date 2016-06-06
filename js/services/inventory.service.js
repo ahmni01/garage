@@ -38,7 +38,18 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     return this._http.post(this._inventoryUrl, payload, { headers: apiHeaders })
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
-                        console.log("Response from POST: " + JSON.stringify(data));
+                        //console.log("Response from POST: " + JSON.stringify(data))  
+                    });
+                };
+                InventoryService.prototype.updateExistingInventory = function (payload) {
+                    var apiHeaders = new http_1.Headers();
+                    var _token = sessionStorage.getItem('id_token');
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    return this._http.put(this._inventoryUrl, payload, { headers: apiHeaders })
+                        .map(function (response) { return response.json(); })
+                        .do(function (data) {
+                        console.log("Response from PUT: " + JSON.stringify(data));
                     });
                 };
                 InventoryService.prototype.getInventory = function () {

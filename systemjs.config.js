@@ -8,13 +8,16 @@
   var map = {
     'app':                        'js',
     'rxjs':                       'node_modules/rxjs',
-    '@angular':                   'node_modules/@angular'
+    '@angular':                   'node_modules/@angular',
+    'primeng':                    'node_modules/primeng',
+    'primeui':                    'node_modules/primeui'
   };
 
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'app':    { main: 'main.js',  defaultExtension: 'js' },
-    'rxjs':   { defaultExtension: 'js' }
+    'rxjs':   { defaultExtension: 'js' },
+    'primeng':{ defaultExtension: 'js' }
   };
 
   var packageNames = [

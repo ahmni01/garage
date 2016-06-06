@@ -3,9 +3,10 @@ export interface InventoryInterface{
      name: string;
      category: string;
      vendor_name: string;
+     available:string;
      vendor_contact:string;
      cost:number;
-     purchase_date:string;
+     purchase_date:string;     
 }
 
 
@@ -15,8 +16,10 @@ export class Inventory implements InventoryInterface{
     public name: string,
     public category: string,
     public vendor_name: string,    
+    public available:string,
     public vendor_contact?:string,
     public cost?:number,
-    public purchase_date?:string     
+    public purchase_date?:string    
   ) {  }
 } 
+
