@@ -19,9 +19,23 @@ export class InventoryService{
         return this._http.post(this._inventoryUrl,payload,{headers: apiHeaders})
                   .map((response: Response) => <Inventory[]>response.json())                 
                   .do(data =>{
-                         console.log("Response from POST: " + JSON.stringify(data))  
+                         //console.log("Response from POST: " + JSON.stringify(data))  
                        })       
       }
+
+      updateExistingInventory(payload:string):Observable <any>{
+        var apiHeaders = new Headers();
+        let _token=sessionStorage.getItem('id_token');        
+        apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+        apiHeaders.append('Content-Type', 'application/json');
+        return this._http.put(this._inventoryUrl,payload,{headers: apiHeaders})
+                  .map((response: Response) => <Inventory[]>response.json())                 
+                  .do(data =>{
+                         console.log("Response from PUT: " + JSON.stringify(data))  
+                       })       
+      }
+
+
        
        getInventory():Observable <any>{          
         var apiHeaders = new Headers();

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../services/inventory.service', 'rxjs/Subject'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../services/inventory.service', '../services/reservation.service', 'rxjs/Subject'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, inventory_service_1, Subject_1;
+    var core_1, router_1, primeng_1, primeng_2, primeng_3, inventory_service_1, reservation_service_1, Subject_1;
     var AdminBayComponent;
     return {
         setters:[
@@ -20,17 +20,26 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
             function (router_1_1) {
                 router_1 = router_1_1;
             },
+            function (primeng_1_1) {
+                primeng_1 = primeng_1_1;
+                primeng_2 = primeng_1_1;
+                primeng_3 = primeng_1_1;
+            },
             function (inventory_service_1_1) {
                 inventory_service_1 = inventory_service_1_1;
+            },
+            function (reservation_service_1_1) {
+                reservation_service_1 = reservation_service_1_1;
             },
             function (Subject_1_1) {
                 Subject_1 = Subject_1_1;
             }],
         execute: function() {
             AdminBayComponent = (function () {
-                function AdminBayComponent(_inventoryService) {
+                function AdminBayComponent(_inventoryService, _reservationService) {
                     var _this = this;
                     this._inventoryService = _inventoryService;
+                    this._reservationService = _reservationService;
                     this.pageTitle = 'Search & Allocate';
                     this.searchTermStream = new Subject_1.Subject();
                     this.inventoryData = this.searchTermStream
@@ -38,6 +47,11 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
                         .distinctUntilChanged()
                         .switchMap(function (term) { return _this._inventoryService.findInventory(term); });
                 }
+                AdminBayComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._reservationService.getAllReservationInfo()
+                        .subscribe(function (reservation) { return _this.reservation = reservation; });
+                };
                 AdminBayComponent.prototype.search = function (term) {
                     if (!term) {
                         return;
@@ -48,10 +62,10 @@ System.register(['@angular/core', '@angular/router', '../services/inventory.serv
                 AdminBayComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/adminbay/adminbay.component.html',
-                        directives: [router_1.ROUTER_DIRECTIVES],
-                        providers: [inventory_service_1.InventoryService]
+                        directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Panel, primeng_2.DataTable, primeng_3.Column],
+                        providers: [inventory_service_1.InventoryService, reservation_service_1.ReservationService]
                     }), 
-                    __metadata('design:paramtypes', [inventory_service_1.InventoryService])
+                    __metadata('design:paramtypes', [inventory_service_1.InventoryService, reservation_service_1.ReservationService])
                 ], AdminBayComponent);
                 return AdminBayComponent;
             }());

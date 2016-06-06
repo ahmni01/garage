@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', './inventory', '../services/category.service', '../services/inventory.service', './inventory-filter.pipe', './DerpPipe', '../services/auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', './inventory', '../services/category.service', '../services/inventory.service', './inventory-filter.pipe', '../services/auth.token.service', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, inventory_1, category_service_1, inventory_service_1, inventory_filter_pipe_1, DerpPipe_1, auth_token_service_1;
+    var core_1, router_1, inventory_1, category_service_1, inventory_service_1, inventory_filter_pipe_1, auth_token_service_1, primeng_1, primeng_2, primeng_3, primeng_4;
     var InventoryComponent;
     return {
         setters:[
@@ -32,11 +32,14 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
             function (inventory_filter_pipe_1_1) {
                 inventory_filter_pipe_1 = inventory_filter_pipe_1_1;
             },
-            function (DerpPipe_1_1) {
-                DerpPipe_1 = DerpPipe_1_1;
-            },
             function (auth_token_service_1_1) {
                 auth_token_service_1 = auth_token_service_1_1;
+            },
+            function (primeng_1_1) {
+                primeng_1 = primeng_1_1;
+                primeng_2 = primeng_1_1;
+                primeng_3 = primeng_1_1;
+                primeng_4 = primeng_1_1;
             }],
         execute: function() {
             InventoryComponent = (function () {
@@ -55,7 +58,17 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                 }
                 InventoryComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    this.model = new inventory_1.Inventory(100, '', '', '');
+                    this.cols = [
+                        { field: 'id', header: 'ID' },
+                        { field: 'name', header: 'Name' },
+                        { field: 'category', header: 'Category' },
+                        { field: 'purchase_date', header: 'Purchase Date' },
+                        { field: 'vendor_name', header: 'Vendor Name' },
+                        { field: 'vendor_contact', header: 'Vendor Contact' },
+                        { field: 'cost', header: 'Cost' },
+                        { field: 'available', header: 'Availability' },
+                    ];
+                    this.model = new inventory_1.Inventory(100, '', '', '', '');
                     this._authTokenService.getToken()
                         .subscribe(function (token) {
                         _this.token = token;
@@ -118,8 +131,8 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                 InventoryComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/inventory/inventory.component.html',
-                        pipes: [inventory_filter_pipe_1.InventoryFilterPipe, DerpPipe_1.DerpPipe],
-                        directives: [router_1.ROUTER_DIRECTIVES],
+                        pipes: [inventory_filter_pipe_1.InventoryFilterPipe],
+                        directives: [router_1.ROUTER_DIRECTIVES, primeng_1.DataTable, primeng_2.Column, primeng_3.Panel, primeng_4.Button],
                         providers: [category_service_1.CategoryService, inventory_service_1.InventoryService, auth_token_service_1.AuthTokenService]
                     }), 
                     __metadata('design:paramtypes', [category_service_1.CategoryService, inventory_service_1.InventoryService, auth_token_service_1.AuthTokenService, router_1.Router])
