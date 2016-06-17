@@ -23,7 +23,7 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 }
                 InventoryFilterPipe.prototype.transform = function (value, filter) {
                     filter = filter ? filter.toLocaleLowerCase() : null;
-                    console.log('$$$$$$$$$$filter$$$$$$$$$: ' + filter);
+                    //console.log('Filter by: ' + filter);
                     return filter ? value.filter(function (inventory) {
                         return inventory.name.toLocaleLowerCase().indexOf(filter) !== -1;
                     }) : value;

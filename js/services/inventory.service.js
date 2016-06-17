@@ -49,7 +49,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     return this._http.put(this._inventoryUrl, payload, { headers: apiHeaders })
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
-                        console.log("Response from PUT: " + JSON.stringify(data));
+                        //console.log("Response from PUT: " + JSON.stringify(data))  
                     });
                 };
                 InventoryService.prototype.getInventory = function () {

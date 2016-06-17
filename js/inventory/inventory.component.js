@@ -50,10 +50,6 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                     this._router = _router;
                     this.listFilter = '';
                     this.submitted = false;
-                    // Reset the form with a new object AND restore 'pristine' class state
-                    // by toggling 'active' flag which causes the form
-                    // to be removed/re-added in a tick via NgIf
-                    // TODO: Workaround until NgForm has a reset method (#6822)
                     this.active = true;
                 }
                 InventoryComponent.prototype.ngOnInit = function () {
@@ -72,18 +68,16 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                     this._authTokenService.getToken()
                         .subscribe(function (token) {
                         _this.token = token;
-                        console.log("Token  : " + token);
                     });
                     this._categoryService.getCategories()
                         .subscribe(function (categories) { return _this.categories = categories; });
                     this._inventoryService.getInventory()
                         .subscribe(function (inventory) { return _this.inventory = inventory; });
-                    //this.inventory = this._inventoryService.getInventory();
                 };
                 InventoryComponent.prototype.addInventory = function () {
                     var _this = this;
                     this.submitted = true;
-                    console.log('Form field values are : ' + JSON.stringify(this.model));
+                    //console.log('Form field values are : ' + JSON.stringify(this.model));
                     var name = this.model.name;
                     var category = this.model.category;
                     var vendor_name = this.model.vendor_name;
@@ -96,15 +90,8 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                     var purchase_date = this.model.purchase_date;
                     if (purchase_date == null)
                         purchase_date = '';
-                    console.log('Form field values are : ' + name);
-                    console.log('Form field values are : ' + category);
-                    console.log('Form field values are : ' + vendor_name);
-                    console.log('Form field values are : ' + vendor_contact);
-                    console.log('Form field values are : ' + cost);
-                    console.log('Form field values are : ' + purchase_date);
                     var requestBody = "{\"name\":\"" + name + "\",\"category\":\"" + category + "\",\"vendor_name\":\"" + vendor_name + "\",\"vendor_contact\":\""
                         + vendor_contact + "\",\"cost\":" + cost + ",\"purchase_date\":\"" + purchase_date + "\"}";
-                    console.log('====>>>>>>>>requestBody<<<<<<====== : ' + requestBody);
                     //this.inventory.push(this.model);
                     this._inventoryService.addNewInventory(requestBody)
                         .subscribe(function (newInventory) { return _this.newInventory = newInventory; });
@@ -112,7 +99,6 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                 InventoryComponent.prototype.onChange = function (deviceValue) {
                     this.selectedCategory = deviceValue.target.value;
                     this.model.category = this.selectedCategory;
-                    console.log('Selected Category : ' + this.selectedCategory);
                 };
                 Object.defineProperty(InventoryComponent.prototype, "diagnostic", {
                     // TODO: Remove this when we're done

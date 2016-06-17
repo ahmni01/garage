@@ -12,10 +12,8 @@ export class ReservationService{
         
     constructor(private _http: Http, private _authTokenService:AuthTokenService){
       }
-      
-      
+            
       addReservation(payload:string):Observable <any>{
-        console.log("payload from Reservation before post invoke: "+ payload);
         var apiHeaders = new Headers();
         let _token=sessionStorage.getItem('id_token');        
         apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
@@ -23,23 +21,37 @@ export class ReservationService{
         return this._http.post(this._reservationUrl,payload,{headers: apiHeaders})
                   .map((response: Response) => response.json())                 
                   .do(data =>{
-                         console.log("Response from POST (Reservation): " + JSON.stringify(data))  
+                         //console.log("Response from POST (Reservation): " + JSON.stringify(data))  
                        })       
       }
       
        getAllReservationInfo():Observable <any>{          
         var apiHeaders = new Headers();
-        let _token=sessionStorage.getItem('id_token');        
+        let _token=sessionStorage.getItem('id_token');  
+        let currentReservervations = this._reservationUrl + '?filter=returned_date+IS+NULL';      
         
         apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
         apiHeaders.append('Content-Type', 'application/json');
-        return this._http.get(this._reservationUrl,{headers: apiHeaders})
+        return this._http.get(currentReservervations,{headers: apiHeaders})
                   .map((response: Response) => response.json())                 
                   .do(data =>{
-                         console.log("RecievedData: " + JSON.stringify(data))  
+                         //console.log("RecievedData: " + JSON.stringify(data))  
                        })
                   .catch(this.exceptionHandler);                        
         }
+
+
+        updateReservation(payload:string):Observable <any>{
+        var apiHeaders = new Headers();
+        let _token=sessionStorage.getItem('id_token');        
+        apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+        apiHeaders.append('Content-Type', 'application/json');
+        return this._http.put(this._reservationUrl,payload,{headers: apiHeaders})
+                  .map((response: Response) => response.json())                 
+                  .do(data =>{
+                         //console.log("Response from PUT (Reservation Service): " + JSON.stringify(data))  
+                       })       
+      }        
         
         private exceptionHandler(error: Response){
           console.log(error);

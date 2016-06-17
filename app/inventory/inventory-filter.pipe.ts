@@ -9,7 +9,7 @@ export class InventoryFilterPipe implements PipeTransform{
     
     transform(value: Inventory[], filter: string):Inventory[]{
         filter = filter ? filter.toLocaleLowerCase() : null; 
-        console.log('$$$$$$$$$$filter$$$$$$$$$: ' + filter);
+        //console.log('Filter by: ' + filter);
         return filter ? value.filter ((inventory) => 
         inventory.name.toLocaleLowerCase().indexOf(filter) !== -1) : value;  
        

@@ -47,15 +47,29 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                     this.pageTitle = 'Inventory details';
                     this.display = false;
                     this.disableField = true;
+                    this.disableAssignButton = false;
                     this.editOrSaveMode = 'Edit';
+                    this.assignInventory = false;
                     this.msgs = [];
                 }
-                InventoryDetailsComponent.prototype.showDialog = function () {
-                    this.display = true;
+                InventoryDetailsComponent.prototype.showWarn = function () {
+                    this.msgs = [];
+                    this.msgs.push({ severity: 'warn', summary: 'Warn Message', detail: 'There are unsaved changes' });
                 };
                 InventoryDetailsComponent.prototype.showInfo = function (messageType, basicMessage, detailedMessage) {
                     this.msgs = [];
-                    this.msgs.push({ severity: messageType, summary: basicMessage, detail: detailedMessage });
+                    this.msgs.push({ severity: 'info', summary: basicMessage, detail: detailedMessage });
+                };
+                InventoryDetailsComponent.prototype.showDialog = function (availability) {
+                    if (availability.value == 'yes') {
+                        this.display = true;
+                        this.disableAssignButton = false;
+                    }
+                    else {
+                        this.display = false;
+                        alert("Item is already assigned to some other Employee");
+                        this.disableAssignButton = true;
+                    }
                 };
                 InventoryDetailsComponent.prototype.clear = function () {
                     this.msgs = [];
@@ -69,10 +83,6 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                     var _this = this;
                     this._inventoryService.searchInventory(id)
                         .subscribe(function (inventory) { return _this.inventoryDetails = inventory; }, function (error) { return _this.errorMessage = error; });
-                    console.log("###id####" + id);
-                    //this.inventory  = this._inventoryService.findInventoryByID(id);
-                    //this._inventoryService.findInventoryByID(id).subscribe(inventory => this.inventoryDetails = inventory);
-                    //console.log("###this.inventory.name####" +this.inventoryDetails.name)
                 };
                 InventoryDetailsComponent.prototype.assign = function (userid, inventory_id, returnByDate, username) {
                     var _this = this;
@@ -82,16 +92,19 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                     bookingDate += (newDate.getMonth() + 1) + "/";
                     bookingDate += newDate.getDate() + "/";
                     bookingDate += newDate.getFullYear();
-                    console.log("bookingDate : " + bookingDate);
-                    console.log("UserID : " + userid);
-                    console.log("inventory_id : " + inventory_id);
-                    var requestBody = "{\"userid\":\"" + userid + "\",\"username\":\"" + username + "\"" + ",\"inventory_id\":\"" + inventory_id + "\"" +
+                    var requestBodyForReservation = "{\"userid\":\"" + userid + "\",\"username\":\"" + username + "\"" + ",\"inventory_id\":\"" + inventory_id + "\"" +
                         ",\"return_by_date\":\"" + returnByDate + "\",\"booking_date\":\"" + bookingDate + "\"}";
-                    //this._reservationService.addReservation(requestBody);
-                    this._reservationService.addReservation(requestBody)
+                    this._reservationService.addReservation(requestBodyForReservation)
                         .subscribe(function (newReservation) { return _this.newReservation = newReservation; });
+                    //Save to call PUT operation
+                    var requestBodyForUpdatingInventory = "{\"id\":\"" + inventory_id + "\",\"available\": \"no\"" + ",\"current_owner\": \"" + userid + "\""
+                        + ",\"@metadata\": {\"checksum\": \"override\"}"
+                        + "}";
+                    this._inventoryService.updateExistingInventory(requestBodyForUpdatingInventory)
+                        .subscribe(function (editMsg) { return editMsg = editMsg; });
                     this.display = false;
                     this.showInfo('info', 'Inventory Assigned Successfully', "Inventory ID: " + inventory_id + " is assigned to " + userid);
+                    this.disableAssignButton = true;
                 };
                 InventoryDetailsComponent.prototype.onBack = function () {
                     this._router.navigate(['/adminbay']);
@@ -100,32 +113,20 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                     this.editOrSaveMode = 'Save';
                     var editMsg;
                     if (this.disableField == false && this.editOrSaveMode == 'Save') {
-                        console.log("In Save Mode");
                         if (inv_cost === null)
                             inv_cost = 0;
-                        /*
-                        console.log("%%%%%%inv_id %%%%%%%%%: " + inv_id.value);
-                        console.log("%%%%%%inventoryDetails?.name%%%%%%%%%: " + inv_name.value);
-                        console.log("%%%%%%inv_category %%%%%%%%%: " + inv_category.value);
-                        console.log("%%%%%%inv_vendorname %%%%%%%%%: " + inv_vendorname.value);
-                        console.log("%%%%%%inv_vendorcontact %%%%%%%%%: " + inv_vendorcontact.value);
-                        console.log("%%%%%%inv_cost %%%%%%%%%: " + inv_cost.value);
-                        console.log("%%%%%%inv_purchasedate %%%%%%%%%: " + inv_purchasedate.value);
-                        */
                         //Save to call PUT operation
                         var requestBody = "{\"id\":\"" + inv_id.value + "\",\"name\":\"" + inv_name.value + "\",\"category\":\"" + inv_category.value + "\"" +
                             ",\"purchase_date\":\"" + inv_purchasedate.value + "\",\"vendor_name\":\"" + inv_vendorname.value
                             + "\",\"vendor_contact\":\"" + inv_vendorcontact.value + "\",\"cost\":" + inv_cost.value
                             + ",\"@metadata\": {\"checksum\": \"override\"}"
                             + "}";
-                        console.log("%%%%%%Request bodyyyyyyy %%%%%%%%%: " + requestBody);
                         this._inventoryService.updateExistingInventory(requestBody)
                             .subscribe(function (editMsg) { return editMsg = editMsg; });
                         this.showInfo('info', 'Inventory update:', "Inventory ID: " + inv_id.value + "(" + inv_name.value + ") is updated successfully");
                     }
                     else {
                         this.disableField = false;
-                        console.log("In Edit Mode");
                     }
                 }; //onEdit
                 InventoryDetailsComponent = __decorate([
