@@ -39,14 +39,11 @@
                     <div class='col-md-6' >
                      <p-calendar [ngModel]="inventoryDetails?.purchase_date"  #inv_purchasedate required showIcon=true
                       maxDate="+1m" [readonlyInput]="true" [disabled]="disableField"></p-calendar></div>                        
-                        
-
-                                        
                 </div>
                 <br>              
                 <div class='row'>
                     <div class='col-md-3'><strong>Available?:</strong></div>
-                    <div class='col-md-6' >{{inventoryDetails?.available}}</div>                    
+                    <div class='col-md-6' ><input type="text" [ngModel]="inventoryDetails?.available" #inv_available  pInputText disabled="true" /></div>                    
                 </div>                                        
             </div>
         </div>
@@ -57,46 +54,32 @@
             <button type="text" (click)='onBack()' pButton icon="fa-step-backward" label="Back"></button>                
             <button type="text" (click)='onEdit(inv_id,inv_name,inv_category,inv_vendorname,inv_vendorcontact,inv_cost,inv_purchasedate)' pButton icon="fa-save" [label]="editOrSaveMode"></button>           
            </div>
-           <div class='col-md-6'>          
-            <button type="text" (click)="showDialog();clear()" pButton icon="fa-external-link-square" label="Assign"></button>
-           </div>  
+           <div class='col-md-6'>     
+            <button ng-if="assignInventory" ng-model="assignInventory" type="text" (click)="showDialog(inv_available);clear()" pButton icon="fa-external-link-square" [disabled]="disableAssignButton" label="Assign"></button>
+           </div>             
        </div>
-   </div>    
- 
+   </div>     
 </p-panel>
 
- 
-<p-dialog header="Reserve Inventory" [(visible)]="display" modal="modal" showEffect="fade" width="450">
-        <div class='row'>
-            <div class='col-md-6'>
-                <div class='row'>
-                    <div class='col-md-8'><strong>PMFKEY:</strong></div>
-                    <div class='col-md-6' ><input type="text" required #userid  pInputText /></div>
-                </div>                
-                <div class='row'>
-                    <div class='col-md-8'><strong>User Name:</strong></div>
-                    <div class='col-md-6'><input type="text" #username pInputText /></div>
-                </div>
-                <div class='row'>
-                    <div class='col-md-8'><strong>Date of Return:</strong></div>
-                    <div class='col-md-6'>        
-                        <p-calendar [(ngModel)]="returnByDate"  #inv_date_of_return required showIcon=true placeholder="Date of return"
+<p-dialog header="Reserve Inventory" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" >
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12"><input type="text" required #userid  pInputText placeholder='PMFKey' /></div>
+        </div>
+        <br>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-12"><input type="text" #username pInputText placeholder='User Name'/></div>
+        </div>
+        <hr>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-5"><p-calendar [(ngModel)]="returnByDate"  #inv_date_of_return showIcon=true placeholder="Return By Date.."
                         minDate="+1d" maxDate="+1m" [readonlyInput]="true"></p-calendar></div>
-                    </div>    
-               </div>
-        </div>       
-        
+        </div>
+    </div>
     <footer>
-           <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-           <!--<button pButton type="button" (click)='assign(userid.value, 147)' label="Reserve"></button>-->
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
            <button type="button" pButton icon="fa-close" (click)="display=false" label="Cancel"></button>
            <button type="button" pButton icon="fa-check" (click)="assign(userid.value, inv_id.value, inv_date_of_return.value, username.value)" label="Assign"></button>
-         </div>
+        </div>
     </footer>
 </p-dialog>
-
-
-        
-
-   
-

@@ -35,7 +35,6 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                     this._reservationUrl = sessionStorage.getItem('api_base_url') + 'reservation';
                 }
                 ReservationService.prototype.addReservation = function (payload) {
-                    console.log("payload from Reservation before post invoke: " + payload);
                     var apiHeaders = new http_1.Headers();
                     var _token = sessionStorage.getItem('id_token');
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
@@ -43,20 +42,32 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                     return this._http.post(this._reservationUrl, payload, { headers: apiHeaders })
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
-                        console.log("Response from POST (Reservation): " + JSON.stringify(data));
+                        //console.log("Response from POST (Reservation): " + JSON.stringify(data))  
                     });
                 };
                 ReservationService.prototype.getAllReservationInfo = function () {
                     var apiHeaders = new http_1.Headers();
                     var _token = sessionStorage.getItem('id_token');
+                    var currentReservervations = this._reservationUrl + '?filter=returned_date+IS+NULL';
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
-                    return this._http.get(this._reservationUrl, { headers: apiHeaders })
+                    return this._http.get(currentReservervations, { headers: apiHeaders })
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
-                        console.log("RecievedData: " + JSON.stringify(data));
+                        //console.log("RecievedData: " + JSON.stringify(data))  
                     })
                         .catch(this.exceptionHandler);
+                };
+                ReservationService.prototype.updateReservation = function (payload) {
+                    var apiHeaders = new http_1.Headers();
+                    var _token = sessionStorage.getItem('id_token');
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    return this._http.put(this._reservationUrl, payload, { headers: apiHeaders })
+                        .map(function (response) { return response.json(); })
+                        .do(function (data) {
+                        //console.log("Response from PUT (Reservation Service): " + JSON.stringify(data))  
+                    });
                 };
                 ReservationService.prototype.exceptionHandler = function (error) {
                     console.log(error);

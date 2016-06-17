@@ -31,7 +31,7 @@ export class InventoryService{
         return this._http.put(this._inventoryUrl,payload,{headers: apiHeaders})
                   .map((response: Response) => <Inventory[]>response.json())                 
                   .do(data =>{
-                         console.log("Response from PUT: " + JSON.stringify(data))  
+                         //console.log("Response from PUT: " + JSON.stringify(data))  
                        })       
       }
 

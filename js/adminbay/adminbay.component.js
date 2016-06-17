@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, primeng_1, primeng_2, primeng_3, inventory_service_1, reservation_service_1, Subject_1;
+    var core_1, router_1, primeng_1, primeng_2, primeng_3, primeng_4, primeng_5, inventory_service_1, reservation_service_1, Subject_1;
     var AdminBayComponent;
     return {
         setters:[
@@ -24,6 +24,8 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                 primeng_1 = primeng_1_1;
                 primeng_2 = primeng_1_1;
                 primeng_3 = primeng_1_1;
+                primeng_4 = primeng_1_1;
+                primeng_5 = primeng_1_1;
             },
             function (inventory_service_1_1) {
                 inventory_service_1 = inventory_service_1_1;
@@ -42,6 +44,7 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                     this._reservationService = _reservationService;
                     this.pageTitle = 'Search & Allocate';
                     this.searchTermStream = new Subject_1.Subject();
+                    this.msgs = [];
                     this.inventoryData = this.searchTermStream
                         .debounceTime(300)
                         .distinctUntilChanged()
@@ -51,6 +54,31 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                     var _this = this;
                     this._reservationService.getAllReservationInfo()
                         .subscribe(function (reservation) { return _this.reservation = reservation; });
+                };
+                AdminBayComponent.prototype.showInfo = function (messageType, basicMessage, detailedMessage) {
+                    this.msgs = [];
+                    this.msgs.push({ severity: messageType, summary: basicMessage, detail: detailedMessage });
+                };
+                AdminBayComponent.prototype.returnInventory = function (reservationRow) {
+                    var reservationReturnDate = "";
+                    var newDate = new Date();
+                    // Get the month, day, and year.
+                    reservationReturnDate += (newDate.getMonth() + 1) + "/";
+                    reservationReturnDate += newDate.getDate() + "/";
+                    reservationReturnDate += newDate.getFullYear();
+                    //Save to call PUT operation
+                    var payloadForReturningReservation = "{\"reservation_id\":" + reservationRow.reservation_id + ",\"returned_date\": \"" + reservationReturnDate + "\""
+                        + ",\"@metadata\": {\"checksum\": \"override\"}"
+                        + "}";
+                    this._reservationService.updateReservation(payloadForReturningReservation)
+                        .subscribe(function (editMsg) { return editMsg = editMsg; });
+                    //Save to call PUT operation
+                    var requestBodyForUpdatingInventory = "{\"id\":\"" + reservationRow.inventory_id + "\",\"available\": \"yes\"" + ",\"current_owner\": \"none\""
+                        + ",\"@metadata\": {\"checksum\": \"override\"}"
+                        + "}";
+                    this._inventoryService.updateExistingInventory(requestBodyForUpdatingInventory)
+                        .subscribe(function (editMsg) { return editMsg = editMsg; });
+                    this.showInfo('info', 'Inventory Returned Successfully', "Inventory ID: " + reservationRow.reservation_id + " is now available for others");
                 };
                 AdminBayComponent.prototype.search = function (term) {
                     if (!term) {
@@ -62,7 +90,7 @@ System.register(['@angular/core', '@angular/router', 'primeng/primeng', '../serv
                 AdminBayComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/adminbay/adminbay.component.html',
-                        directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Panel, primeng_2.DataTable, primeng_3.Column],
+                        directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Panel, primeng_2.DataTable, primeng_3.Column, primeng_4.Button, primeng_5.Messages],
                         providers: [inventory_service_1.InventoryService, reservation_service_1.ReservationService]
                     }), 
                     __metadata('design:paramtypes', [inventory_service_1.InventoryService, reservation_service_1.ReservationService])

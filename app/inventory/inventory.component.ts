@@ -50,7 +50,6 @@ export class InventoryComponent implements OnInit {
   this._authTokenService.getToken()
   .subscribe(token => {
     this.token = token;
-    console.log("Token  : " + token);   
   });  
     
   this._categoryService.getCategories()
@@ -58,17 +57,13 @@ export class InventoryComponent implements OnInit {
       
 this._inventoryService.getInventory()
       .subscribe(inventory => this.inventory = inventory);
-  
-  //this.inventory = this._inventoryService.getInventory();
-  
-  }
+}
 
   listFilter: string = '';  
-  
   submitted = false;
 
   addInventory() { this.submitted = true;
-      console.log('Form field values are : ' + JSON.stringify(this.model));
+      //console.log('Form field values are : ' + JSON.stringify(this.model));
       let name:string = this.model.name;
       let category:string = this.model.category;
       let vendor_name:string = this.model.vendor_name;
@@ -82,18 +77,10 @@ this._inventoryService.getInventory()
         if(purchase_date==null)
           purchase_date='';
           
-      console.log('Form field values are : ' + name);
-      console.log('Form field values are : ' + category);
-      console.log('Form field values are : ' + vendor_name);
-      console.log('Form field values are : ' + vendor_contact);
-      console.log('Form field values are : ' + cost);
-      console.log('Form field values are : ' + purchase_date);   
       let requestBody: string = 
       "{\"name\":\"" + name +"\",\"category\":\"" + category +"\",\"vendor_name\":\"" + vendor_name +"\",\"vendor_contact\":\""
        + vendor_contact + "\",\"cost\":" + cost + ",\"purchase_date\":\"" + purchase_date + "\"}";   
     
-      console.log('====>>>>>>>>requestBody<<<<<<====== : ' + requestBody);   
-      
       //this.inventory.push(this.model);
       this._inventoryService.addNewInventory(requestBody)
       .subscribe(newInventory => this.newInventory = newInventory);  
@@ -102,21 +89,12 @@ this._inventoryService.getInventory()
   onChange(deviceValue:any) {
        this.selectedCategory = deviceValue.target.value;
        this.model.category = this.selectedCategory;
-       console.log('Selected Category : ' + this.selectedCategory);
   }
-  
   
   // TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.model); }
-
-  // Reset the form with a new object AND restore 'pristine' class state
-  // by toggling 'active' flag which causes the form
-  // to be removed/re-added in a tick via NgIf
-  // TODO: Workaround until NgForm has a reset method (#6822)
   active = true;
-
   showFormControls(form:NgForm){
-
     return form && form.controls['name'] &&
     form.controls['name'].value; // Dr. IQ
   }
@@ -125,10 +103,6 @@ this._inventoryService.getInventory()
             this.submitted = false;
         this._router.navigate(['/inventory']);
     }
-
-
-  /////////////////////////////
-
 }
 
 

@@ -30,7 +30,9 @@ export class InventoryDetailsComponent implements OnActivate{
     errorMessage: string;
     display: boolean = false;
     disableField:boolean=true;
+    disableAssignButton:boolean=false;
     editOrSaveMode = 'Edit';
+    assignInventory:boolean = false;
     msgs: Messages[] = [];
 
     
@@ -38,15 +40,30 @@ export class InventoryDetailsComponent implements OnActivate{
                 private _reservationService: ReservationService,
                 private _router: Router){
     }
-    
-    showDialog() {
-        this.display = true;
-    }
+
+showWarn() {
+        this.msgs = [];
+        this.msgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
+    }    
     
 showInfo(messageType:string, basicMessage:string, detailedMessage:string) {
         this.msgs = [];
-        this.msgs.push({severity: messageType, summary:basicMessage, detail:detailedMessage});
+        this.msgs.push({severity: 'info', summary:basicMessage, detail:detailedMessage});
     }
+    
+    
+    showDialog(availability) {        
+        if(availability.value == 'yes'){
+         this.display = true;
+         this.disableAssignButton = false;
+        }
+        else{
+            this.display = false;
+            alert("Item is already assigned to some other Employee");
+            this.disableAssignButton = true;
+        }   
+    }
+
 
 clear() {
         this.msgs = [];
@@ -62,13 +79,7 @@ clear() {
        this._inventoryService.searchInventory(id)
             .subscribe(
             inventory => this.inventoryDetails = inventory,
-            error => this.errorMessage = <any>error);
-          
-          
-        console.log("###id####" +id);
-        //this.inventory  = this._inventoryService.findInventoryByID(id);
-          //this._inventoryService.findInventoryByID(id).subscribe(inventory => this.inventoryDetails = inventory);
-          //console.log("###this.inventory.name####" +this.inventoryDetails.name)
+            error => this.errorMessage = <any>error);          
             }
    
     assign(userid:string, inventory_id:string, returnByDate:string,username:string){
@@ -79,19 +90,26 @@ clear() {
         bookingDate += (newDate.getMonth() + 1) + "/";
         bookingDate += newDate.getDate() + "/";
         bookingDate += newDate.getFullYear();
-     console.log("bookingDate : " +  bookingDate);   
-     console.log("UserID : " +  userid);
-     console.log("inventory_id : " +  inventory_id);
      
-     let requestBody: string = 
+     let requestBodyForReservation: string = 
       "{\"userid\":\"" + userid +"\",\"username\":\"" + username +"\"" + ",\"inventory_id\":\"" + inventory_id + "\"" + 
       ",\"return_by_date\":\"" + returnByDate + "\",\"booking_date\":\"" + bookingDate + "\"}";   
     
-      //this._reservationService.addReservation(requestBody);
-           this._reservationService.addReservation(requestBody)
+      this._reservationService.addReservation(requestBodyForReservation)
       .subscribe(newReservation => this.newReservation = newReservation);
+
+      //Save to call PUT operation
+      let requestBodyForUpdatingInventory:string = 
+            "{\"id\":\"" + inventory_id + "\",\"available\": \"no\""  + ",\"current_owner\": \""+ userid + "\""
+            + ",\"@metadata\": {\"checksum\": \"override\"}"
+            + "}";   
+            this._inventoryService.updateExistingInventory(requestBodyForUpdatingInventory)
+            .subscribe(editMsg => editMsg = editMsg);
+
       this.display=false;
-      this.showInfo('info', 'Inventory Assigned Successfully', "Inventory ID: " + inventory_id + " is assigned to " + userid);          
+      this.showInfo('info', 'Inventory Assigned Successfully', "Inventory ID: " + inventory_id + " is assigned to " + userid);
+      this.disableAssignButton = true;
+
     }    
         onBack(): void {
         this._router.navigate(['/adminbay']);
@@ -102,19 +120,8 @@ clear() {
         let editMsg;
 
         if(this.disableField==false && this.editOrSaveMode=='Save'){
-            console.log("In Save Mode");    
             if(inv_cost===null)
                 inv_cost=0;
-            /*
-            console.log("%%%%%%inv_id %%%%%%%%%: " + inv_id.value);
-            console.log("%%%%%%inventoryDetails?.name%%%%%%%%%: " + inv_name.value);
-            console.log("%%%%%%inv_category %%%%%%%%%: " + inv_category.value);
-            console.log("%%%%%%inv_vendorname %%%%%%%%%: " + inv_vendorname.value);
-            console.log("%%%%%%inv_vendorcontact %%%%%%%%%: " + inv_vendorcontact.value);
-            console.log("%%%%%%inv_cost %%%%%%%%%: " + inv_cost.value);
-            console.log("%%%%%%inv_purchasedate %%%%%%%%%: " + inv_purchasedate.value);
-            */
-
             //Save to call PUT operation
             let requestBody: string = 
             "{\"id\":\"" + inv_id.value +"\",\"name\":\"" +inv_name.value+ "\",\"category\":\""+inv_category.value +"\"" + 
@@ -122,7 +129,6 @@ clear() {
             + "\",\"vendor_contact\":\"" + inv_vendorcontact.value + "\",\"cost\":" + inv_cost.value 
             + ",\"@metadata\": {\"checksum\": \"override\"}"
             + "}";   
-            console.log("%%%%%%Request bodyyyyyyy %%%%%%%%%: " + requestBody);
             this._inventoryService.updateExistingInventory(requestBody)
             .subscribe(editMsg => editMsg = editMsg);
             this.showInfo('info', 'Inventory update:', "Inventory ID: " + inv_id.value + "("+ inv_name.value +") is updated successfully");
@@ -130,7 +136,6 @@ clear() {
         
         else{
             this.disableField=false;          
-            console.log("In Edit Mode");
         }     
     }//onEdit
     

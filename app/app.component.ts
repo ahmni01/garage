@@ -1,4 +1,4 @@
-import {Component}  from '@angular/core';
+import {Component, OnInit}  from '@angular/core';
 import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes} from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
 
@@ -8,6 +8,7 @@ import {HomeComponent} from './home/home.component';
 import {AdminBayComponent} from './adminbay/adminbay.component';
 import {ReportComponent} from './report/report.component';
 import {ConfigService} from './services/config.service';  
+import {AuthTokenService} from './services/auth.token.service';
 
 @Component({
   selector: 'garage-app',
@@ -30,7 +31,8 @@ import {ConfigService} from './services/config.service';
   providers:[InventoryComponent,             
              ROUTER_PROVIDERS, 
              HTTP_PROVIDERS,
-             ConfigService]  
+             ConfigService, 
+             AuthTokenService]  
 })
 
 @Routes([
@@ -42,8 +44,23 @@ import {ConfigService} from './services/config.service';
   {path:'/adminbay',  component: AdminBayComponent}
   
 ])
-export class MainComponent {
+export class MainComponent  implements OnInit{
+      constructor(private _configService: ConfigService,
+                  private _authTokenService:AuthTokenService){
+      }   
   pageTitle:string = 'CA GARAGE!';
+  private _dataFromConfig:any;
+  private token:any;
+
+  ngOnInit():void{
+  this._configService.loadConfig()
+          .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig);
+           this._authTokenService.getToken()
+  .subscribe(token => {
+    this.token = token;    
+  }); 
+} 
+  
  }
 
 

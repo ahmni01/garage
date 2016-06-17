@@ -34,6 +34,9 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './config.
                     //private _tokenUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/@authentication';
                     this._tokenUrl = sessionStorage.getItem('api_base_url') + '@authentication';
                 }
+                AuthTokenService.prototype.ngOnInit = function () {
+                    this.getConfig();
+                };
                 AuthTokenService.prototype.getConfig = function () {
                     var _this = this;
                     this._configService.loadConfig()
@@ -42,7 +45,6 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './config.
                 AuthTokenService.prototype.getToken = function () {
                     this.getConfig();
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-                    //console.log('Content-Type : ' + headers.get('Content-Type'));
                     var options = new http_1.RequestOptions({ headers: headers });
                     var body = JSON.stringify({ "username": "demo", "password": "Password1" });
                     return this._http.post(this._tokenUrl, body, options)
@@ -53,10 +55,8 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './config.
                     if (res.status < 200 || res.status >= 300)
                         throw new Error('Bad response status: ' + res.status);
                     var body = res.json();
-                    //console.log("Token: " + JSON.stringify(body)); 
                     this._token = 'CALiveAPICreator ' + body.apikey + ':1';
                     this._tokenExpirationDateTime = body.expiration;
-                    //console.log("Token Expires@" + this._tokenExpirationDateTime);
                     var tokenExpiresIn = new Date(this._tokenExpirationDateTime).getTime() - new Date().getTime();
                     //console.log("Token Expires in : " + tokenExpiresIn + ' milleseconds, ' + tokenExpiresIn/(1000*60) + ' minutes');
                     sessionStorage.setItem('id_token', this._token);
