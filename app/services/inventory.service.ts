@@ -27,7 +27,7 @@ export class InventoryService{
       }
 
       updateExistingInventory(payload:string):Observable <any>{
-        console.log("Request payload: " + payload);
+       //console.log("Request payload: " + payload);
         var apiHeaders = new Headers();
         let _token=sessionStorage.getItem('id_token');        
         apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
@@ -81,7 +81,7 @@ export class InventoryService{
         apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator 68368c95857b7710514f52621ccc5eb7:1');
         apiHeaders.append('Content-Type', 'application/json');
         urlwithFilter = this._inventoryUrl + searchFilterStr;
-        console.log("urlwithFilter " + urlwithFilter);
+        //console.log("urlwithFilter " + urlwithFilter);
         this._http.get(urlwithFilter,{headers: apiHeaders})
                   .retry(3)
                   .map((res: Response) => res.json())
@@ -123,7 +123,7 @@ export class InventoryService{
         apiHeaders.append('Content-Type', 'application/json');
         searchFilterStr =  '/' + id;
         urlwithFilter = this._inventoryUrl + searchFilterStr;
-        console.log('####urlwithFilter: ' + urlwithFilter);
+        //console.log('####urlwithFilter: ' + urlwithFilter);
         return this._http.get(urlwithFilter,{headers: apiHeaders})
                    .retry(3)
                    .map((response: Response) => <Inventory>response.json())

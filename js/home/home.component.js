@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../services/auth.token.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router'], function(exports_1, contex
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1;
+    var core_1, router_1, auth_token_service_1;
     var HomeComponent;
     return {
         setters:[
@@ -19,19 +19,30 @@ System.register(['@angular/core', '@angular/router'], function(exports_1, contex
             },
             function (router_1_1) {
                 router_1 = router_1_1;
+            },
+            function (auth_token_service_1_1) {
+                auth_token_service_1 = auth_token_service_1_1;
             }],
         execute: function() {
             HomeComponent = (function () {
-                function HomeComponent() {
+                function HomeComponent(_authTokenService) {
+                    this._authTokenService = _authTokenService;
                     this.pageTitle = 'Welcome to CA Garage!';
                 }
+                HomeComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._authTokenService.getToken()
+                        .subscribe(function (token) {
+                        _this.token = token;
+                    });
+                };
                 HomeComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/home/home.component.html',
                         directives: [router_1.ROUTER_DIRECTIVES],
-                        providers: [router_1.ROUTER_PROVIDERS]
+                        providers: [router_1.ROUTER_PROVIDERS, auth_token_service_1.AuthTokenService]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [auth_token_service_1.AuthTokenService])
                 ], HomeComponent);
                 return HomeComponent;
             }());

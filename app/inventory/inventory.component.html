@@ -41,7 +41,7 @@
       
       <div class="form-group">
         <label for="vendor_contact">Vendor Contact</label>
-        <input type="text" class="form-control"
+        <input type="text" class="form-control" 
           [(ngModel)]="model.vendor_contact"
             ngControl="vendor_contact" >
       </div>
@@ -106,28 +106,45 @@
     </div>    
     <hr>   
   <ul class="list-group">
-    <li class="list-group-item list-group-item-info"> <a class='btn btn-default' (click)='submitted=false' style='width:80px'>
+   
+    <li class="list-group-item list-group-item-info"> 
+      <!--
+      <a class='btn btn-default' (click)='submitted=false' style='width:80px'>
             <i class='glyphicon glyphicon-pencil'></i> Edit
         </a>
-        <a class='btn btn-default' (click)='onBackClick()' style='width:80px'>
-            <i class='glyphicon glyphicon-chevron-left'></i> Back
-        </a>
+      -->   
+      <a class='btn btn-warning' (click)='onBackClick()' style='width:100px'>
+            <i class='glyphicon glyphicon-chevron-left'></i> Add New
+      </a>
     </li>
   </ul> 
 </p-fieldset>
   </div> 
- <div [hidden]="submitted">
-<p-panel header="Current Inventory" [toggleable]="true"  >
- <p>
-   <input type="text" [(ngModel)]='filterString' class="form-control" placeholder="Search Inventory...">
- </p>  
-<p-dataTable [value]="inventory | itemFilter:filterString | itemFilter:model.name" [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" sortMode="multiple">
-    <p-column field="id" header="ID" [sortable]="true"></p-column>
-    <p-column field="name" header="Name" [sortable]="true"></p-column>
-    <p-column field="category" header="Category" [sortable]="true"></p-column>
-    <p-column field="vendor_name" header="Vendor Name" [sortable]="true"></p-column>
-    <p-column field="available" header="Availability" [sortable]="true"></p-column>
-</p-dataTable>
+ 
+<div [hidden]="submitted">
+<p-panel>
+    <header>
+        <div class="ui-helper-clearfix">
+            <span class="ui-panel-title" style="font-size:16px">Current Inventory</span>          
+        </div>
+    </header>
+   <p-toolbar>    
+      <div class="ui-toolbar-group-right">
+          <button pButton type="button" icon="fa-search" (click)="toggleSearch()"></button>
+          <i class="fa fa-bars"></i>
+          <button pButton type="button" icon="fa-refresh" (click)="refreshInventory()"></button>
+      </div>
+      <div [hidden]="!searchInventory">
+        <br><br>
+        <p><input type="text" [(ngModel)]='filterString' class="form-control" placeholder="Search Inventory..."></p>  
+      </div>
+    </p-toolbar>
+  <p-dataTable [value]="inventory | itemFilter:filterString | itemFilter:model.name" [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" sortMode="multiple">
+      <p-column field="id" header="ID" [sortable]="true"></p-column>
+      <p-column field="name" header="Name" [sortable]="true"></p-column>
+      <p-column field="category" header="Category" [sortable]="true"></p-column>
+      <p-column field="vendor_name" header="Vendor Name" [sortable]="true"></p-column>
+      <p-column field="available" header="Availability" [sortable]="true"></p-column>
+  </p-dataTable>
 </p-panel>
-
 </div>

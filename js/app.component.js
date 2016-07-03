@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '@angular/http', './inventory/inventory.component', './inventory/inventory-details.component', './home/home.component', './adminbay/adminbay.component', './report/report.component', './services/config.service', './services/auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '@angular/http', './inventory/inventory.component', './inventory/inventory-details.component', './home/home.component', './adminbay/adminbay.component', './report/report.component', './services/config.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '@angular/http', './invento
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, http_1, inventory_component_1, inventory_details_component_1, home_component_1, adminbay_component_1, report_component_1, config_service_1, auth_token_service_1;
+    var core_1, router_1, http_1, inventory_component_1, inventory_details_component_1, home_component_1, adminbay_component_1, report_component_1, config_service_1;
     var MainComponent;
     return {
         setters:[
@@ -40,25 +40,17 @@ System.register(['@angular/core', '@angular/router', '@angular/http', './invento
             },
             function (config_service_1_1) {
                 config_service_1 = config_service_1_1;
-            },
-            function (auth_token_service_1_1) {
-                auth_token_service_1 = auth_token_service_1_1;
             }],
         execute: function() {
             MainComponent = (function () {
-                function MainComponent(_configService, _authTokenService) {
+                function MainComponent(_configService) {
                     this._configService = _configService;
-                    this._authTokenService = _authTokenService;
                     this.pageTitle = 'CA GARAGE!';
                 }
                 MainComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this._configService.loadConfig()
                         .subscribe(function (_dataFromConfig) { return _this._dataFromConfig = _dataFromConfig; });
-                    this._authTokenService.getToken()
-                        .subscribe(function (token) {
-                        _this.token = token;
-                    });
                 };
                 MainComponent = __decorate([
                     core_1.Component({
@@ -68,8 +60,7 @@ System.register(['@angular/core', '@angular/router', '@angular/http', './invento
                         providers: [inventory_component_1.InventoryComponent,
                             router_1.ROUTER_PROVIDERS,
                             http_1.HTTP_PROVIDERS,
-                            config_service_1.ConfigService,
-                            auth_token_service_1.AuthTokenService]
+                            config_service_1.ConfigService]
                     }),
                     router_1.Routes([
                         { path: '/', component: home_component_1.HomeComponent },
@@ -79,7 +70,7 @@ System.register(['@angular/core', '@angular/router', '@angular/http', './invento
                         { path: '/reports', component: report_component_1.ReportComponent },
                         { path: '/adminbay', component: adminbay_component_1.AdminBayComponent }
                     ]), 
-                    __metadata('design:paramtypes', [config_service_1.ConfigService, auth_token_service_1.AuthTokenService])
+                    __metadata('design:paramtypes', [config_service_1.ConfigService])
                 ], MainComponent);
                 return MainComponent;
             }());
