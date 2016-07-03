@@ -1,6 +1,7 @@
 import {Component, Injectable, OnInit} from '@angular/core';
 import {Http, Response,RequestOptions, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/retry';
 
 import {ConfigService} from './config.service';  
 
@@ -33,6 +34,7 @@ ngOnInit():void{
         let options = new RequestOptions({ headers: headers });
         let body = JSON.stringify({ "username": "demo", "password": "Password1"});        
         return this._http.post(this._tokenUrl,body, options)
+                   .retry(3)
                    .map(this.extractData)                       
                    .catch(this.exceptionHandler);                        
         }

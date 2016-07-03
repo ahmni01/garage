@@ -1,5 +1,5 @@
 import {Component, OnInit}  from '@angular/core';
-import {NgForm}    from '@angular/common';
+import {NgForm} from '@angular/common';
 import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router, OnActivate, RouteSegment} from '@angular/router';
 import {Inventory}    from './inventory';
 import {CategoryService} from '../services/category.service';
@@ -10,11 +10,13 @@ import {DataTable} from 'primeng/primeng';
 import {Column} from 'primeng/primeng';
 import {Panel} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
+import {Fieldset} from 'primeng/primeng';
+
 
 @Component({  
   templateUrl: 'app/inventory/inventory.component.html',
   pipes: [InventoryFilterPipe],
-  directives: [ROUTER_DIRECTIVES,DataTable,Column,Panel,Button],
+  directives: [ROUTER_DIRECTIVES,DataTable,Column,Panel,Button, Fieldset],
   providers:[ CategoryService, InventoryService, AuthTokenService]
 })
 export class InventoryComponent implements OnInit {
@@ -27,6 +29,7 @@ export class InventoryComponent implements OnInit {
   token:any;
   model:any;
   cols: any[];
+  numberOfDuplicateRecords:number=0;
   constructor(private _categoryService: CategoryService, 
                 private _inventoryService: InventoryService,
                 private _authTokenService: AuthTokenService,
@@ -62,7 +65,13 @@ this._inventoryService.getInventory()
   listFilter: string = '';  
   submitted = false;
 
-  addInventory() { this.submitted = true;
+  addInventory(inventoryForm:NgForm) { 
+     let myName = inventoryForm && inventoryForm.controls['name'] &&
+    inventoryForm.controls['name'].value; 
+    console.log("Name captured through - " + myName + inventoryForm && inventoryForm.controls['vendorName'] &&
+    inventoryForm.controls['vendorName'].value);
+
+      this.submitted = true;
       //console.log('Form field values are : ' + JSON.stringify(this.model));
       let name:string = this.model.name;
       let category:string = this.model.category;
@@ -76,7 +85,20 @@ this._inventoryService.getInventory()
       let purchase_date:string = this.model.purchase_date;
         if(purchase_date==null)
           purchase_date='';
-          
+
+      let searchFilter:string;
+      let searchedInv: Inventory[];
+      
+      searchFilter = "?sysfilter=equal(name: "+ "\'" + name + "\', category: \'" + category + "\', vendor_name: \'" + vendor_name + "\')";
+      //console.log("Going to search for " + searchFilter );
+          this.numberOfDuplicateRecords = this._inventoryService.findExactInventory(searchFilter);//.subscribe(searchedInv => searchedInv = searchedInv); 
+                     //var size = Object.keys(searchedInv).length;
+
+                     console.log('numberOfDuplicateRecords ----' + this.numberOfDuplicateRecords);
+                     //console.log("RecievedData: " + JSON.stringify(searchedInv));
+          if(this.numberOfDuplicateRecords >0)
+            return;
+      
       let requestBody: string = 
       "{\"name\":\"" + name +"\",\"category\":\"" + category +"\",\"vendor_name\":\"" + vendor_name +"\",\"vendor_contact\":\""
        + vendor_contact + "\",\"cost\":" + cost + ",\"purchase_date\":\"" + purchase_date + "\"}";   
@@ -102,6 +124,14 @@ this._inventoryService.getInventory()
           onBackClick(): void {
             this.submitted = false;
         this._router.navigate(['/inventory']);
+        
+ 
+    this.model = new Inventory(100, '', '', '', '' );
+    this.active = false;
+    setTimeout(() => this.active = true, 0);
+  
+
+
     }
 }
 

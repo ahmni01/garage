@@ -12,5 +12,5 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/toPromise';
 
-bootstrap(MainComponent, [AuthTokenService, ConfigService, HTTP_PROVIDERS]);
+bootstrap(MainComponent, [HTTP_PROVIDERS]);
 

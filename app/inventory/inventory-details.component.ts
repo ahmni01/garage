@@ -1,4 +1,5 @@
 import {Component}  from '@angular/core';
+import {ControlGroup, FormBuilder, Validators, Control} from '@angular/common';
 import {Router, OnActivate, RouteSegment} from '@angular/router';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Observable} from 'rxjs/Observable'; 
@@ -15,13 +16,14 @@ import {Messages} from 'primeng/primeng';
 import {InventoryService} from '../services/inventory.service';
 import {ReservationService} from '../services/reservation.service'
 import {Inventory}    from './inventory';
+import {AuthTokenService} from '../services/auth.token.service';
 
 @Component({
     templateUrl: 'app/inventory/inventory-details.component.html',    
        directives: [ROUTER_DIRECTIVES, Accordion, 
                     AccordionTab, InputText, Panel, 
                     Calendar,Button, Dialog, Growl,Messages],
-       providers: [InventoryService, ReservationService]    
+       providers: [InventoryService, ReservationService,AuthTokenService]    
 })
 export class InventoryDetailsComponent implements OnActivate{
     pageTitle:string = 'Inventory details';
@@ -34,11 +36,19 @@ export class InventoryDetailsComponent implements OnActivate{
     editOrSaveMode = 'Edit';
     assignInventory:boolean = false;
     msgs: Messages[] = [];
-
+    submitted = false;
+    form: ControlGroup;
+    model:any;
     
     constructor(private _inventoryService: InventoryService, 
                 private _reservationService: ReservationService,
-                private _router: Router){
+                private _router: Router,
+                formbuilder: FormBuilder){
+                    this.form = formbuilder.group({
+                    'userid': new Control('', Validators.compose([Validators.required, Validators.minLength(7),Validators.maxLength(7)])),
+                    'username': new Control(''),
+                    'toreturndate': new Control('', Validators.required)
+             });
     }
 
 showWarn() {
@@ -65,6 +75,7 @@ showInfo(messageType:string, basicMessage:string, detailedMessage:string) {
     }
 
 
+
 clear() {
         this.msgs = [];
     }        
@@ -83,6 +94,7 @@ clear() {
             }
    
     assign(userid:string, inventory_id:string, returnByDate:string,username:string){
+        this.submitted = true;
         let bookingDate="";
         let newDate = new Date();
 
@@ -120,8 +132,8 @@ clear() {
         let editMsg;
 
         if(this.disableField==false && this.editOrSaveMode=='Save'){
-            if(inv_cost===null)
-                inv_cost=0;
+            if(inv_cost.value=="")
+                inv_cost.value=0;
             //Save to call PUT operation
             let requestBody: string = 
             "{\"id\":\"" + inv_id.value +"\",\"name\":\"" +inv_name.value+ "\",\"category\":\""+inv_category.value +"\"" + 
@@ -138,5 +150,11 @@ clear() {
             this.disableField=false;          
         }     
     }//onEdit
+
+
+    onSubmit(value: string) {
+        this.submitted = true;
+        console.log("JSON.stringify(this.userform.value) - " + JSON.stringify(this.userform.value) )
+    }//onSubmit
     
 } 
