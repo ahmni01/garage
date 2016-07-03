@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Http, Response, Headers} from '@angular/http';
 
 import {Observable} from 'rxjs/Observable'; 
+import 'rxjs/add/operator/retry';
 import {AuthTokenService} from './auth.token.service';
 
 @Injectable()
@@ -26,6 +27,7 @@ export class CategoryService{
             return this._http.get(this._categoryUrl,{
                 headers: apiHeaders
             })
+                       .retry(3)
                        .map((response: Response) => <any>response.json())
                        .do(data => {
                        // console.log("RecievedData: " + JSON.stringify(data))   

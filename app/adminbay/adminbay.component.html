@@ -22,7 +22,7 @@
                     <td>{{item.category}}</td>
                     <td>{{item.vendor_name}}</td>
                     <td>{{item.vendor_contact}}</td>
-                    <td>{{item.cost | currency : 'USD':true }}</td>
+                    <td>{{item.cost | currency : 'INR':true }}</td>
                     </tr>
                 </tbody> 
           </table>
@@ -44,7 +44,7 @@
                 <tr *ngFor = "let item of inventoryData | async"  >
                     <td>{{item.id}}</td>                      
                     <td>
-                     <a [routerLink]="['/item',item.id]">
+                     <a [routerLink]="['/item',item.id]" style="color: #00f">
                      {{item.name}}
                      </a>  
                     </td>
@@ -52,7 +52,7 @@
                     <td>{{item.vendor_name}}</td>
                     <td>{{item.available}}</td>                        
                     <td>{{item.current_owner}}</td>        
-                    <td>{{item.cost | currency : 'USD':true }}</td>
+                    <td>{{item.cost | currency : 'INR':true }}</td>
                                 
                     </tr>
                 </tbody> 
@@ -66,15 +66,43 @@
 <p-dataTable [value]="reservation" [rows]="10" [paginator]="true" [pageLinks]="5" [rowsPerPageOptions]="[5,10,20]" sortMode="multiple">
     <p-column field="reservation_id" header="Reservation ID" [sortable]="true"></p-column>
     <p-column field="inventory_id" header="Inventory ID" [sortable]="true"></p-column>    
-    <p-column field="inventory_name" header="Inventory Name" [sortable]="true"></p-column>
+   <!-- <p-column field="inventory_name" header="Inventory Name" [sortable]="true"></p-column> -->
     <p-column field="userid" header="pmfkey" [sortable]="true"></p-column>
     <p-column field="booking_date" header="Booking Date" [sortable]="true"></p-column>
     <p-column field="return_by_date" header="Return By Date" [sortable]="true"></p-column>    
-    <p-column styleClass="col-button" header="Return">
+    <p-column styleClass="col-button" header="Action" >
         <template let-reservationRow="rowData">
-            <button type="button" pButton (click)="returnInventory(reservationRow)" icon="fa-undo"></button>
+            <button type="text" (click)="showReturnInvWarningDialog(reservationRow)" pButton icon="fa-external-link-square" label="Return"></button>
         </template>
     </p-column>   
 </p-dataTable>  
 </p-panel>
+
+<p-dialog header="Return Inventory?" [(visible)]="displayReturnInvDialog" [responsive]="true" showEffect="fade" [modal]="true">
+    <p>Are your sure you want to return the following inventory?</p>
+    <div class="ui-grid ui-grid-responsive ui-fluid" >
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label>Res ID:</label></div>
+            <div class="ui-grid-col-4"><label>{{reservationRow?.reservation_id}}</label></div>
+           </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label>Owner:</label></div>
+            <div class="ui-grid-col-4"><label>{{reservationRow?.userid}}</label></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label>Inv ID:</label></div>
+            <div class="ui-grid-col-4"><label>{{reservationRow?.inventory_id}}</label></div>
+        </div>       
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label>Return By:</label></div>
+            <div class="ui-grid-col-4"><label>{{reservationRow?.return_by_date}}</label></div>
+        </div>               
+    </div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="displayReturnInvDialog=false" label="No"></button>
+            <button type="button" pButton icon="fa-check" (click)="confirmInvReturn();displayReturnInvDialog=false" label="Yes"></button>
+        </div>
+    </footer>
+</p-dialog>
 

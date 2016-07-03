@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response,RequestOptions, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable'; 
+import 'rxjs/add/operator/retry';
 
 @Injectable()
 export class ConfigService{
@@ -17,6 +18,7 @@ export class ConfigService{
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         return this._http.get(this.configUrl, options)
+                   .retry(3)
                    .map(this.extractData)                       
                    .catch(this.exceptionHandler);                           
       }           

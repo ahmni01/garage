@@ -5,17 +5,19 @@ import {DataTable} from 'primeng/primeng';
 import {Column} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
 import {Messages} from 'primeng/primeng';
+import {Dialog} from 'primeng/primeng';
 
 import {Inventory}    from '../inventory/inventory';
 import {InventoryService} from '../services/inventory.service';
 import {ReservationService} from '../services/reservation.service'
 import {Observable} from 'rxjs/Observable'; 
 import {Subject}  from 'rxjs/Subject';
+import {AuthTokenService} from '../services/auth.token.service';
 
 @Component({
     templateUrl: 'app/adminbay/adminbay.component.html',
-    directives: [ROUTER_DIRECTIVES,Panel,DataTable,Column,Button,Messages],
-  providers:[InventoryService,ReservationService]
+    directives: [ROUTER_DIRECTIVES,Panel,DataTable,Column,Button,Messages,Dialog],
+  providers:[InventoryService,ReservationService,AuthTokenService]
 
 }) 
 export class AdminBayComponent implements OnInit{
@@ -27,6 +29,8 @@ export class AdminBayComponent implements OnInit{
    reservation:any;
    cols: any[];
    msgs: Messages[] = [];
+   displayReturnInvDialog:boolean = false;
+   reservationRow:any;
 
 ngOnInit():void{
 this._reservationService.getAllReservationInfo()
@@ -36,6 +40,15 @@ showInfo(messageType:string, basicMessage:string, detailedMessage:string) {
         this.msgs = [];
         this.msgs.push({severity: messageType, summary:basicMessage, detail:detailedMessage});
     }
+
+showReturnInvWarningDialog(reservationRow:any){
+      this.reservationRow = reservationRow;
+      this.displayReturnInvDialog = true;
+}    
+
+confirmInvReturn(){
+      this.returnInventory(this.reservationRow);
+}
 
 returnInventory(reservationRow:any):void{
         let reservationReturnDate="";

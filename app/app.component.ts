@@ -8,7 +8,6 @@ import {HomeComponent} from './home/home.component';
 import {AdminBayComponent} from './adminbay/adminbay.component';
 import {ReportComponent} from './report/report.component';
 import {ConfigService} from './services/config.service';  
-import {AuthTokenService} from './services/auth.token.service';
 
 @Component({
   selector: 'garage-app',
@@ -31,8 +30,7 @@ import {AuthTokenService} from './services/auth.token.service';
   providers:[InventoryComponent,             
              ROUTER_PROVIDERS, 
              HTTP_PROVIDERS,
-             ConfigService, 
-             AuthTokenService]  
+             ConfigService]  
 })
 
 @Routes([
@@ -45,8 +43,7 @@ import {AuthTokenService} from './services/auth.token.service';
   
 ])
 export class MainComponent  implements OnInit{
-      constructor(private _configService: ConfigService,
-                  private _authTokenService:AuthTokenService){
+      constructor(private _configService: ConfigService){
       }   
   pageTitle:string = 'CA GARAGE!';
   private _dataFromConfig:any;
@@ -54,11 +51,7 @@ export class MainComponent  implements OnInit{
 
   ngOnInit():void{
   this._configService.loadConfig()
-          .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig);
-           this._authTokenService.getToken()
-  .subscribe(token => {
-    this.token = token;    
-  }); 
+          .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig); 
 } 
   
  }

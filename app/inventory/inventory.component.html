@@ -2,7 +2,7 @@
 <div class="container"> 
   <div [hidden]="submitted">
     <h1>Add Inventory</h1>
-    <form *ngIf="active" (ngSubmit)="addInventory()" #inventoryForm="ngForm">
+    <form *ngIf="active" (ngSubmit)="addInventory(inventoryForm)" #inventoryForm="ngForm">
    <div class="col-lg-6">
       <div class="form-group">
         <label for="name">Name</label>
@@ -10,8 +10,7 @@
           [(ngModel)]="model.name"
             ngControl="name"  #name="ngForm" >
         <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-          Inventory Name is required
-          
+          Inventory Name is required          
         </div>
       </div>
 
@@ -61,10 +60,11 @@
             ngControl="purchase_date" >
       </div>     
  </div>
-      <div class="col-lg-6">
-      <button type="submit" class="btn btn-primary" [disabled]="!inventoryForm.form.valid">Save</button>  
-      
-     </div>
+      <div class="col-lg-6">  
+      <button type="submit" class="btn btn-primary" [disabled]="!inventoryForm.form.valid">
+        <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>Save
+      </button> 
+      </div>
       </form>
     
 </div>      
@@ -74,8 +74,10 @@
       <div class="alert alert-success" role="alert">
         <strong>Inventory saved!</strong> Please feel free to make corrections by clicking on Edit button...
       </div>
-      
-    <h2>Inventory details:</h2>
+      </div>
+
+<div [hidden]="!submitted">
+<p-fieldset legend="Inventory Details">
     <div class="row">
       <div class="col-xs-3">Name</div>
       <div class="col-xs-9  pull-left">{{ model.name }}</div>
@@ -95,23 +97,26 @@
     </div>
     <div class="row">
       <div class="col-xs-3">Cost</div>
-      <div class="col-xs-9 pull-left">{{ model.cost | currency:'USD':true}}</div>
+      <div class="col-xs-9 pull-left">{{ model.cost | currency:'INR':true}}</div>
     </div>    
        
     <div class="row">
       <div class="col-xs-3">Purchase Date</div>
       <div class="col-xs-9 pull-left">{{ model.purchase_date }}</div>
     </div>    
-       
-    <br>
-    <button class="btn btn-warning" (click)="submitted=false">Edit</button>
-    <button class="btn btn-default" (click)="onBackClick()">Back</button>
-    
-    <hr>
+    <hr>   
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-info"> <a class='btn btn-default' (click)='submitted=false' style='width:80px'>
+            <i class='glyphicon glyphicon-pencil'></i> Edit
+        </a>
+        <a class='btn btn-default' (click)='onBackClick()' style='width:80px'>
+            <i class='glyphicon glyphicon-chevron-left'></i> Back
+        </a>
+    </li>
+  </ul> 
+</p-fieldset>
   </div> 
-  
  <div [hidden]="submitted">
-
 <p-panel header="Current Inventory" [toggleable]="true"  >
  <p>
    <input type="text" [(ngModel)]='filterString' class="form-control" placeholder="Search Inventory...">
