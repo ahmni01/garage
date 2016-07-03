@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/retry'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -22,7 +22,8 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             ConfigService = (function () {
                 function ConfigService(_http) {
@@ -33,6 +34,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this._http.get(this.configUrl, options)
+                        .retry(3)
                         .map(this.extractData)
                         .catch(this.exceptionHandler);
                 };

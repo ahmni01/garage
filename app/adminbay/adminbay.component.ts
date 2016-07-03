@@ -6,6 +6,7 @@ import {Column} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
 import {Messages} from 'primeng/primeng';
 import {Dialog} from 'primeng/primeng';
+import {Toolbar} from 'primeng/primeng';
 
 import {Inventory}    from '../inventory/inventory';
 import {InventoryService} from '../services/inventory.service';
@@ -16,7 +17,7 @@ import {AuthTokenService} from '../services/auth.token.service';
 
 @Component({
     templateUrl: 'app/adminbay/adminbay.component.html',
-    directives: [ROUTER_DIRECTIVES,Panel,DataTable,Column,Button,Messages,Dialog],
+    directives: [ROUTER_DIRECTIVES,Panel,DataTable,Column,Button,Messages,Dialog,Toolbar],
   providers:[InventoryService,ReservationService,AuthTokenService]
 
 }) 
@@ -75,6 +76,8 @@ returnInventory(reservationRow:any):void{
             .subscribe(editMsg => editMsg = editMsg);            
       
       this.showInfo('info', 'Inventory Returned Successfully', "Inventory ID: " + reservationRow.reservation_id + " is now available for others");
+      this._reservationService.getAllReservationInfo()
+      .subscribe(reservation => this.reservation = reservation);
 
 }
 
@@ -82,6 +85,11 @@ returnInventory(reservationRow:any):void{
     if (!term) { return; };
     this.searchTermStream.next(term); 
   }
+
+ refreshReservation(){
+       this._reservationService.getAllReservationInfo()
+      .subscribe(reservation => this.reservation = reservation);
+ } 
 
  inventoryData: Observable<Inventory[]> = this.searchTermStream
     .debounceTime(300)

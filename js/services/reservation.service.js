@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/retry', './auth.token.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -23,6 +23,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
             },
+            function (_1) {},
             function (auth_token_service_1_1) {
                 auth_token_service_1 = auth_token_service_1_1;
             }],
@@ -40,6 +41,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
                     return this._http.post(this._reservationUrl, payload, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         //console.log("Response from POST (Reservation): " + JSON.stringify(data))  
@@ -52,6 +54,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
                     return this._http.get(currentReservervations, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         //console.log("RecievedData: " + JSON.stringify(data))  
@@ -64,6 +67,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
                     return this._http.put(this._reservationUrl, payload, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         //console.log("Response from PUT (Reservation Service): " + JSON.stringify(data))  

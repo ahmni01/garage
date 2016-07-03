@@ -61,31 +61,6 @@
    </div>     
 </p-panel>
 
-<!--
-<p-dialog header="Reserve Inventory" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="true">
-    <div class="ui-grid ui-grid-responsive ui-fluid" >
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12"><input type="text" required #userid  pInputText placeholder='PMFKey' /></div>
-        </div>
-        <br>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-12"><input type="text" #username pInputText placeholder='User Name'/></div>
-        </div>
-        <hr>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-5"><p-calendar [(ngModel)]="returnByDate"  #inv_date_of_return showIcon=true placeholder="Return By Date.."
-                        minDate="+1d" maxDate="+1m" [readonlyInput]="true"></p-calendar></div>
-        </div>
-    </div>
-    <footer>
-        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-           <button type="button" pButton icon="fa-close" (click)="display=false" label="Cancel"></button>
-           <button type="button" pButton icon="fa-check" (click)="assign(userid.value, inv_id.value, inv_date_of_return.value, username.value)" label="Assign"></button>
-        </div>
-    </footer>
-</p-dialog>
--->
-
 <p-dialog header="Reserve Inventory" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="true">
 <form [ngFormModel]="form" #reservationform="ngForm" (ngSubmit)="assign(userid.value, inv_id.value, toreturndate.value, username.value)">
 <div class="form-group">
@@ -103,17 +78,11 @@
 <div class="form-group">
     <label class="control-label" for="toreturndate">Return Date</label>
     <br>
-      <input class="form-control" type="date" value = "today()" id="toreturndate" ngControl="toreturndate" #toreturndate="ngForm">
-    <!--
+  <!--    <input class="form-control" type="date" value = "today()" id="toreturndate" ngControl="toreturndate" #toreturndate="ngForm">
+  -->
     <p-calendar #toreturndate showIcon=true ngControl="toreturndate" #toreturndate="ngForm"
-
-                        minDate="+1d" maxDate="+1m" [readonlyInput]="true"></p-calendar>
-                        -->
-
-</div>
-<div [hidden]="toreturndate.valid || toreturndate.pristine" class="alert alert-danger">
-    <strong>Please set return by date!</strong>
-</div>          
+                minDate="+1d" maxDate="+15d" [readonlyInput]="true"></p-calendar>
+</div>         
     <footer>
         <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
            <button type="button" pButton icon="fa-close" (click)="display=false" label="Cancel"></button>

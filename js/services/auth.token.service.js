@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './config.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/retry', './config.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -23,6 +23,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './config.
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
             },
+            function (_1) {},
             function (config_service_1_1) {
                 config_service_1 = config_service_1_1;
             }],
@@ -48,6 +49,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './config.
                     var options = new http_1.RequestOptions({ headers: headers });
                     var body = JSON.stringify({ "username": "demo", "password": "Password1" });
                     return this._http.post(this._tokenUrl, body, options)
+                        .retry(3)
                         .map(this.extractData)
                         .catch(this.exceptionHandler);
                 };

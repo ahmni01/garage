@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, inventory_1, category_service_1, inventory_service_1, inventory_filter_pipe_1, auth_token_service_1, primeng_1, primeng_2, primeng_3, primeng_4;
+    var core_1, router_1, inventory_1, category_service_1, inventory_service_1, inventory_filter_pipe_1, auth_token_service_1, primeng_1, primeng_2, primeng_3, primeng_4, primeng_5, primeng_6;
     var InventoryComponent;
     return {
         setters:[
@@ -40,6 +40,8 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                 primeng_2 = primeng_1_1;
                 primeng_3 = primeng_1_1;
                 primeng_4 = primeng_1_1;
+                primeng_5 = primeng_1_1;
+                primeng_6 = primeng_1_1;
             }],
         execute: function() {
             InventoryComponent = (function () {
@@ -48,6 +50,8 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                     this._inventoryService = _inventoryService;
                     this._authTokenService = _authTokenService;
                     this._router = _router;
+                    this.numberOfDuplicateRecords = 0;
+                    this.searchInventory = false;
                     this.listFilter = '';
                     this.submitted = false;
                     this.active = true;
@@ -74,8 +78,12 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                     this._inventoryService.getInventory()
                         .subscribe(function (inventory) { return _this.inventory = inventory; });
                 };
-                InventoryComponent.prototype.addInventory = function () {
+                InventoryComponent.prototype.addInventory = function (inventoryForm) {
                     var _this = this;
+                    var myName = inventoryForm && inventoryForm.controls['name'] &&
+                        inventoryForm.controls['name'].value;
+                    console.log("Name captured through - " + myName + inventoryForm && inventoryForm.controls['vendorName'] &&
+                        inventoryForm.controls['vendorName'].value);
                     this.submitted = true;
                     //console.log('Form field values are : ' + JSON.stringify(this.model));
                     var name = this.model.name;
@@ -90,6 +98,16 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                     var purchase_date = this.model.purchase_date;
                     if (purchase_date == null)
                         purchase_date = '';
+                    var searchFilter;
+                    var searchedInv;
+                    searchFilter = "?sysfilter=equal(name: " + "\'" + name + "\', category: \'" + category + "\', vendor_name: \'" + vendor_name + "\')";
+                    //console.log("Going to search for " + searchFilter );
+                    this.numberOfDuplicateRecords = this._inventoryService.findExactInventory(searchFilter); //.subscribe(searchedInv => searchedInv = searchedInv); 
+                    //var size = Object.keys(searchedInv).length;
+                    console.log('numberOfDuplicateRecords ----' + this.numberOfDuplicateRecords);
+                    //console.log("RecievedData: " + JSON.stringify(searchedInv));
+                    if (this.numberOfDuplicateRecords > 0)
+                        return;
                     var requestBody = "{\"name\":\"" + name + "\",\"category\":\"" + category + "\",\"vendor_name\":\"" + vendor_name + "\",\"vendor_contact\":\""
                         + vendor_contact + "\",\"cost\":" + cost + ",\"purchase_date\":\"" + purchase_date + "\"}";
                     //this.inventory.push(this.model);
@@ -111,14 +129,27 @@ System.register(['@angular/core', '@angular/router', './inventory', '../services
                         form.controls['name'].value; // Dr. IQ
                 };
                 InventoryComponent.prototype.onBackClick = function () {
+                    var _this = this;
+                    this.refreshInventory();
                     this.submitted = false;
                     this._router.navigate(['/inventory']);
+                    this.model = new inventory_1.Inventory(100, '', '', '', '');
+                    this.active = false;
+                    setTimeout(function () { return _this.active = true; }, 0);
+                };
+                InventoryComponent.prototype.refreshInventory = function () {
+                    var _this = this;
+                    this._inventoryService.getInventory()
+                        .subscribe(function (inventory) { return _this.inventory = inventory; });
+                };
+                InventoryComponent.prototype.toggleSearch = function () {
+                    this.searchInventory = !this.searchInventory;
                 };
                 InventoryComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/inventory/inventory.component.html',
                         pipes: [inventory_filter_pipe_1.InventoryFilterPipe],
-                        directives: [router_1.ROUTER_DIRECTIVES, primeng_1.DataTable, primeng_2.Column, primeng_3.Panel, primeng_4.Button],
+                        directives: [router_1.ROUTER_DIRECTIVES, primeng_1.DataTable, primeng_2.Column, primeng_3.Panel, primeng_4.Button, primeng_5.Fieldset, primeng_6.Toolbar],
                         providers: [category_service_1.CategoryService, inventory_service_1.InventoryService, auth_token_service_1.AuthTokenService]
                     }), 
                     __metadata('design:paramtypes', [category_service_1.CategoryService, inventory_service_1.InventoryService, auth_token_service_1.AuthTokenService, router_1.Router])

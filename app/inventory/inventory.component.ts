@@ -11,12 +11,14 @@ import {Column} from 'primeng/primeng';
 import {Panel} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
 import {Fieldset} from 'primeng/primeng';
+import {Toolbar} from 'primeng/primeng';
+
 
 
 @Component({  
   templateUrl: 'app/inventory/inventory.component.html',
   pipes: [InventoryFilterPipe],
-  directives: [ROUTER_DIRECTIVES,DataTable,Column,Panel,Button, Fieldset],
+  directives: [ROUTER_DIRECTIVES,DataTable,Column,Panel,Button, Fieldset, Toolbar],
   providers:[ CategoryService, InventoryService, AuthTokenService]
 })
 export class InventoryComponent implements OnInit {
@@ -30,6 +32,7 @@ export class InventoryComponent implements OnInit {
   model:any;
   cols: any[];
   numberOfDuplicateRecords:number=0;
+  searchInventory:boolean=false;
   constructor(private _categoryService: CategoryService, 
                 private _inventoryService: InventoryService,
                 private _authTokenService: AuthTokenService,
@@ -121,17 +124,22 @@ this._inventoryService.getInventory()
     form.controls['name'].value; // Dr. IQ
   }
   
-          onBackClick(): void {
-            this.submitted = false;
-        this._router.navigate(['/inventory']);
-        
- 
+  onBackClick(): void {
+    this.refreshInventory();
+    this.submitted = false;
+    this._router.navigate(['/inventory']);
     this.model = new Inventory(100, '', '', '', '' );
     this.active = false;
     setTimeout(() => this.active = true, 0);
-  
+    }
 
+  refreshInventory(){
+     this._inventoryService.getInventory()
+         .subscribe(inventory => this.inventory = inventory);
+    }
 
+   toggleSearch():void{
+      this.searchInventory = !this.searchInventory;
     }
 }
 

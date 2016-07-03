@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.token.service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/retry', './auth.token.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -23,6 +23,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
             },
+            function (_1) {},
             function (auth_token_service_1_1) {
                 auth_token_service_1 = auth_token_service_1_1;
             }],
@@ -44,6 +45,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', './auth.to
                     return this._http.get(this._categoryUrl, {
                         headers: apiHeaders
                     })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         // console.log("RecievedData: " + JSON.stringify(data))   

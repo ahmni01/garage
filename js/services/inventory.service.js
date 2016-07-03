@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/retry'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -22,13 +22,15 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
-            }],
+            },
+            function (_1) {}],
         execute: function() {
             InventoryService = (function () {
                 function InventoryService(_http) {
                     this._http = _http;
                     //private _inventoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/inventory';
                     this._inventoryUrl = sessionStorage.getItem('api_base_url') + 'inventory';
+                    this.size = 0;
                 }
                 InventoryService.prototype.addNewInventory = function (payload) {
                     var apiHeaders = new http_1.Headers();
@@ -36,17 +38,20 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
                     return this._http.post(this._inventoryUrl, payload, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         //console.log("Response from POST: " + JSON.stringify(data))  
                     });
                 };
                 InventoryService.prototype.updateExistingInventory = function (payload) {
+                    //console.log("Request payload: " + payload);
                     var apiHeaders = new http_1.Headers();
                     var _token = sessionStorage.getItem('id_token');
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
                     return this._http.put(this._inventoryUrl, payload, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         //console.log("Response from PUT: " + JSON.stringify(data))  
@@ -58,6 +63,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
                     apiHeaders.append('Content-Type', 'application/json');
                     return this._http.get(this._inventoryUrl, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         //console.log("RecievedData: " + JSON.stringify(data))  
@@ -73,7 +79,43 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     searchFilterStr = '?filter=name like \'' + term + '%\'';
                     urlwithFilter = this._inventoryUrl + searchFilterStr;
                     return this._http.get(urlwithFilter, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); });
+                };
+                //TODO 6/19
+                InventoryService.prototype.findExactInventory = function (searchFilterStr) {
+                    var apiHeaders = new http_1.Headers();
+                    var urlwithFilter;
+                    var _token = sessionStorage.getItem('id_token');
+                    var dupNo;
+                    apiHeaders.append('Authorization', _token); //apiHeaders.append('Authorization', 'CALiveAPICreator 68368c95857b7710514f52621ccc5eb7:1');
+                    apiHeaders.append('Content-Type', 'application/json');
+                    urlwithFilter = this._inventoryUrl + searchFilterStr;
+                    //console.log("urlwithFilter " + urlwithFilter);
+                    this._http.get(urlwithFilter, { headers: apiHeaders })
+                        .retry(3)
+                        .map(function (res) { return res.json(); })
+                        .do(function (data) {
+                        //this.size = Object.keys(data).length;
+                        // console.log('Object.keys(data).length ----' + this.size);
+                        // console.log("RecievedData: " + JSON.stringify(data));
+                    })
+                        .subscribe(function (data) {
+                        dupNo = Object.keys(data).length;
+                        //data = data;
+                        //    size = Object.keys(data).length;
+                        console.log("RecievedData: " + JSON.stringify(data));
+                        console.log("size.....: " + dupNo);
+                    });
+                    //        return this._http.get(urlwithFilter,{headers: apiHeaders})
+                    //                   .map((response: Response) => <Inventory[]>response.json())
+                    //                   .do(data =>{
+                    //                     var size = Object.keys(data).length;
+                    //                     console.log('Object.keys(data).length ----' + size);
+                    //                   console.log("RecievedData: " + JSON.stringify(data));
+                    //                }
+                    //              );   
+                    return dupNo;
                 };
                 InventoryService.prototype.findInventoryByID = function (id) {
                     var apiHeaders = new http_1.Headers();
@@ -84,8 +126,9 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable'], function(
                     apiHeaders.append('Content-Type', 'application/json');
                     searchFilterStr = '/' + id;
                     urlwithFilter = this._inventoryUrl + searchFilterStr;
-                    console.log('####urlwithFilter: ' + urlwithFilter);
+                    //console.log('####urlwithFilter: ' + urlwithFilter);
                     return this._http.get(urlwithFilter, { headers: apiHeaders })
+                        .retry(3)
                         .map(function (response) { return response.json(); })
                         .do(function (data) {
                         console.log("RecievedData: " + JSON.stringify(data));
