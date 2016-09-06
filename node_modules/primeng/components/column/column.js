@@ -66,6 +66,10 @@ var Column = (function () {
         __metadata('design:type', Boolean)
     ], Column.prototype, "expander", void 0);
     __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], Column.prototype, "selectionMode", void 0);
+    __decorate([
         core_1.Output(), 
         __metadata('design:type', core_1.EventEmitter)
     ], Column.prototype, "sortFunction", void 0);

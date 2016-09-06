@@ -11,94 +11,82 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var button_1 = require('../button/button');
 var domhandler_1 = require('../dom/domhandler');
+var common_1 = require('../common');
 var OrderList = (function () {
     function OrderList(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
         this.onReorder = new core_1.EventEmitter();
     }
-    OrderList.prototype.onMouseover = function (event) {
-        var element = event.target;
-        if (element.nodeName != 'UL') {
-            var item = this.findListItem(element);
-            this.domHandler.addClass(item, 'ui-state-hover');
-        }
+    OrderList.prototype.ngAfterViewInit = function () {
+        this.listContainer = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-orderlist-list');
     };
-    OrderList.prototype.onMouseout = function (event) {
-        var element = event.target;
-        if (element.nodeName != 'UL') {
-            var item = this.findListItem(element);
-            this.domHandler.removeClass(item, 'ui-state-hover');
-        }
-    };
-    OrderList.prototype.onClick = function (event) {
-        var element = event.target;
-        if (element.nodeName != 'UL') {
-            var item = this.findListItem(element);
-            this.onItemClick(event, item);
-        }
-    };
-    OrderList.prototype.findListItem = function (element) {
-        if (element.nodeName == 'LI') {
-            return element;
-        }
-        else {
-            var parent_1 = element.parentElement;
-            while (parent_1.nodeName != 'LI') {
-                parent_1 = parent_1.parentElement;
-            }
-            return parent_1;
+    OrderList.prototype.ngAfterViewChecked = function () {
+        if (this.movedUp || this.movedDown) {
+            var listItems = this.domHandler.find(this.listContainer, 'li.ui-state-highlight');
+            var listItem = void 0;
+            if (this.movedUp)
+                listItem = listItems[0];
+            else
+                listItem = listItems[listItems.length - 1];
+            this.domHandler.scrollInView(this.listContainer, listItem);
+            this.movedUp = false;
+            this.movedDown = false;
         }
     };
     OrderList.prototype.onItemClick = function (event, item) {
         var metaKey = (event.metaKey || event.ctrlKey);
-        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-            if (metaKey) {
-                this.domHandler.removeClass(item, 'ui-state-highlight');
-            }
+        var index = this.findIndexInList(item, this.selectedItems);
+        var selected = (index != -1);
+        if (selected && metaKey) {
+            this.selectedItems.splice(index, 1);
         }
         else {
-            if (!metaKey) {
-                var siblings = this.domHandler.siblings(item);
-                for (var i = 0; i < siblings.length; i++) {
-                    var sibling = siblings[i];
-                    if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-                        this.domHandler.removeClass(sibling, 'ui-state-highlight');
-                    }
-                }
-            }
-            this.domHandler.removeClass(item, 'ui-state-hover');
-            this.domHandler.addClass(item, 'ui-state-highlight');
+            this.selectedItems = (metaKey) ? this.selectedItems || [] : [];
+            this.selectedItems.push(item);
         }
     };
+    OrderList.prototype.isSelected = function (item) {
+        return this.findIndexInList(item, this.selectedItems) != -1;
+    };
+    OrderList.prototype.findIndexInList = function (item, list) {
+        var index = -1;
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i] == item) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
     OrderList.prototype.moveUp = function (event, listElement) {
-        var selectedElements = this.getSelectedListElements(listElement);
-        if (selectedElements.length) {
-            for (var i = 0; i < selectedElements.length; i++) {
-                var selectedElement = selectedElements[i];
-                var selectedElementIndex = this.domHandler.index(selectedElement);
-                if (selectedElementIndex != 0) {
-                    var movedItem = this.value[selectedElementIndex];
-                    var temp = this.value[selectedElementIndex - 1];
-                    this.value[selectedElementIndex - 1] = movedItem;
-                    this.value[selectedElementIndex] = temp;
-                    this.domHandler.scrollInView(listElement, listElement.children[selectedElementIndex - 1]);
+        if (this.selectedItems) {
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != 0) {
+                    var movedItem = this.value[selectedItemIndex];
+                    var temp = this.value[selectedItemIndex - 1];
+                    this.value[selectedItemIndex - 1] = movedItem;
+                    this.value[selectedItemIndex] = temp;
                 }
                 else {
                     break;
                 }
             }
+            this.movedUp = true;
             this.onReorder.emit(event);
         }
     };
     OrderList.prototype.moveTop = function (event, listElement) {
-        var selectedElements = this.getSelectedListElements(listElement);
-        if (selectedElements.length) {
-            for (var i = 0; i < selectedElements.length; i++) {
-                var selectedElement = selectedElements[i];
-                var selectedElementIndex = this.domHandler.index(selectedElement);
-                if (selectedElementIndex != 0) {
-                    var movedItem = this.value.splice(selectedElementIndex, 1)[0];
+        if (this.selectedItems) {
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != 0) {
+                    var movedItem = this.value.splice(selectedItemIndex, 1)[0];
                     this.value.unshift(movedItem);
                     listElement.scrollTop = 0;
                 }
@@ -107,48 +95,44 @@ var OrderList = (function () {
                 }
             }
             this.onReorder.emit(event);
+            listElement.scrollTop = 0;
         }
     };
     OrderList.prototype.moveDown = function (event, listElement) {
-        var selectedElements = this.getSelectedListElements(listElement);
-        if (selectedElements.length) {
-            for (var i = selectedElements.length - 1; i >= 0; i--) {
-                var selectedElement = selectedElements[i];
-                var selectedElementIndex = this.domHandler.index(selectedElement);
-                if (selectedElementIndex != (this.value.length - 1)) {
-                    var movedItem = this.value[selectedElementIndex];
-                    var temp = this.value[selectedElementIndex + 1];
-                    this.value[selectedElementIndex + 1] = movedItem;
-                    this.value[selectedElementIndex] = temp;
-                    this.domHandler.scrollInView(listElement, listElement.children[selectedElementIndex + 1]);
+        if (this.selectedItems) {
+            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != (this.value.length - 1)) {
+                    var movedItem = this.value[selectedItemIndex];
+                    var temp = this.value[selectedItemIndex + 1];
+                    this.value[selectedItemIndex + 1] = movedItem;
+                    this.value[selectedItemIndex] = temp;
                 }
                 else {
                     break;
                 }
             }
+            this.movedDown = true;
             this.onReorder.emit(event);
         }
     };
     OrderList.prototype.moveBottom = function (event, listElement) {
-        var selectedElements = this.getSelectedListElements(listElement);
-        if (selectedElements.length) {
-            for (var i = selectedElements.length - 1; i >= 0; i--) {
-                var selectedElement = selectedElements[i];
-                var selectedElementIndex = this.domHandler.index(selectedElement);
-                if (selectedElementIndex != (this.value.length - 1)) {
-                    var movedItem = this.value.splice(selectedElementIndex, 1)[0];
+        if (this.selectedItems) {
+            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+                var selectedItem = this.selectedItems[i];
+                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+                if (selectedItemIndex != (this.value.length - 1)) {
+                    var movedItem = this.value.splice(selectedItemIndex, 1)[0];
                     this.value.push(movedItem);
-                    listElement.scrollTop = listElement.scrollHeight;
                 }
                 else {
                     break;
                 }
             }
             this.onReorder.emit(event);
+            listElement.scrollTop = listElement.scrollHeight;
         }
-    };
-    OrderList.prototype.getSelectedListElements = function (listElement) {
-        return this.domHandler.find(listElement, 'li.ui-state-highlight');
     };
     __decorate([
         core_1.Input(), 
@@ -185,8 +169,8 @@ var OrderList = (function () {
     OrderList = __decorate([
         core_1.Component({
             selector: 'p-orderList',
-            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-grid ui-widget':true,'ui-grid-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-grid-row\">\n                <div class=\"ui-orderlist-controls ui-grid-col-2\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n                </div>\n                <div class=\"ui-grid-col-10\">\n                    <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                    <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" \n                        (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                        <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
-            directives: [button_1.Button],
+            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-grid ui-widget':true,'ui-grid-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-grid-row\">\n                <div class=\"ui-orderlist-controls ui-grid-col-2\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n                </div>\n                <div class=\"ui-grid-col-10\">\n                    <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                    <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\">\n                        <li *ngFor=\"let item of value\" \n                            [ngClass]=\"{'ui-orderlist-item':true,'ui-state-hover':(hoveredItem==item),'ui-state-highlight':isSelected(item)}\"\n                            (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\" (click)=\"onItemClick($event,item)\">\n                            <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
+            directives: [button_1.Button, common_1.TemplateWrapper],
             providers: [domhandler_1.DomHandler]
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])

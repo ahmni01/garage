@@ -1,29 +1,5 @@
-System.register(['@angular/platform-browser-dynamic', './app.component', '@angular/http', 'rxjs/add/observable/throw', 'rxjs/add/operator/catch', 'rxjs/add/operator/debounceTime', 'rxjs/add/operator/distinctUntilChanged', 'rxjs/add/operator/map', 'rxjs/add/operator/do', 'rxjs/add/operator/switchMap', 'rxjs/add/operator/toPromise'], function(exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
-    var platform_browser_dynamic_1, app_component_1, http_1;
-    return {
-        setters:[
-            function (platform_browser_dynamic_1_1) {
-                platform_browser_dynamic_1 = platform_browser_dynamic_1_1;
-            },
-            function (app_component_1_1) {
-                app_component_1 = app_component_1_1;
-            },
-            function (http_1_1) {
-                http_1 = http_1_1;
-            },
-            function (_1) {},
-            function (_2) {},
-            function (_3) {},
-            function (_4) {},
-            function (_5) {},
-            function (_6) {},
-            function (_7) {},
-            function (_8) {}],
-        execute: function() {
-            platform_browser_dynamic_1.bootstrap(app_component_1.MainComponent, [http_1.HTTP_PROVIDERS]);
-        }
-    }
-});
+"use strict";
+var platform_browser_dynamic_1 = require('@angular/platform-browser-dynamic');
+var app_module_1 = require('./app.module');
+platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 //# sourceMappingURL=main.js.map

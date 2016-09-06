@@ -1,25 +1,23 @@
 import {Component, OnInit}  from '@angular/core';
 import {NgForm} from '@angular/common';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router, OnActivate, RouteSegment} from '@angular/router';
+import {ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
 import {Inventory}    from './inventory';
 import {CategoryService} from '../services/category.service';
 import {InventoryService} from '../services/inventory.service';
 import {InventoryFilterPipe} from './inventory-filter.pipe';
-import {AuthTokenService} from '../services/auth.token.service';
 import {DataTable} from 'primeng/primeng';
 import {Column} from 'primeng/primeng';
 import {Panel} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
 import {Fieldset} from 'primeng/primeng';
 import {Toolbar} from 'primeng/primeng';
-
-
+import { AuthService } from '../services/auth';
+import { Auth } from '../containers/auth';
 
 @Component({  
   templateUrl: 'app/inventory/inventory.component.html',
   pipes: [InventoryFilterPipe],
-  directives: [ROUTER_DIRECTIVES,DataTable,Column,Panel,Button, Fieldset, Toolbar],
-  providers:[ CategoryService, InventoryService, AuthTokenService]
+  directives: [DataTable,Column,Panel,Button, Fieldset, Toolbar],
 })
 export class InventoryComponent implements OnInit {
   categories: any;
@@ -31,12 +29,19 @@ export class InventoryComponent implements OnInit {
   token:any;
   model:any;
   cols: any[];
-  numberOfDuplicateRecords:number=0;
+  numberOfDuplicateRecords:number;
   searchInventory:boolean=false;
+  private loggedin:boolean;
   constructor(private _categoryService: CategoryService, 
                 private _inventoryService: InventoryService,
-                private _authTokenService: AuthTokenService,
-                private _router: Router){
+                private _router: Router,
+                authService:AuthService,
+                private _authService:AuthService,
+                auth:Auth){
+                  this.numberOfDuplicateRecords=0;
+                      if(this._authService.isAuthorized()){
+              this.loggedin=true;
+            }
   }  
   
   ngOnInit():void{
@@ -52,11 +57,6 @@ export class InventoryComponent implements OnInit {
         ];        
         
   this.model = new Inventory(100, '', '', '', '' );  
-
-  this._authTokenService.getToken()
-  .subscribe(token => {
-    this.token = token;
-  });  
     
   this._categoryService.getCategories()
       .subscribe(categories => this.categories = categories);
@@ -64,6 +64,11 @@ export class InventoryComponent implements OnInit {
 this._inventoryService.getInventory()
       .subscribe(inventory => this.inventory = inventory);
 }
+
+logOff(){
+        this.loggedin=false;
+        this._authService.signout();
+      }
 
   listFilter: string = '';  
   submitted = false;
@@ -73,6 +78,7 @@ this._inventoryService.getInventory()
     inventoryForm.controls['name'].value; 
     console.log("Name captured through - " + myName + inventoryForm && inventoryForm.controls['vendorName'] &&
     inventoryForm.controls['vendorName'].value);
+    
 
       this.submitted = true;
       //console.log('Form field values are : ' + JSON.stringify(this.model));
@@ -93,23 +99,32 @@ this._inventoryService.getInventory()
       let searchedInv: Inventory[];
       
       searchFilter = "?sysfilter=equal(name: "+ "\'" + name + "\', category: \'" + category + "\', vendor_name: \'" + vendor_name + "\')";
-      //console.log("Going to search for " + searchFilter );
+      console.log("Going to search for " + searchFilter );
           this.numberOfDuplicateRecords = this._inventoryService.findExactInventory(searchFilter);//.subscribe(searchedInv => searchedInv = searchedInv); 
                      //var size = Object.keys(searchedInv).length;
 
                      console.log('numberOfDuplicateRecords ----' + this.numberOfDuplicateRecords);
                      //console.log("RecievedData: " + JSON.stringify(searchedInv));
-          if(this.numberOfDuplicateRecords >0)
-            return;
-      
+        /*  if(this.numberOfDuplicateRecords >0){
+            alert("dddddd");
+            this.numberOfDuplicateRecords=0;
+            return false;
+          }*/
+          //else{
+            console.log("returned??........");
       let requestBody: string = 
       "{\"name\":\"" + name +"\",\"category\":\"" + category +"\",\"vendor_name\":\"" + vendor_name +"\",\"vendor_contact\":\""
        + vendor_contact + "\",\"cost\":" + cost + ",\"purchase_date\":\"" + purchase_date + "\"}";   
     
       //this.inventory.push(this.model);
       this._inventoryService.addNewInventory(requestBody)
-      .subscribe(newInventory => this.newInventory = newInventory);  
-      }
+      .subscribe(newInventory => this.newInventory = newInventory); 
+
+      //    }
+            
+       
+      
+    }
       
   onChange(deviceValue:any) {
        this.selectedCategory = deviceValue.target.value;
@@ -124,11 +139,13 @@ this._inventoryService.getInventory()
     form.controls['name'].value; // Dr. IQ
   }
   
-  onBackClick(): void {
+  onBackClick(inventoryForm:NgForm): void {
     this.refreshInventory();
     this.submitted = false;
     this._router.navigate(['/inventory']);
     this.model = new Inventory(100, '', '', '', '' );
+    this.selectedCategory='';
+    
     this.active = false;
     setTimeout(() => this.active = true, 0);
     }

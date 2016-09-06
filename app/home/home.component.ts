@@ -1,25 +1,30 @@
 import {Component, OnInit}  from '@angular/core';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes} from '@angular/router';
+import { ROUTER_DIRECTIVES, Routes} from '@angular/router';
+import { AuthService } from '../services/auth'
+import { Auth } from '../containers/auth';
 
-import {AuthTokenService} from '../services/auth.token.service';
 
 @Component({
     templateUrl: 'app/home/home.component.html',
-    directives: [ROUTER_DIRECTIVES],
-  providers:[ROUTER_PROVIDERS, AuthTokenService]
+    providers:[ AuthService, Auth]
 
 })
 export class HomeComponent  implements OnInit{
-    pageTitle:string = 'Welcome to CA Garage!';
-     private token:any;
-    constructor(private _authTokenService:AuthTokenService){
+    constructor(private _authService:AuthService){
+         if(this._authService.isAuthorized()){
+              this.loggedin=true;
+            }
 
     }
-    ngOnInit():void{
-                   this._authTokenService.getToken()
-  .subscribe(token => {
-    this.token = token;    
+    pageTitle:string = 'Welcome to CA Garage!';
+    private loggedin:boolean;
 
-    });
+    ngOnInit():void{
+                  
 }
+
+      logOff(){
+        this.loggedin=false;
+        this._authService.signout();
+      }
 } 

@@ -11,19 +11,6 @@ export class InventoryFilterPipe implements PipeTransform{
         filter = filter ? filter.toLocaleLowerCase() : null; 
         //console.log('Filter by: ' + filter);
         return filter ? value.filter ((inventory) => 
-        inventory.name.toLocaleLowerCase().indexOf(filter) !== -1) : value;  
-       
-              
+        inventory.name.toLocaleLowerCase().indexOf(filter) !== -1) : value;           
     }
-    
-     
-    
-    
-    
-    
-    
-
 }
-
-
-

@@ -4,6 +4,7 @@ import {Panel} from 'primeng/primeng';
 import {DataTable} from 'primeng/primeng';
 import {Column} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
+import {Message} from 'primeng/primeng';
 import {Messages} from 'primeng/primeng';
 import {Dialog} from 'primeng/primeng';
 import {Toolbar} from 'primeng/primeng';
@@ -13,25 +14,35 @@ import {InventoryService} from '../services/inventory.service';
 import {ReservationService} from '../services/reservation.service'
 import {Observable} from 'rxjs/Observable'; 
 import {Subject}  from 'rxjs/Subject';
-import {AuthTokenService} from '../services/auth.token.service';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import { AuthService } from '../services/auth'
 
 @Component({
     templateUrl: 'app/adminbay/adminbay.component.html',
-    directives: [ROUTER_DIRECTIVES,Panel,DataTable,Column,Button,Messages,Dialog,Toolbar],
-  providers:[InventoryService,ReservationService,AuthTokenService]
+    directives: [Panel,DataTable,
+                 Column,Button,Dialog,Toolbar,Messages],
+  providers:[InventoryService,ReservationService]
 
 }) 
 export class AdminBayComponent implements OnInit{
  constructor(private _inventoryService:InventoryService,
-             private _reservationService:ReservationService ){        
+             private _reservationService:ReservationService,
+             private _authService:AuthService ){     
+                    if(this._authService.isAuthorized()){
+              this.loggedin=true;
+            }   
     }
+
    private pageTitle:string = 'Search & Allocate';
+   reservationRow:any;
    private searchTermStream = new Subject<string>();
    reservation:any;
    cols: any[];
-   msgs: Messages[] = [];
+   msgs: Message[] = [];
    displayReturnInvDialog:boolean = false;
-   reservationRow:any;
+   private loggedin:boolean;
 
 ngOnInit():void{
 this._reservationService.getAllReservationInfo()
@@ -75,7 +86,7 @@ returnInventory(reservationRow:any):void{
             this._inventoryService.updateExistingInventory(requestBodyForUpdatingInventory)
             .subscribe(editMsg => editMsg = editMsg);            
       
-      this.showInfo('info', 'Inventory Returned Successfully', "Inventory ID: " + reservationRow.reservation_id + " is now available for others");
+      this.showInfo('info', 'Inventory Returned Successfully', "Inventory ID: " + reservationRow.reservation_id + " is now available for checkout");
       this._reservationService.getAllReservationInfo()
       .subscribe(reservation => this.reservation = reservation);
 
@@ -85,6 +96,11 @@ returnInventory(reservationRow:any):void{
     if (!term) { return; };
     this.searchTermStream.next(term); 
   }
+
+  logOff(){
+        this.loggedin=false;
+        this._authService.signout();
+      }
 
  refreshReservation(){
        this._reservationService.getAllReservationInfo()
