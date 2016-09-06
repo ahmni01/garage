@@ -1,6 +1,7 @@
-import {Component}  from '@angular/core';
-import {ControlGroup, FormBuilder, Validators, Control} from '@angular/common';
-import {Router, OnActivate, RouteSegment} from '@angular/router';
+import {Component, OnInit}  from '@angular/core';
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import {ActivatedRoute, Params,Router} from '@angular/router';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {Observable} from 'rxjs/Observable'; 
 import {Accordion} from 'primeng/primeng';
@@ -11,21 +12,26 @@ import {Calendar} from 'primeng/primeng';
 import {Button} from 'primeng/primeng';
 import {Dialog} from 'primeng/primeng';
 import {Growl} from 'primeng/primeng';
+import {Message} from 'primeng/primeng';
 import {Messages} from 'primeng/primeng';
-
 import {InventoryService} from '../services/inventory.service';
 import {ReservationService} from '../services/reservation.service'
 import {Inventory}    from './inventory';
-import {AuthTokenService} from '../services/auth.token.service';
+
+import { AuthService } from '../services/auth'
+import { Auth } from '../containers/auth';
 
 @Component({
     templateUrl: 'app/inventory/inventory-details.component.html',    
-       directives: [ROUTER_DIRECTIVES, Accordion, 
+       directives: [Accordion, 
+                    FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES,
                     AccordionTab, InputText, Panel, 
-                    Calendar,Button, Dialog, Growl,Messages],
-       providers: [InventoryService, ReservationService,AuthTokenService]    
+                    Calendar,Button, Dialog,Messages],
+       providers: [InventoryService, 
+                   ReservationService,
+                   FormBuilder]    
 })
-export class InventoryDetailsComponent implements OnActivate{
+export class InventoryDetailsComponent implements OnInit{
     pageTitle:string = 'Inventory details';
     inventoryDetails: Inventory; 
     newReservation:any;   
@@ -35,26 +41,47 @@ export class InventoryDetailsComponent implements OnActivate{
     disableAssignButton:boolean=false;
     editOrSaveMode = 'Edit';
     assignInventory:boolean = false;
-    msgs: Messages[] = [];
+    msgs: Message[] = [];
     submitted = false;
-    form: ControlGroup;
-    model:any;
-    
+    reservationFormGroup: FormGroup;
+    userId: FormControl;
+    userName: FormControl;
+    toReturnDate: FormControl;
+
+
     constructor(private _inventoryService: InventoryService, 
                 private _reservationService: ReservationService,
-                private _router: Router,
-                formbuilder: FormBuilder){
-                    this.form = formbuilder.group({
-                    'userid': new Control('', Validators.compose([Validators.required, Validators.minLength(7),Validators.maxLength(7)])),
-                    'username': new Control(''),
-                    'toreturndate': new Control('', Validators.required)
-             });
+                private _route: ActivatedRoute,
+                private formBuilder: FormBuilder,
+                private _router: Router){
+                    this.userId = new FormControl('', Validators.compose([Validators.required, Validators.minLength(7),
+                    Validators.maxLength(7)]));
+                    this.toReturnDate = new FormControl('', Validators.required),
+                    this.userName = new FormControl('');
+                    
+    this.reservationFormGroup = this.formBuilder.group({
+      'userid': this.userId,
+      'userName':this.userName,
+      'toReturnDate':this.toReturnDate
+    });
+
+
     }
+
+    ngOnInit(): void {
+        this._route.params.forEach((params: Params) => {
+        let id = +params['id'];
+        this.pageTitle = this.pageTitle + ':';
+        this.searchInventory(id);
+        });
+    }
+
+
 
 showWarn() {
         this.msgs = [];
         this.msgs.push({severity:'warn', summary:'Warn Message', detail:'There are unsaved changes'});
-    }    
+        }    
     
 showInfo(messageType:string, basicMessage:string, detailedMessage:string) {
         this.msgs = [];
@@ -69,7 +96,7 @@ showInfo(messageType:string, basicMessage:string, detailedMessage:string) {
         }
         else{
             this.display = false;
-            alert("Item is already assigned to some other Employee");
+            alert("Item is already checkout out by another Employee");
             this.disableAssignButton = true;
         }   
     }
@@ -80,12 +107,6 @@ clear() {
         this.msgs = [];
     }        
     
-    routerOnActivate(curr: RouteSegment): void {
-        let id = +curr.getParam('id');
-        this.pageTitle = this.pageTitle + ':';
-        this.searchInventory(id);
-    }
-
     searchInventory(id: number) {
        this._inventoryService.searchInventory(id)
             .subscribe(
@@ -93,7 +114,7 @@ clear() {
             error => this.errorMessage = <any>error);          
             }
    
-    assign(userid:string, inventory_id:string, returnByDate:string,username:string){
+    assign(){
         this.submitted = true;
         let bookingDate="";
         let newDate = new Date();
@@ -104,22 +125,24 @@ clear() {
         bookingDate += newDate.getFullYear();
      
      let requestBodyForReservation: string = 
-      "{\"userid\":\"" + userid +"\",\"username\":\"" + username +"\"" + ",\"inventory_id\":\"" + inventory_id + "\"" + 
-      ",\"return_by_date\":\"" + returnByDate + "\",\"booking_date\":\"" + bookingDate + "\"}";   
-    
+      "{\"userid\":\"" + this.userId.value +"\",\"username\":\"" + this.userName.value +"\"" + ",\"inventory_id\":\"" 
+      + this.inventoryDetails.id + "\"" + 
+      ",\"return_by_date\":\"" + this.toReturnDate.value  + "\",\"booking_date\":\"" + bookingDate + "\"}";   
+    console.log("#################" + requestBodyForReservation);
       this._reservationService.addReservation(requestBodyForReservation)
       .subscribe(newReservation => this.newReservation = newReservation);
 
       //Save to call PUT operation
       let requestBodyForUpdatingInventory:string = 
-            "{\"id\":\"" + inventory_id + "\",\"available\": \"no\""  + ",\"current_owner\": \""+ userid + "\""
+            "{\"id\":\"" + this.inventoryDetails.id + "\",\"available\": \"no\""  + ",\"current_owner\": \""+ this.userId.value  + "\""
             + ",\"@metadata\": {\"checksum\": \"override\"}"
             + "}";   
             this._inventoryService.updateExistingInventory(requestBodyForUpdatingInventory)
             .subscribe(editMsg => editMsg = editMsg);
 
       this.display=false;
-      this.showInfo('info', 'Inventory Assigned Successfully', "Inventory ID: " + inventory_id + " is assigned to " + userid);
+      this.showInfo('info', 'Inventory Assigned Successfully', "Inventory ID: " + this.inventoryDetails.id + " is assigned to " 
+      + this.userId.value );
       this.disableAssignButton = true;
 
     }    
@@ -154,7 +177,7 @@ clear() {
 
     onSubmit(value: string) {
         this.submitted = true;
-        console.log("JSON.stringify(this.userform.value) - " + JSON.stringify(this.userform.value) )
+        //console.log("JSON.stringify(this.userform.value) - " + JSON.stringify(this.userform.value) )
     }//onSubmit
-    
+ 
 } 

@@ -22,6 +22,12 @@ var Menu = (function () {
         var _this = this;
         this.container = this.el.nativeElement.children[0];
         if (this.popup) {
+            if (this.appendTo) {
+                if (this.appendTo === 'body')
+                    document.body.appendChild(this.el.nativeElement);
+                else
+                    this.appendTo.appendChild(this.el.nativeElement);
+            }
             this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
                 if (!_this.preventDocumentDefault) {
                     _this.hide();
@@ -66,6 +72,9 @@ var Menu = (function () {
     Menu.prototype.ngOnDestroy = function () {
         if (this.popup) {
             this.documentClickListener();
+            if (this.appendTo && this.appendTo === 'body') {
+                document.body.removeChild(this.el.nativeElement);
+            }
         }
         if (this.model) {
             for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
@@ -112,6 +121,10 @@ var Menu = (function () {
         core_1.Input(), 
         __metadata('design:type', String)
     ], Menu.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], Menu.prototype, "appendTo", void 0);
     Menu = __decorate([
         core_1.Component({
             selector: 'p-menu',

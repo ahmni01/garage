@@ -13,6 +13,7 @@ export declare class Column {
     styleClass: string;
     hidden: boolean;
     expander: boolean;
+    selectionMode: string;
     sortFunction: EventEmitter<any>;
     template: TemplateRef<any>;
 }

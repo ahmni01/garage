@@ -1,61 +1,46 @@
-import {Component, OnInit}  from '@angular/core';
-import {ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {  RouterModule } from '@angular/router';
 import { HTTP_PROVIDERS } from '@angular/http';
-
-import {InventoryComponent} from './inventory/inventory.component';
-import {InventoryDetailsComponent} from './inventory/inventory-details.component';
-import {HomeComponent} from './home/home.component';
-import {AdminBayComponent} from './adminbay/adminbay.component';
-import {ReportComponent} from './report/report.component';
-import {ConfigService} from './services/config.service';  
+import {ConfigService} from './services/config.service'; 
+import { AuthService } from './services/auth';
+import { ApiService } from './services/api';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
   selector: 'garage-app',
   template: ` 
-  <div>
-  <nav class="navbar navbar-default navbar-fixed-top">
-  <a class="navbar-brand">CA Garage</a>
-     <ul class="nav navbar-nav">        
-        <li><a [routerLink]="['/home']">Home</a></li>
-        <li><a [routerLink]="['/inventory']">Manage Inventory</a></li>
-       <li><a [routerLink]="['/adminbay']">Admin Bay</a></li>
-       <li><a [routerLink]="['/reports']">Reports</a></li>
-     </ul>    
-    </nav>
-  <div class='container'>
-    <router-outlet></router-outlet>
-    </div>
-  </div> `,
-  directives: [ROUTER_DIRECTIVES],
-  providers:[InventoryComponent,             
-             ROUTER_PROVIDERS, 
+
+    <div class='container-fluid'>
+      <router-outlet></router-outlet>
+    </div> `,
+  providers:[RouterModule,
              HTTP_PROVIDERS,
-             ConfigService]  
+             ConfigService
+             ]
+            ,directives: [ROUTER_DIRECTIVES]
 })
+export class AppComponent implements OnInit{
+      constructor(private _configService: ConfigService,
+                  private _authService: AuthService){
+      }  
+      private _dataFromConfig:any; 
+      private loggedin:boolean;
+    
+      ngOnInit():void{
+        this._configService.loadConfig()
+            .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig); 
+            if(this._authService.isAuthorized()){
+              this.loggedin=true;
+            }
 
-@Routes([
-  {path:'/',  component: HomeComponent},
-  {path:'/home', component: HomeComponent},
-  {path:'/inventory', component: InventoryComponent},
-  {path:'/item/:id',  component: InventoryDetailsComponent},
-  {path:'/reports',  component: ReportComponent},
-  {path:'/adminbay',  component: AdminBayComponent}
-  
-])
-export class MainComponent  implements OnInit{
-      constructor(private _configService: ConfigService){
-      }   
-  pageTitle:string = 'CA GARAGE!';
-  private _dataFromConfig:any;
-  private token:any;
+        
+      } 
+      showLogout(){
+        this.loggedin=true;
+      }
 
-  ngOnInit():void{
-  this._configService.loadConfig()
-          .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig); 
-} 
-  
- }
-
-
-
-
+      logOff(){
+        this.loggedin=false;
+        this._authService.signout();
+      }
+}

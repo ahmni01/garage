@@ -1,0 +1,755 @@
+[
+  {
+    "ident": 2004,
+    "ts": "2016-05-07T11:46:46",
+    "exportVersion": "v4",
+    "adminSchemaVersion": "20160323",
+    "name": "ca_garage",
+    "url_name": "garage",
+    "comments": "Insert comments here",
+    "status": null,
+    "is_active": true,
+    "account_ident": 1000,
+    "authprovider_ident": 1000,
+    "@metadata": {
+      "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport/2004",
+      "checksum": "A:1ab3f30f569bc50e",
+      "nonpersistent": [
+        "exportVersion",
+        "adminSchemaVersion"
+      ]
+    },
+    "Topics": [
+    ],
+    "Rules": [
+    ],
+    "ApiVersions": [
+      {
+        "ident": 2004,
+        "ts": "2016-05-07T11:45:07",
+        "name": "v1",
+        "comments": null,
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiVersions/2004",
+          "checksum": "A:524b6cf287bc6948"
+        },
+        "Resources": [
+          {
+            "ident": 2006,
+            "ts": "2016-05-07T12:05:16",
+            "resource_type_ident": 1,
+            "prefix": "main",
+            "table_name": "category",
+            "name": "category",
+            "description": null,
+            "is_collection": "Y",
+            "join_condition": null,
+            "filter": null,
+            "sorting": null,
+            "attach_path": null,
+            "caching": null,
+            "custom_class": null,
+            "code_text": null,
+            "filter_code": "",
+            "serial_filter": null,
+            "prop1": null,
+            "prop2": null,
+            "prop3": null,
+            "prop4": null,
+            "prop5": null,
+            "container_ident": null,
+            "sibling_rank": 100,
+            "combined": false,
+            "root_ident": null,
+            "linked_ident": null,
+            "apiversion_ident": 2004,
+            "@metadata": {
+              "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiVersions.Resources/2006",
+              "checksum": "A:3f9a60fb9630031d"
+            },
+            "ResourceAttributes": [
+            ]
+          },
+          {
+            "ident": 2010,
+            "ts": "2016-08-16T15:13:07",
+            "resource_type_ident": 1,
+            "prefix": "main",
+            "table_name": "category",
+            "name": "NewResource",
+            "description": null,
+            "is_collection": "Y",
+            "join_condition": null,
+            "filter": null,
+            "sorting": null,
+            "attach_path": null,
+            "caching": null,
+            "custom_class": null,
+            "code_text": null,
+            "filter_code": null,
+            "serial_filter": null,
+            "prop1": null,
+            "prop2": null,
+            "prop3": null,
+            "prop4": null,
+            "prop5": null,
+            "container_ident": null,
+            "sibling_rank": 100,
+            "combined": false,
+            "root_ident": null,
+            "linked_ident": null,
+            "apiversion_ident": 2004,
+            "@metadata": {
+              "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiVersions.Resources/2010",
+              "checksum": "A:45added122ae8631"
+            },
+            "ResourceAttributes": [
+            ]
+          },
+          {
+            "ident": 2005,
+            "ts": "2016-07-03T13:58:02",
+            "resource_type_ident": 1,
+            "prefix": "main",
+            "table_name": "inventory",
+            "name": "inventory",
+            "description": null,
+            "is_collection": "Y",
+            "join_condition": "",
+            "filter": null,
+            "sorting": "id desc",
+            "attach_path": null,
+            "caching": null,
+            "custom_class": null,
+            "code_text": null,
+            "filter_code": "",
+            "serial_filter": null,
+            "prop1": null,
+            "prop2": null,
+            "prop3": null,
+            "prop4": null,
+            "prop5": null,
+            "container_ident": null,
+            "sibling_rank": 100,
+            "combined": false,
+            "root_ident": null,
+            "linked_ident": null,
+            "apiversion_ident": 2004,
+            "@metadata": {
+              "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiVersions.Resources/2005",
+              "checksum": "A:fb8e2de3b8e4f251"
+            },
+            "ResourceAttributes": [
+            ]
+          },
+          {
+            "ident": 2009,
+            "ts": "2016-08-16T14:51:47",
+            "resource_type_ident": 1,
+            "prefix": "main",
+            "table_name": "inventory",
+            "name": "inventoryList",
+            "description": null,
+            "is_collection": "Y",
+            "join_condition": "category = [name]",
+            "filter": null,
+            "sorting": null,
+            "attach_path": null,
+            "caching": null,
+            "custom_class": null,
+            "code_text": null,
+            "filter_code": null,
+            "serial_filter": null,
+            "prop1": null,
+            "prop2": null,
+            "prop3": null,
+            "prop4": null,
+            "prop5": null,
+            "container_ident": 2006,
+            "sibling_rank": 100,
+            "combined": false,
+            "root_ident": 2006,
+            "linked_ident": null,
+            "apiversion_ident": 2004,
+            "@metadata": {
+              "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiVersions.Resources/2009",
+              "checksum": "A:918755ff52d0f96c"
+            },
+            "ResourceAttributes": [
+            ]
+          },
+          {
+            "ident": 2007,
+            "ts": "2016-06-02T11:37:00",
+            "resource_type_ident": 1,
+            "prefix": "main",
+            "table_name": "reservation",
+            "name": "reservation",
+            "description": null,
+            "is_collection": "Y",
+            "join_condition": null,
+            "filter": null,
+            "sorting": null,
+            "attach_path": null,
+            "caching": null,
+            "custom_class": null,
+            "code_text": null,
+            "filter_code": "",
+            "serial_filter": null,
+            "prop1": null,
+            "prop2": null,
+            "prop3": null,
+            "prop4": null,
+            "prop5": null,
+            "container_ident": null,
+            "sibling_rank": 100,
+            "combined": false,
+            "root_ident": null,
+            "linked_ident": null,
+            "apiversion_ident": 2004,
+            "@metadata": {
+              "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiVersions.Resources/2007",
+              "checksum": "A:e019798972bcdf86"
+            },
+            "ResourceAttributes": [
+            ]
+          }
+        ]
+      }
+    ],
+    "DbaseSchemas": [
+      {
+        "ident": 2005,
+        "name": "Database: ca_garage - nisar",
+        "comments": "Created using Connect Wizard",
+        "url": "jdbc:mysql://localhost:3306/ca_garage",
+        "catalog_name": "ca_garage",
+        "schema_name": null,
+        "user_name": "nisar",
+        "password": null,
+        "salt": null,
+        "active": true,
+        "status": null,
+        "dbasetype_ident": 1,
+        "prefix": "main",
+        "datasource_name": null,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.DbaseSchemas/2005",
+          "checksum": "A:9c23218c5992a13a"
+        },
+        "TableInfos": [
+        ],
+        "NonPersistentAttributes": [
+        ]
+      }
+    ],
+    "ProjectLibraries": [
+    ],
+    "ProjectOptions": [
+      {
+        "ident": 2004,
+        "ts": "2016-05-07T11:45:16",
+        "option_value": "{{globals.docSiteRoot}}/tutorial/northwind",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 13,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2004",
+          "checksum": "A:ed4d63f71bbf58ad"
+        }
+      },
+      {
+        "ident": 2005,
+        "ts": "2016-05-31T21:30:27",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 1,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2005",
+          "checksum": "A:7c118fd038e2da9a"
+        }
+      },
+      {
+        "ident": 2006,
+        "ts": "2016-05-31T21:30:27",
+        "option_value": "@metadata",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 4,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2006",
+          "checksum": "A:112e644ec85990a0"
+        }
+      },
+      {
+        "ident": 2007,
+        "ts": "2016-05-31T21:30:27",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 3,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2007",
+          "checksum": "A:c125366820461296"
+        }
+      },
+      {
+        "ident": 2008,
+        "ts": "2016-05-31T21:30:27",
+        "option_value": "2000",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 6,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2008",
+          "checksum": "A:70c921b6f9298d52"
+        }
+      },
+      {
+        "ident": 2009,
+        "ts": "2016-05-31T21:30:27",
+        "option_value": "urn:caliveapicreator:",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 2,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2009",
+          "checksum": "A:560bfa33687ff4ab"
+        }
+      },
+      {
+        "ident": 2010,
+        "ts": "2016-05-31T21:30:27",
+        "option_value": "2000",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 5,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2010",
+          "checksum": "A:d2edccfc7e4f8cf6"
+        }
+      },
+      {
+        "ident": 2011,
+        "ts": "2016-06-16T16:17:22",
+        "option_value": "2000",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 7,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2011",
+          "checksum": "A:2f78d30ccfcc094d"
+        }
+      },
+      {
+        "ident": 2012,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "20",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 9,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2012",
+          "checksum": "A:0210a23bdb71127e"
+        }
+      },
+      {
+        "ident": 2013,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "100",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 10,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2013",
+          "checksum": "A:fcd900ab6a1e538c"
+        }
+      },
+      {
+        "ident": 2014,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "2000",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 11,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2014",
+          "checksum": "A:6d6210519f0d46a9"
+        }
+      },
+      {
+        "ident": 2015,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 12,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2015",
+          "checksum": "A:658457cdded12ea2"
+        }
+      },
+      {
+        "ident": 2016,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": null,
+        "project_ident": 2004,
+        "projectoptiontype_ident": 14,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2016",
+          "checksum": "A:d90192cc5fbad58e"
+        }
+      },
+      {
+        "ident": 2017,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "json",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 15,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2017",
+          "checksum": "A:d2598bd02461e512"
+        }
+      },
+      {
+        "ident": 2018,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 19,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2018",
+          "checksum": "A:0c4401aa59f4294a"
+        }
+      },
+      {
+        "ident": 2019,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 16,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2019",
+          "checksum": "A:6bab11729e6dc6d0"
+        }
+      },
+      {
+        "ident": 2020,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "20",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 17,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2020",
+          "checksum": "A:1793ed741e210fb0"
+        }
+      },
+      {
+        "ident": 2021,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 18,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2021",
+          "checksum": "A:a4ce293bc43aaaa1"
+        }
+      },
+      {
+        "ident": 2022,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "0",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 20,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2022",
+          "checksum": "A:d2d85f3a9c217096"
+        }
+      },
+      {
+        "ident": 2023,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "null",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 21,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2023",
+          "checksum": "A:80c30c618d2a86ba"
+        }
+      },
+      {
+        "ident": 2024,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "null",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 24,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2024",
+          "checksum": "A:f569d445900a01e2"
+        }
+      },
+      {
+        "ident": 2025,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "hex",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 25,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2025",
+          "checksum": "A:cb874e5e8b46cae2"
+        }
+      },
+      {
+        "ident": 2026,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "null",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 23,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2026",
+          "checksum": "A:9e0d2bc503aa2640"
+        }
+      },
+      {
+        "ident": 2027,
+        "ts": "2016-05-31T21:30:28",
+        "option_value": "null",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 22,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2027",
+          "checksum": "A:dca8f1b076171e25"
+        }
+      },
+      {
+        "ident": 2028,
+        "ts": "2016-05-31T21:30:29",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 26,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2028",
+          "checksum": "A:974442ca33e69cad"
+        }
+      },
+      {
+        "ident": 2029,
+        "ts": "2016-05-31T21:30:29",
+        "option_value": "false",
+        "project_ident": 2004,
+        "projectoptiontype_ident": 27,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ProjectOptions/2029",
+          "checksum": "A:bd1b545cc50d2f9b"
+        }
+      }
+    ],
+    "ApiKeys": [
+      {
+        "ident": 2013,
+        "ts": "2016-05-07T11:45:08",
+        "name": "Admin key",
+        "description": "Created as part of this API. Feel free to change or delete this auth token.",
+        "apikey": "rDaanpGeIfOTnO6RfVbi",
+        "status": "A",
+        "expiration": null,
+        "logging": "*=FINE",
+        "user_identifier": null,
+        "data": null,
+        "origin": null,
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.ApiKeys/2013",
+          "checksum": "A:6f86b103cbd6c493"
+        }
+      }
+    ],
+    "Roles": [
+      {
+        "ident": 2012,
+        "ts": "2016-05-07T11:45:03",
+        "name": "API Documentation",
+        "description": "This role is special and is used when generating OpenAPI(Swagger) documentation. It is recognized by the name special name 'API Documentation' and used only for documentation calls.\n Any Resources, Tables, Views, Procedures etc. that are defined and enabled by this role are used to generate the OpenAPI(Swagger) documentation.\n If this role is assigned to a user it will NOT be used for execution permissions.\n If this role is removed or otherwise unavailable, the Swagger/OpenAPI documentation will be nothing more that a name and version.",
+        "default_permission": "A",
+        "default_apivisibility": "TVPRM",
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Roles/2012",
+          "checksum": "A:ce920d0f0a32348c"
+        },
+        "TablePermissions": [
+        ],
+        "PermissionData": [
+        ],
+        "ApiKeyRoles": [
+        ],
+        "ApiVisibility": [
+        ]
+      },
+      {
+        "ident": 2013,
+        "ts": "2016-05-07T11:45:04",
+        "name": "Full access",
+        "description": "Full access to everything in this project",
+        "default_permission": "A",
+        "default_apivisibility": "TVPRM",
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Roles/2013",
+          "checksum": "A:8f865f54102b431a"
+        },
+        "TablePermissions": [
+        ],
+        "PermissionData": [
+        ],
+        "ApiKeyRoles": [
+          {
+            "ident": 2013,
+            "ts": "2016-05-07T11:45:05",
+            "apikey_ident": 2013,
+            "role_ident": 2013,
+            "@metadata": {
+              "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Roles.ApiKeyRoles/2013",
+              "checksum": "A:46f786f44684cc36"
+            }
+          }
+        ],
+        "ApiVisibility": [
+        ]
+      },
+      {
+        "ident": 2014,
+        "ts": "2016-05-07T11:45:05",
+        "name": "Read only",
+        "description": "Read-only access to everything in this project",
+        "default_permission": "R",
+        "default_apivisibility": "TVPRM",
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Roles/2014",
+          "checksum": "A:b4385f6227373e06"
+        },
+        "TablePermissions": [
+        ],
+        "PermissionData": [
+        ],
+        "ApiKeyRoles": [
+        ],
+        "ApiVisibility": [
+        ]
+      }
+    ],
+    "Users": [
+      {
+        "ident": 2013,
+        "ts": "2016-05-07T11:45:08",
+        "name": "admin",
+        "fullname": "Admin Account with full access",
+        "email": null,
+        "status": "A",
+        "roles": "Full access",
+        "data": null,
+        "comments": null,
+        "apikey_lifespan": null,
+        "password_hash": "3DQbz6G6iIdbgIUy6CDq4FInzW4CwmFOATluK/Kz02l8pdBwtXLuFiSkJ2AcD3FAEY9JJA/vFqhF1gFzkklQog==",
+        "password_salt": "uM0r+7teiS4L+eVs3P5BwmyI+5rWZPm+1G8N9FQg",
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Users/2013",
+          "checksum": "A:100c509759740f03"
+        }
+      },
+      {
+        "ident": 2012,
+        "ts": "2016-05-07T11:45:08",
+        "name": "demo",
+        "fullname": "Demo Account with full access",
+        "email": null,
+        "status": "A",
+        "roles": "Full access",
+        "data": null,
+        "comments": null,
+        "apikey_lifespan": null,
+        "password_hash": "ip0WYmPgUP0TthENvb9LMVqdRO1J5uwnSDA4JEbVNcrzKB6MEmMswFcMKx71DiLXATdQI09QwEPhizAEu3ATJw==",
+        "password_salt": "vx5jD6FpUNfRcbECz2lvh9ZCIKpCIExCJhTlAoDI",
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Users/2012",
+          "checksum": "A:4350fadf582a9da5"
+        }
+      },
+      {
+        "ident": 2014,
+        "ts": "2016-05-07T11:45:08",
+        "name": "guest",
+        "fullname": "Guest Account with read-only access",
+        "email": null,
+        "status": "A",
+        "roles": "Read only",
+        "data": null,
+        "comments": null,
+        "apikey_lifespan": null,
+        "password_hash": "nrle84tyD1YfKEu3ADV3oVUnlg0ppiOj119C50nIxWawitlEEvnjolqPNGlwFTkB88d5qXDFzixj4NY7B1V8mA==",
+        "password_salt": "h4nWRm1WVzWBVPO8C6wevUaYjt0K1QNuy9VSXXRJ",
+        "project_ident": 2004,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Users/2014",
+          "checksum": "A:ab104617c34d2fe1"
+        }
+      }
+    ],
+    "Handlers": [
+    ],
+    "EventHandlers": [
+    ],
+    "Relationships": [
+      {
+        "ident": 2,
+        "name": "Between main:category and main:inventory",
+        "parent_entity_name": "main:category",
+        "child_entity_name": "main:inventory",
+        "role_to_child": "main_inventory_List",
+        "role_to_parent": "main_category_Parent",
+        "parent_columns": "name",
+        "child_columns": "id",
+        "update_rule": "R",
+        "delete_rule": "R",
+        "comments": null,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Relationships/2",
+          "checksum": "A:42ce69664f04bf32"
+        }
+      },
+      {
+        "ident": 3,
+        "name": "Between main:category and main:inventory",
+        "parent_entity_name": "main:category",
+        "child_entity_name": "main:inventory",
+        "role_to_child": "main_inventory_List",
+        "role_to_parent": "main_category_Parent",
+        "parent_columns": "name",
+        "child_columns": "id",
+        "update_rule": "R",
+        "delete_rule": "R",
+        "comments": null,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Relationships/3",
+          "checksum": "A:850bca2a263fad43"
+        }
+      },
+      {
+        "ident": 4,
+        "name": "Reservation and Inventory",
+        "parent_entity_name": "main:inventory",
+        "child_entity_name": "main:reservation",
+        "role_to_child": "main_reservation_List",
+        "role_to_parent": "main_inventory_Parent",
+        "parent_columns": "id",
+        "child_columns": "inventory_id",
+        "update_rule": "R",
+        "delete_rule": "R",
+        "comments": null,
+        "@metadata": {
+          "href": "http://raove02-i176822:8080/rest/abl/admin/v2/ProjectExport.Relationships/4",
+          "checksum": "A:757f557eefadca3d"
+        }
+      }
+    ],
+    "Applications": [
+    ],
+    "NamedFilters": [
+    ],
+    "NamedSorts": [
+    ]
+  }
+]

@@ -10,6 +10,7 @@ export class InventoryService{
     //private _inventoryUrl = 'http://ahmni01-i168061:8080/rest/default/garage/v1/inventory';
     private _inventoryUrl = sessionStorage.getItem('api_base_url')+'inventory';
     size:number=0;
+    dupNo:number;
     constructor(private _http: Http){
       }
       
@@ -21,9 +22,9 @@ export class InventoryService{
         return this._http.post(this._inventoryUrl,payload,{headers: apiHeaders})
                   .retry(3)
                   .map((response: Response) => <Inventory[]>response.json())                 
-                  .do(data =>{
+                  //.do(data =>{
                          //console.log("Response from POST: " + JSON.stringify(data))  
-                       })       
+                    //   })       
       }
 
       updateExistingInventory(payload:string):Observable <any>{
@@ -35,9 +36,9 @@ export class InventoryService{
         return this._http.put(this._inventoryUrl,payload,{headers: apiHeaders})
                   .retry(3)
                   .map((response: Response) => <Inventory[]>response.json())                 
-                  .do(data =>{
+                  //.do(data =>{
                          //console.log("Response from PUT: " + JSON.stringify(data))  
-                       })       
+                       //})       
       }
 
 
@@ -48,13 +49,13 @@ export class InventoryService{
         
         apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator f90a2b7e784e8abd7ba8687c149fb53e:1');
         apiHeaders.append('Content-Type', 'application/json');
-        return this._http.get(this._inventoryUrl,{headers: apiHeaders})
+        return this._http.get(this._inventoryUrl,{headers: apiHeaders, body: ''})
                   .retry(3)
                   .map((response: Response) => <Inventory[]>response.json())                 
-                  .do(data =>{
+                  //.do(data =>{
                          //console.log("RecievedData: " + JSON.stringify(data))  
-                       })
-                  .catch(this.exceptionHandler);                        
+                       //})
+                  //.catch(this.exceptionHandler);                        
         }
      
         findInventory(term: string){    
@@ -66,7 +67,7 @@ export class InventoryService{
         apiHeaders.append('Content-Type', 'application/json');
         searchFilterStr =  '?filter=name like \'' + term + '%\'';
         urlwithFilter = this._inventoryUrl + searchFilterStr;
-        return this._http.get(urlwithFilter,{headers: apiHeaders})
+        return this._http.get(urlwithFilter,{headers: apiHeaders, body: ''})
                    .retry(3)
                    .map((response: Response) => <Inventory[]>response.json());                        
         }
@@ -76,27 +77,27 @@ export class InventoryService{
         var apiHeaders = new Headers();
         var urlwithFilter;
         let _token=sessionStorage.getItem('id_token');  
-        let dupNo:number; 
+         
         
         apiHeaders.append('Authorization', _token);//apiHeaders.append('Authorization', 'CALiveAPICreator 68368c95857b7710514f52621ccc5eb7:1');
         apiHeaders.append('Content-Type', 'application/json');
         urlwithFilter = this._inventoryUrl + searchFilterStr;
         //console.log("urlwithFilter " + urlwithFilter);
-        this._http.get(urlwithFilter,{headers: apiHeaders})
+        this._http.get(urlwithFilter,{headers: apiHeaders, body: ''})
                   .retry(3)
                   .map((res: Response) => res.json())
-                  .do(data =>{
+                  //.do(data =>{
                    //this.size = Object.keys(data).length;
                    // console.log('Object.keys(data).length ----' + this.size);
                    // console.log("RecievedData: " + JSON.stringify(data));
-                  })
+                  //})
                   .subscribe(
                     data => {
-                      dupNo = Object.keys(data).length;
+                      this.dupNo = Object.keys(data).length;
                       //data = data;
                   //    size = Object.keys(data).length;
                       console.log("RecievedData: " + JSON.stringify(data));
-                      console.log("size.....: " + dupNo);
+                      console.log("size.....: " + this.dupNo);
                     }
                   );
 //        return this._http.get(urlwithFilter,{headers: apiHeaders})
@@ -109,7 +110,7 @@ export class InventoryService{
    //                }
 
      //              );   
-     return dupNo;                     
+     return this.dupNo;                     
         }
 
 
@@ -124,12 +125,12 @@ export class InventoryService{
         searchFilterStr =  '/' + id;
         urlwithFilter = this._inventoryUrl + searchFilterStr;
         //console.log('####urlwithFilter: ' + urlwithFilter);
-        return this._http.get(urlwithFilter,{headers: apiHeaders})
+        return this._http.get(urlwithFilter,{headers: apiHeaders, body: ''})
                    .retry(3)
                    .map((response: Response) => <Inventory>response.json())
-                   .do(data =>{
-                         console.log("RecievedData: " + JSON.stringify(data))  
-                       })                     
+                   //.do(data =>{
+                     //    console.log("RecievedData: " + JSON.stringify(data))  
+                       //})                     
         }
          
                

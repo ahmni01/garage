@@ -1,4 +1,32 @@
+
 <p-messages [value]="msgs"></p-messages>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">CA Garage</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+       <li><a routerLink="/home">Home <span class="sr-only">(current)</span></a></li>
+        <li><a routerLink="/inventory">Manage Inventory</a></li>
+       <li><a routerLink="/adminbay">Admin Bay</a></li>
+        <li><a routerLink="/reports">Reports</a></li>
+       </ul>
+      <ul class="nav navbar-nav navbar-right" [hidden]="!loggedin">
+          <li class="link" ><a (click)="logOff()" >Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 <p-panel header=" ID:  {{inventoryDetails?.id}} , Name:  {{inventoryDetails?.name}}">
         <div class='row'>
             <div class='col-md-6'>
@@ -9,17 +37,17 @@
                 <br>
                 <div class='row'>
                     <div class='col-md-3'><strong>Name:</strong></div>
-                    <div class='col-md-6' ><input type="text" #inv_name [ngModel]="inventoryDetails?.name" required [disabled]="disableField" pInputText size="30"/></div>                    
+                    <div class='col-md-6' ><input type="text" #inv_name [ngModel]="inventoryDetails?.name" required disabled="true" pInputText size="30"/></div>                    
                 </div>
                 <br>              
                 <div class='row'>
                     <div class='col-md-3'><strong>Category:</strong></div>
-                    <div class='col-md-6' ><input type="text" #inv_category [ngModel]="inventoryDetails?.category" required [disabled]="disableField" pInputText size="30"/></div>                    
+                    <div class='col-md-6' ><input type="text" #inv_category [ngModel]="inventoryDetails?.category" required disabled="true" pInputText size="30"/></div>                    
                 </div>
                 <br>              
                 <div class='row'>
                     <div class='col-md-3'><strong>Vendor Name:</strong></div>
-                    <div class='col-md-6' ><input type="text" #inv_vendorname [ngModel]="inventoryDetails?.vendor_name" required [disabled]="disableField" pInputText size="30"/></div>                    
+                    <div class='col-md-6' ><input type="text" #inv_vendorname [ngModel]="inventoryDetails?.vendor_name" required disabled="true" pInputText size="30"/></div>                    
                 </div>
                 <br>
             </div>
@@ -34,13 +62,15 @@
                     <div class='col-md-6' ><input type="number" #inv_cost [ngModel]="inventoryDetails?.cost" [disabled]="disableField" pInputText/></div>                    
                 </div>
                 <br>              
-                <div class='row'>
+                    <div class='row'>
                     <div class='col-md-3'><strong>Purchase Date:</strong></div>
-                    <div class='col-md-6' >
+                    <div class='col-md-6' >  
                      <p-calendar [ngModel]="inventoryDetails?.purchase_date"  #inv_purchasedate required showIcon=true
-                      maxDate="+1m" [readonlyInput]="true" [disabled]="disableField"></p-calendar></div>                        
+                      maxDate="+1m" [readonlyInput]="true" [disabled]="disableField"></p-calendar>
+                      </div>                        
                 </div>
-                <br>              
+                <br>  
+                               
                 <div class='row'>
                     <div class='col-md-3'><strong>Available?:</strong></div>
                     <div class='col-md-6' ><input type="text" [ngModel]="inventoryDetails?.available" #inv_available  pInputText disabled="true" /></div>                    
@@ -62,26 +92,29 @@
 </p-panel>
 
 <p-dialog header="Reserve Inventory" [(visible)]="display" [responsive]="true" showEffect="fade" [modal]="true">
-<form [ngFormModel]="form" #reservationform="ngForm" (ngSubmit)="assign(userid.value, inv_id.value, toreturndate.value, username.value)">
+<form [formGroup]="reservationFormGroup" (ngSubmit)="assign()" #reservationform="ngForm">
+    
 <div class="form-group">
-    <label class="control-label" for="userid">PMFKEY</label>
-    <input class="form-control" type="text" id="userid" ngControl="userid" #userid="ngForm">
-</div>     
-<div [hidden]="userid.valid || userid.pristine" class="alert alert-danger">
+    <label class="control-label" for="userId">PMFKEY</label>
+    <input class="form-control" type="text"  
+     [formControl]="userId">
+<div [hidden]="userId.valid || userId.pristine" class="alert alert-danger">
     <strong>Verify PMFKEY!</strong>
 </div>
+</div>     
+
 
 <div class="form-group">
-    <label class="control-label" for="username">User Name</label>
-    <input class="form-control" type="text" id="username" ngControl="username" #username="ngForm">
+    <label class="control-label" for="userName">User Name</label>
+    <input class="form-control" type="text" [formControl]="userName" >
 </div>
 <div class="form-group">
-    <label class="control-label" for="toreturndate">Return Date</label>
+    <label class="control-label" for="toReturnDate">Return Date</label>
     <br>
-  <!--    <input class="form-control" type="date" value = "today()" id="toreturndate" ngControl="toreturndate" #toreturndate="ngForm">
-  -->
-    <p-calendar #toreturndate showIcon=true ngControl="toreturndate" #toreturndate="ngForm"
-                minDate="+1d" maxDate="+15d" [readonlyInput]="true"></p-calendar>
+
+    <p-calendar showIcon=true name="toReturnDate" id="toReturnDate"
+                minDate="+1d" maxDate="+15d" [readonlyInput]="true" [formControl]="toReturnDate"></p-calendar>
+                
 </div>         
     <footer>
         <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
@@ -91,3 +124,4 @@
     </footer>
     </form>
 </p-dialog>
+

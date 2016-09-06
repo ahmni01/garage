@@ -16,11 +16,11 @@ export class ConfigService{
       
       loadConfig():Observable <any>{
         let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+        let options = new RequestOptions({ headers: headers, body: '' });
         return this._http.get(this.configUrl, options)
                    .retry(3)
-                   .map(this.extractData)                       
-                   .catch(this.exceptionHandler);                           
+                   .map(this.extractData);                     
+                   //.catch(this.exceptionHandler);                           
       }           
             
         private extractData(res: Response) {
@@ -38,12 +38,12 @@ export class ConfigService{
            sessionStorage.setItem('api_base_url', this.apiUrl);
            //console.log("Base Url : " + sessionStorage.getItem('api_base_url'));           
            
-           this.userName = body.userName;
-           sessionStorage.setItem('username', this.userName);
+           //this.userName = body.userName;
+           //sessionStorage.setItem('username', this.userName);
            //console.log("username : " + sessionStorage.getItem('username'));
            
-           this.password = body.password;
-           sessionStorage.setItem('password', this.password);
+           //this.password = body.password;
+           //sessionStorage.setItem('password', this.password);
            //console.log("password : " + sessionStorage.getItem('password'));
            
            //console.log("Token Expires@" + this._tokenExpirationDateTime);           
