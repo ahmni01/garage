@@ -54,6 +54,9 @@ import { Router } from '@angular/router';
     <form class="signin form-horizontal" autocomplete="off" (ngSubmit)="authenticate()" #authForm="ngForm">
         <fieldset>
             <div class="form-group">
+                <div class="alert alert-danger" role="alert" [hidden] = '!showError' >{{errorMessage}}</div>
+            </div>
+            <div class="form-group"> 
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         <i class="text-muted glyphicon glyphicon-user"></i>
@@ -61,7 +64,7 @@ import { Router } from '@angular/router';
                     <input type="text" class="form-control" id="username" name="username" placeholder="username"
                     required [(ngModel)]="user.username" #username="ngModel" >
                 </div>
-                <div class="error" [hidden]="username.valid || username.pristine">username is invalid</div>
+                <div class="alert alert-danger" [hidden]="username.valid || username.pristine">username is invalid</div>
             </div>
             <div class="form-group">
                 <div class="input-group input-group-lg">
@@ -78,6 +81,7 @@ import { Router } from '@angular/router';
             </div>
         </fieldset>
     </form>
+    
 </div>
 </div>
   `
@@ -88,13 +92,23 @@ export class Auth {
     username: ''
   };
   mode: string = 'signin';
+  errorMessage:string;
+  showError:boolean = false;
+  constructor(private auth: AuthService, private router: Router) {
+  }
 
-constructor(private auth: AuthService, private router: Router) {
-
-}
-
-authenticate() {
+  authenticate() {
     this.auth.authenticate(this.mode, this.user)
-    .subscribe(() => this.router.navigate(['']))
+    .subscribe(() => this.router.navigate(['']),
+     err => {
+            this.showError = true;
+            if(err.status == 401){
+              this.errorMessage = "Incorrect username or password";
+            }
+            else{
+              console.log(err);
+              this.errorMessage = "Check if API Server is running and check logs...";
+            }
+      });
   }
 }
