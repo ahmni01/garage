@@ -9,15 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-//import { StoreHelper } from './store-helper';
-//import { Store} from '../store';
 var api_1 = require('./api');
 var router_1 = require('@angular/router');
 require('rxjs/Rx');
 var AuthService = (function () {
-    function AuthService(
-        //private storeHelper: StoreHelper,
-        api, router) {
+    function AuthService(api, router) {
         this.api = api;
         this.router = router;
         this.JWT_KEY = 'id_token';
@@ -63,7 +59,6 @@ var AuthService = (function () {
     AuthService.prototype.signout = function () {
         sessionStorage.removeItem(this.JWT_KEY);
         sessionStorage.removeItem(this.JWT_EXPIRY);
-        //this.store.purge();
         this.router.navigate(['', 'auth']);
     };
     AuthService = __decorate([

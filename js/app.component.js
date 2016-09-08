@@ -12,27 +12,25 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var http_1 = require('@angular/http');
 var config_service_1 = require('./services/config.service');
-var auth_1 = require('./services/auth');
 var router_2 = require('@angular/router');
 var AppComponent = (function () {
-    function AppComponent(_configService, _authService) {
+    function AppComponent(_configService) {
         this._configService = _configService;
-        this._authService = _authService;
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._configService.loadConfig()
             .subscribe(function (_dataFromConfig) { return _this._dataFromConfig = _dataFromConfig; });
-        if (this._authService.isAuthorized()) {
-            this.loggedin = true;
-        }
+        /*   if(this._authService.isAuthorized()){
+             this.loggedin=true;
+           }*/
     };
     AppComponent.prototype.showLogout = function () {
         this.loggedin = true;
     };
     AppComponent.prototype.logOff = function () {
         this.loggedin = false;
-        this._authService.signout();
+        //this._authService.signout();
     };
     AppComponent = __decorate([
         core_1.Component({
@@ -44,7 +42,7 @@ var AppComponent = (function () {
             ],
             directives: [router_2.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [config_service_1.ConfigService, auth_1.AuthService])
+        __metadata('design:paramtypes', [config_service_1.ConfigService])
     ], AppComponent);
     return AppComponent;
 }());
