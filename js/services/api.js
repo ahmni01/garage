@@ -13,15 +13,23 @@ var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 require('rxjs/Rx');
 require('rxjs/add/observable/throw');
+var config_service_1 = require('./config.service');
 var ApiService = (function () {
-    function ApiService(http) {
+    function ApiService(http, _configService) {
         this.http = http;
+        this._configService = _configService;
         this.headers = new http_1.Headers({
             'Content-Type': 'application/json',
             Accept: 'application/json'
         });
-        this.api_url = 'http://localhost:8080/rest/default/garage/v1/@authentication';
+        this.API_BASE_URL = 'api_base_url';
+        this.api_url = sessionStorage.getItem('api_base_url') + '@authentication';
     }
+    ApiService.prototype.ngOnInit = function () {
+        var _this = this;
+        this._configService.loadConfig()
+            .subscribe(function (_dataFromConfig) { return _this._dataFromConfig = _dataFromConfig; });
+    };
     ApiService.prototype.getJson = function (response) {
         return response.json();
     };
@@ -60,7 +68,7 @@ var ApiService = (function () {
     };
     ApiService = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        __metadata('design:paramtypes', [http_1.Http, config_service_1.ConfigService])
     ], ApiService);
     return ApiService;
 }());

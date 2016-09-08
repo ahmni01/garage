@@ -74,7 +74,7 @@ import { Router } from '@angular/router';
                     <input type="password" class="form-control" id="password" name="password" placeholder="password" 
                     required [(ngModel)]="user.password" #password="ngModel" >
                 </div>
-                <div class="error" [hidden]="password.valid || password.pristine">password is required</div>
+                <div class="alert alert-danger" [hidden]="password.valid || password.pristine">password is required</div>
             </div>
             <div class="text-center form-group">
                 <button type="submit" class="btn btn-success btn-lg btn-block" [disabled]="!authForm.form.valid">Login</button>

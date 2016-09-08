@@ -32,11 +32,11 @@ import {CategoryService} from './services/category.service';
                   InventoryDetailsComponent,
                   Auth],
   
-  providers: [AuthService,
+  providers: [ConfigService,
+              AuthService,
               ApiService, 
               Http, 
               HTTP_PROVIDERS,
-              ConfigService,
               Auth,
               InventoryService,
               CategoryService],

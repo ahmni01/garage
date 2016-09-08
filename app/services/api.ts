@@ -1,18 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Headers, Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
 import 'rxjs/add/observable/throw';
+import {ConfigService} from './config.service'
 
 @Injectable()
-export class ApiService {
+export class ApiService implements OnInit{
   headers: Headers = new Headers({
     'Content-Type': 'application/json',
     Accept: 'application/json'
   });
-  api_url: string = 'http://localhost:8080/rest/default/garage/v1/@authentication';
+  API_BASE_URL:string = 'api_base_url'; 
+  //api_url = sessionStorage.getItem('api_base_url');
+  //api_url:string = 'http://localhost:8080/rest/default/garage/v1/@authentication';
+  api_url:string;
+  _dataFromConfig:any;
+  
+  
+  ngOnInit(){
+    this._configService.loadConfig()
+            .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig); 
+      }
 
-  constructor(private http: Http) {}
+  constructor(private http: Http,
+              private _configService: ConfigService) {
+    this.api_url = sessionStorage.getItem('api_base_url')  + '@authentication';
+  }
 
   private getJson(response: Response) {
     return response.json();

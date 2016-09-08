@@ -20,8 +20,9 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
             ,directives: [ROUTER_DIRECTIVES]
 })
 export class AppComponent implements OnInit{
-      constructor(private _configService: ConfigService,
-                  private _authService: AuthService){
+      constructor(private _configService: ConfigService
+                  //,private _authService: AuthService
+                  ){
       }  
       private _dataFromConfig:any; 
       private loggedin:boolean;
@@ -29,9 +30,9 @@ export class AppComponent implements OnInit{
       ngOnInit():void{
         this._configService.loadConfig()
             .subscribe(_dataFromConfig => this._dataFromConfig = _dataFromConfig); 
-            if(this._authService.isAuthorized()){
+         /*   if(this._authService.isAuthorized()){
               this.loggedin=true;
-            }
+            }*/
 
         
       } 
@@ -41,6 +42,6 @@ export class AppComponent implements OnInit{
 
       logOff(){
         this.loggedin=false;
-        this._authService.signout();
+        //this._authService.signout();
       }
 }
